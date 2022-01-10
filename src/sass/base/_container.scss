@@ -1,0 +1,35 @@
+// * Контейнер
+
+.container {
+  min-width: 270px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 12px;
+  padding-right: 12px;
+
+  @include mq('phone') {
+    width: $phone;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  @include mq('tablet') {
+    width: $tablet;
+    padding-left: 75px;
+    padding-right: 75px;
+  }
+
+  @include mq('desktop') {
+    width: $desktop;
+    padding-left: 71px;
+    padding-right: 71px;
+  }
+}
+
+.header__container {
+  display: flex;
+}
+
+.footer__container {
+  display: flex;
+}

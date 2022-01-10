@@ -1,0 +1,105 @@
+// * Подставляет анимацию для неограниченого числа свойств
+
+// ! Как пользоваться?
+// - В скобках пишем через запятую любые свойства которым хотим задать плавный переход:
+//   @include transition(background-color, transform);
+
+@mixin transition($transition...) {
+  transition-property: $transition;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// * Подставляет медиазапрос
+
+// ! Как пользоваться?
+// - Мобильный телефон и выше:
+//   @include mq('phone') {
+//     padding-left: 20px;
+//     padding-right: 20px;
+//   }
+// - Планшет и выше:
+//   @include mq('tablet') {
+//     padding-left: 34px;
+//     padding-right: 34px;
+//   }
+// - Десктоп и бесконечность не придел:
+//   @include mq('desktop') {
+//     padding-left: 115px;
+//     padding-right: 115px;
+//   }
+// - Если нужен только планшетный размер:
+//   @include mq-tablet-only {
+//     width: 162px;
+//   }
+// - Если добавить max в скобки после девайса то все медиа запросы будут до определенного размера экрана:
+//   @include mq('mobile', max) {
+//     width: 78px;
+//     height: 10;
+//   }
+
+@mixin mq($width, $type: min) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width);
+
+    @if $type==max {
+      $width: $width - 1px;
+    }
+
+    @media screen and (#{$type}-width: $width) {
+      @content;
+    }
+  }
+}
+
+@mixin mq-tablet-only {
+  @media screen and (min-width: $tablet) and (max-width: $befor-desktop) {
+    @content;
+  }
+}
+
+// Карта точек перелома для mq (media query)
+$breakpoints: (
+  'phone': 320px,
+  'tablet': 768px,
+  'desktop': 1024px,
+);
+
+// * Кастомный контейнер
+
+@mixin custom-box($w, $h, $bg-color, $radius, $shadow, $padding, $margin) {
+  width: $w;
+  height: $h;
+  background-color: $bg-color;
+  padding: $padding;
+  margin: $margin;
+  border-radius: $radius;
+}
+
+// * Кастомное модальное окно
+
+@mixin custom-modal-box($min-w, $min-h, $radius) {
+  min-width: $min-w;
+  min-height: $min-h;
+  width: auto;
+  height: auto;
+  box-sizing: border-box;
+  border-radius: $radius;
+  border: none;
+}
+
+// * Центрирование контента
+
+@mixin centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// * Центрирование текста
+
+@mixin centered-text {
+  text-align: center;
+  line-height: 100%;
+  vertical-align: middle;
+}

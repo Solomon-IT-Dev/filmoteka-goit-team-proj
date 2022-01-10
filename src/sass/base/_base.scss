@@ -1,0 +1,46 @@
+// * Главные стили
+
+body {
+  background-color: $white-color;
+
+  &.modal-open {
+    overflow: hidden;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+}
+
+// Отзывчевые изображения
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+// Ссылки
+a {
+  text-decoration: none;
+}
+
+// Списки
+ul,
+ol {
+  list-style: none;
+}
+
+// Кнопки
+button {
+  border: none;
+  cursor: pointer;
+}
