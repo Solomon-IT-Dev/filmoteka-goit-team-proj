@@ -2,7 +2,10 @@
 
 // Color variables in SASS format
 $color__text--primary: #000000;
+$color__text--primary-lighten: #8c8c8c;
 $color__text--secondary: #ffffff;
+$color__text--additional: #ff6b08;
+$color__footer-text: #545454;
 
 // Classic colors (just in case)
 $black-color: #000000;
@@ -11,8 +14,7 @@ $white-color: #ffffff;
 // * Variables for text
 
 // Font Family
-$mainFont: 'DM Sans', Helvetica, Arial, sans-serif;
-$secondaryFont: 'Titan One', Helvetica, Arial, sans-serif;
+$mainFont: 'Roboto', Helvetica, Arial, sans-serif;
 
 // Font Weight
 $hairline-weight: 100;

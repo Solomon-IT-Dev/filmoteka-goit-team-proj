@@ -1,6 +1,12 @@
 // * Главные стили
 
+body,
+html {
+  height: 100%;
+}
+
 body {
+  font-family: $mainFont;
   background-color: $white-color;
 
   &.modal-open {
@@ -22,7 +28,9 @@ li {
 }
 
 // Отзывчевые изображения
-img {
+img,
+picture,
+svg {
   display: block;
   max-width: 100%;
   height: auto;
@@ -31,6 +39,7 @@ img {
 // Ссылки
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 // Списки
