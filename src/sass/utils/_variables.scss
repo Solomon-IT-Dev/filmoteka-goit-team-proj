@@ -1,11 +1,32 @@
-// * Variables for color
+// * Variables for colors in SASS format
 
-// Color variables in SASS format
+// Text colors
 $color__text--primary: #000000;
 $color__text--primary-lighten: #8c8c8c;
 $color__text--secondary: #ffffff;
 $color__text--additional: #ff6b08;
+$color__text--notification: #ff001b;
 $color__footer-text: #545454;
+
+// Background colors
+$bg-color__header: #000103;
+$bg-color__header--additional: #1e0002;
+$bg-color__main: #ffffff;
+$bg-color__footer: #f7f7f7;
+
+// Icon colors
+$color__icon: #818181;
+$color__icon--accent: #ff6b01;
+
+// Objects colors
+$color__object: #f7f7f7;
+$color__object--accent: #ff6b08;
+
+// Button colors
+$color__btn: #ff6b01;
+$color__btn-border: #ffffff;
+$color__btn-border--darken: #000000;
+$color__btn-shadow: rgba(255, 107, 1, 0.6);
 
 // Classic colors (just in case)
 $black-color: #000000;
