@@ -3,4 +3,4 @@ parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcel
 },{"./../fonts/Roboto-Regular.eot":[["Roboto-Regular.c3e8c01a.eot","mvwk"],"mvwk"],"./../fonts/Roboto-Regular.woff":[["Roboto-Regular.7d0c50d9.woff","xTI8"],"xTI8"],"./../fonts/Roboto-Regular.ttf":[["Roboto-Regular.5c3119f7.ttf","E3dE"],"E3dE"],"./../fonts/Roboto-Regular.svg":[["Roboto-Regular.0a64adca.svg","AM97"],"AM97"],"./../fonts/Roboto-Medium.eot":[["Roboto-Medium.88cbb6e0.eot","Pbrh"],"Pbrh"],"./../fonts/Roboto-Medium.woff":[["Roboto-Medium.77b9081a.woff","aGep"],"aGep"],"./../fonts/Roboto-Medium.ttf":[["Roboto-Medium.f1c32734.ttf","qops"],"qops"],"./../fonts/Roboto-Medium.svg":[["Roboto-Medium.92612916.svg","DUQj"],"DUQj"]}],"Focm":[function(require,module,exports) {
 "use strict";require("./sass/main.scss");
 },{"./sass/main.scss":"clu1"}]},{},["Focm"], null)
-//# sourceMappingURL=/filmoteka-goit-team-proj/src.f744ad46.js.map
+//# sourceMappingURL=/filmoteka-goit-team-proj/src.53b29aaf.js.map
