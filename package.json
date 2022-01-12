@@ -1,7 +1,7 @@
 {
   "name": "filmoteka-goit-team-proj",
   "version": "1.1.0",
-  "description": "",
+  "description": "Your movie library",
   "main": "index.js",
   "homepage": "https://Solomon-IT-Dev.github.io/filmoteka-goit-team-proj",
   "scripts": {
