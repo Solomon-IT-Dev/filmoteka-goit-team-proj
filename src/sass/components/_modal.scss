@@ -1,0 +1,47 @@
+.modal {
+  position: relative;
+  background-color: grey;
+
+  @include mq('tablet', max) {
+    max-width: 485px;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  @include mq('tablet') {
+    width: 618px;
+    height: 562px;
+  }
+
+  @include mq('desktop') {
+    width: 882px;
+    height: 568px;
+  }
+}
+
+.modal__button--close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 30px;
+  height: 30px;
+
+  @include centered-content;
+
+  border-radius: 50%;
+  background-color: $white-color;
+  color: $black-color;
+
+  @include transition(background-color, color);
+
+  &:hover,
+  &:focus {
+    background-color: $color__object--accent;
+    color: $white-color;
+  }
+}
+
+.modal__icon-close {
+  fill: currentColor;
+}
