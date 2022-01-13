@@ -1,6 +1,6 @@
 .main-section {
   padding-top: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
 }
 .films-list {
   @include mq('tablet') {
@@ -23,4 +23,39 @@
   @include mq('desktop') {
     width: calc((100% - 90px) / 3);
   }
+}
+
+.films-list__info {
+  padding-top: 10px;
+}
+.films-list__title,
+.films-list__box {
+  font-weight: $medium-weight;
+  font-size: $text-xxs;
+  line-height: 1.33;
+}
+.films-list__title {
+  text-transform: uppercase;
+}
+.films-list__box {
+  display: flex;
+}
+
+.films-list__genre,
+.films-list__year {
+  color: $color__text--additional;
+}
+.films-list__genre {
+  padding-right: 4px;
+  border-right: 2px solid $color__text--additional;
+}
+.films-list__year {
+  padding-right: 8px;
+  padding-left: 4px;
+}
+.films-list__rating {
+  padding: 1px 10px;
+  color: $color__text--secondary;
+  background-color: $color__text--additional;
+  border-radius: 5px;
 }
