@@ -1,0 +1,26 @@
+.main-section {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.films-list {
+  @include mq('tablet') {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -15px;
+  }
+}
+.films-list__item {
+  width: 100%;
+  @include mq('tablet', max) {
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
+  @include mq('tablet') {
+    margin: 15px;
+    width: calc((100% - 60px) / 2);
+  }
+  @include mq('desktop') {
+    width: calc((100% - 90px) / 3);
+  }
+}
