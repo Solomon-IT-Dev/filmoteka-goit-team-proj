@@ -1,4 +1,109 @@
 .footer__container{
-    background-color: $bg-color__footer;
+    border:solid 1px red;
+    
+    padding-top: 30px;
+    padding-bottom: 28px;
+
+    @include mq('tablet', max) {
+        flex-direction: column;
+        
+        padding-top: 29px;
+        padding-bottom: 30px;
+    }
+}
+.upper-part-of-footer {
+    border:solid 1px green;
+    @include mq('tablet', max) {
+        margin-bottom: 10px;
+    
+        display: flex;
+        justify-content: center;
+    
+        
+    }
     
 }
+.bottom-of-footer{
+    border:solid 1px blue;
+    @include mq('tablet', max) {
+        display: flex;
+        justify-content: center;
+    }
+    
+}
+
+.footer_date,
+.footer_rights,
+.footer_info-about-us,
+.footer_info-about-developed {
+    color: $color__footer-text;
+
+    @include mq('tablet', max) {
+    font-weight: $normal-weight;
+    font-size: $text-xs;
+    line-height: 16px;
+    }
+}
+.footer_modal{
+    text-decoration: underline;
+    
+}
+.heart_box{
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 4px;
+    position: relative;
+}
+
+.heart {
+    animation: heartbeat 1s infinite;
+    background-color: $color__object--accent;
+    display: inline-block;
+    height: 8px;
+    margin: 0;
+    
+    top: 25%;
+    left: -10%;
+    transform: rotate(-45deg);
+    position: absolute; 
+    width: 10px;
+  }
+  
+  .heart:before,
+  .heart:after {
+    content: "";
+    background-color: $color__object--accent;
+    border-radius: 50%;
+    height: 8px;
+    position: absolute;
+    width: 8px;
+  }
+  
+  .heart:before {
+    top: -5px;
+    left: 0;
+  }
+  
+  .heart:after {
+    left: 5px;
+    top: 0;
+  }
+  
+  @keyframes heartbeat
+  {
+    0%
+    {
+      transform: scale( 1 )
+        rotate(-45deg);    
+    }
+    20%
+    {
+      transform: scale( 1.25 )
+        rotate(-45deg);  
+    }
+     40%
+    {
+      transform: scale( 1.5 )
+        rotate(-45deg);
+    }
+  }
