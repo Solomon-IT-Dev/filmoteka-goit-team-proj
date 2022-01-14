@@ -32,4 +32,13 @@
 
 .footer__container {
   display: flex;
+
+  padding-top: 30px;
+  padding-bottom: 28px;
+
+  @include mq('tablet', max) {
+    flex-direction: column;
+    padding-top: 29px;
+    padding-bottom: 30px;
+  }
 }

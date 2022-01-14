@@ -1,4 +1,6 @@
 import './sass/main.scss';
+
+import './js/modal';
 const axios = require('axios').default;
 
 //module for generating correct API queries for TheMovieDatabase
