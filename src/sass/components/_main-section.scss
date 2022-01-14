@@ -32,13 +32,15 @@
 .films-list__box {
   font-weight: $medium-weight;
   font-size: $text-xxs;
-  line-height: 1.33;
+  line-height: 1;
 }
 .films-list__title {
   text-transform: uppercase;
+  padding-bottom: 5px;
 }
 .films-list__box {
   display: flex;
+  align-items: center;
 }
 
 .films-list__genre,
@@ -56,6 +58,7 @@
 .films-list__rating {
   padding: 1px 10px;
   color: $color__text--secondary;
-  background-color: $color__text--additional;
+  background-color: $color__icon--accent;
+  line-height: 1.2;
   border-radius: 5px;
 }
