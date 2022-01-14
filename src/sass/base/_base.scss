@@ -9,6 +9,7 @@ body {
   font-family: $mainFont;
   background-color: $white-color;
 
+  // Запрещает прокрутку страницы при открытом модальном окне
   &.modal-open {
     overflow: hidden;
   }
@@ -52,4 +53,15 @@ ol {
 button {
   border: none;
   cursor: pointer;
+}
+
+// Фиксирует footer внизу страницы
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-section {
+  flex: 1 1 auto;
 }
