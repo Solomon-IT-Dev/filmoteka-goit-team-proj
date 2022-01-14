@@ -11,6 +11,9 @@
 }
 .films-list__item {
   width: 100%;
+  transform: scale(1);
+  @include transition(transform);
+
   @include mq('tablet', max) {
     &:not(:last-child) {
       margin-bottom: 20px;
@@ -22,6 +25,11 @@
   }
   @include mq('desktop') {
     width: calc((100% - 90px) / 3);
+  }
+
+  &:hover,
+  &:focus {
+    transform: scale(1.04);
   }
 }
 
@@ -49,7 +57,7 @@
 }
 .films-list__genre {
   padding-right: 4px;
-  border-right: 2px solid $color__text--additional;
+  border-right: 1px solid $color__text--additional;
 }
 .films-list__year {
   padding-right: 8px;
