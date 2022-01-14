@@ -1,157 +1,113 @@
 import './sass/main.scss';
 const axios = require('axios').default;
 
-/* CLass TMDB_handler is abstract. Instances of this class can't be created. However, any classes extending this one can (unless they are abstract, too) - and will inherit its fields and methods.
-Essentially, it's a way to describe common methods for several classes in one place. */
-class TMDB_GET_method {
-    TMDB_API_ENTRY = "";
-    TMDB_API_params = {};
+//module for generating correct API queries for TheMovieDatabase
+const { TMDB_URL_handler } = require("./js/api-service");
 
-    constructor() {
-        if (this.constructor == TMDB_GET_method) {
-            throw new Error("TMDB_GET_method class is abstract. Abstract classes can't be instantiated.");
-        }
-    };
+const { Pagination } = require("./js/pagination");
+
+const pageCounter = new Pagination();
+
+async function renderResults(TMDB_response_results) {
+    /* Accepts serverResponse.data.resuts from Axios */
+    /* single movie Object format from TMDB:
+    (some fields are optional and may not be present!)
+    {
+        adult: false​​​
+        backdrop_path: "/tXe3XBDkdCiNfSdyI7zZ0fz8lAC.jpg"     ​​​
+        genre_ids: Array(3) [ 28, 80, 18 ] ​​​
+        id: 414906
+        original_language: "en" ​​​
+        original_title: "The Batman"
+        overview: "In his second year of fighting crime, Batman uncovers corruption in Gotham City that connects to his own family while facing a serial killer known as the Riddler."   ​​​
+        popularity: 90.516​​​
+        poster_path: "/pOaKyhMwALpCTg07eQQu0SQCbL9.jpg"
+        release_date: "2022-03-01"
+        title: "The Batman"​​​
+        video: false​​​
+        vote_average: 0​​​
+        vote_count: 0
+    }
+	} */
     
-    toString() {
-        let asString = Object.keys(this.TMDB_API_params).reduce((urlPart, currentParam) => {
-            //if currentParam is empty, skip it, otherwise concat
-            if (this.TMDB_API_params[currentParam] === "") {
-                return urlPart;
-            }
-            else {
-                return urlPart + "&" + currentParam + "=" + this.TMDB_API_params[currentParam];
-            };
-        }, "");
+    const markup = TMDB_response_results.reduce((currentMarkup, currentMovie) => {
+        const currentImageMarkup = ``; //TODO: single movie card markup here
+        
+        return currentMarkup += currentImageMarkup;
+    }, "");
 
-        asString = this.TMDB_API_ENTRY + "?" + asString;
+    //console.log(TMDB_response_results); //debug line
 
-        return asString; //no api_key, remember to insert it!
-    };
+    //movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+    //imageLightBox.refresh(); //force update SimpleLightbox
 }
-
-class TMDB_search extends TMDB_GET_method {
-    TMDB_API_ENTRY = "search/movie";
-    TMDB_API_params = {
-        language : "", //example: en-US
-        //sort_by = "original_title.asc",
-        query : "",
-        page : 1, //integer, max = 1000
-        include_adult : "false", //force mature movies off
-    };
-
-    //private static method. Can only be called FROM the class (not instance) and BY the class/instance. Unreachable from the outside
-    static #sanitizeString(dirtyString) {
-        return dirtyString.trim().replaceAll(/ +/g, '+');
-        //some RegExp magic. While it's a homemade one, it should trim spaces at the ends and replace inner spaces with a '+'
-        //RegEx *should* do this: search one or more [space] (note the 'Kleene plus') and replace. 
-    }
-    
-    constructor(queryString, page = 1) {
-        super();
-        this.TMDB_API_params.query = TMDB_search.#sanitizeString(queryString);
-        this.TMDB_API_params.page = page;
-    }
-}
-
-
-class TMDB_trending extends TMDB_GET_method {
-    TMDB_API_ENTRY = "trending/";
-    // media_type = all | movie | tv | person
-    // time_window = day | week
-
-    constructor(media_type = "movie", time_window = "week") {
-        super();
-        this.media_type = media_type;
-        this.time_window = time_window;
-    }
-
-    toString() {
-        return this.TMDB_API_ENTRY + this.media_type + "/" + this.time_window + "?";
-        //example: "/trending/movie/week?"
-    }
-}
-
-class TMDB_URL_handler {
-    //some constants for API first
-    TMDB_API = "https://api.themoviedb.org/3/";
-
-    //injects api key into the query
-    insertApiKey(queryString = "?") {
-        //TMDB API KEY - V3 auth (move to environment vars later!)
-        const api_key = "3f733d367aa88a68e8778536d460fad2";
-
-        return queryString.replace('?', '?' + "api_key=" + api_key);
-    }
-
-    constructor(queryString = "", page = 1) {
-        //if no search string is provided, init trending
-        if (queryString === "") {
-            this.handler = new TMDB_trending("movie", "week");
-        }
-        else {
-            this.handler = new TMDB_search(queryString, page);
-        }
-    }
-
-    toString() {
-        if (this.handler.constructor.name === "TMDB_search") {
-            //generate link for searching movies
-            return this.TMDB_API + this.insertApiKey(this.handler.toString());
-        }
-        else {
-            if (this.handler.constructor.name === "TMDB_trending") {
-                //generate link for trending movies
-                return this.TMDB_API + this.insertApiKey(this.handler.toString());
-            }
-        }
-    }
-};
-
-//---TESTING---//
-
-// const handler = new TMDB_URL_handler("", 1);
-// console.log(handler);
-// console.log(handler.toString())
 
 async function searchMovies(event) {
     //event.preventDefault();
 
-    // --- TESTING
-    const search = prompt("What to search? (empty string for trending): ");
+    let searchString;
 
-    console.log("Searching for: " + search);
-
-    const URL_handler = new TMDB_URL_handler(search, 1);
-
+    // --- DEBUG TESTING
+    searchString = prompt("What to search? (empty string for trending): ");
+    console.log("Searching for: " + searchString);
+    const URL_handler = new TMDB_URL_handler(searchString, 1);
     console.log("Generated query: " + URL_handler.toString());
-    // --- end TESTING
+    // --- END TESTING
 
     const AxiosSearchParams = {
         method: 'get',
         url: URL_handler.toString(),
-        /* headers: {
-        }, */
     };
 
     try {
-        const searchResult = await axios(AxiosSearchParams);
+        const serverResponse = await axios(AxiosSearchParams);
 
-        if (searchResult.statusText != "OK" && searchResult.status != 200) {
-            throw new ServerError("TMDB response: " + searchResult.statusText + " " + "BAD TMDB RESPONSE STATUS: " + searchResult.status);
-            //throw console.error("BAD PIXABAY RESPONSE STATUS: " + searchResult.status);
+        if (serverResponse.statusText != "OK" && searchResult.status != 200) {
+            throw new ServerError("TMDB response: " + serverResponse.statusText + " " + "BAD TMDB RESPONSE STATUS: " + serverResponse.status);
         }
 
-        /*if (searchResult.status_code === 7 || searchResult.status_code === 34) {
-            throw new ServerError("Error 401/404. TMDB API response: " + searchResult.status_message);
-            //throw console.error("BAD PIXABAY RESPONSE STATUS: " + searchResult.status);
-        }*/
+        pageCounter.resetNewPage(searchString, serverResponse.data.total_results, serverResponse.data.total_pages);
 
-        console.log(searchResult);
+        if (serverResponse.data.results.length > 0) {
+            //If we have non-zero matches, render them
+            renderResults(serverResponse.data.results);
+            console.log(serverResponse.data); //debug line
+        }
     }
     catch (error) {
         console.log(error.message);
     }
 }
 
-searchMovies();
+async function movePage(direction) {
+    //valid values for direction: next | prev | first | last
+    if (pageCounter.movePage(direction) === false) {
+        console.log(pageCounter.movePage(direction));
+        return false; //try to move page, early exit if it fails
+    };
+
+    const URL_handler = new TMDB_URL_handler(pageCounter.currentSearchString, pageCounter.currentPage);
+
+    const AxiosSearchParams = {
+        method: 'get',
+        url: URL_handler.toString(),
+    };
+
+    try {
+        const serverResponse = await axios(AxiosSearchParams);
+
+        if (serverResponse.statusText != "OK" && searchResult.status != 200) {
+            throw new ServerError("TMDB response: " + serverResponse.statusText + " " + "BAD TMDB RESPONSE STATUS: " + serverResponse.status);
+        }    
+
+        if (serverResponse.data.results.length > 0) {
+            //TODO: additionally disable interface elements responsible for switching here accordingly
+
+            renderResults(serverResponse.data.results);
+            console.log(serverResponse.data); //debug line
+        }   
+    }
+    catch (error) {
+        console.log(error.message);
+    }
+}
