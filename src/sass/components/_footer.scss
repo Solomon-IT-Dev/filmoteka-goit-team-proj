@@ -1,0 +1,103 @@
+
+.upper-part-of-footer {
+  display: flex;
+    
+  @include mq('tablet', max) {
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+
+  @include mq('tablet') {
+    margin-left: auto;
+  }
+    
+}
+.bottom-of-footer{
+  display: flex;
+
+  @include mq('tablet', max) {
+    justify-content: center;
+  }
+    
+  @include mq('tablet') {
+    padding-left: 4px;
+    margin-right: auto;
+  }
+ 
+}
+
+.footer_date,
+.footer_rights,
+.footer_info-about-us,
+.footer_info-about-developed {
+  color: $color__footer-text;
+  line-height: 1.18;
+
+  @include mq('tablet', max) {
+    font-weight: $normal-weight;
+    font-size: $text-xs;
+    line-height: 1.14;
+  }
+}
+.footer_modal{
+  text-decoration: underline;  
+}
+
+.heart_box{
+  position: relative;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 4px;
+}
+
+.heart {
+  animation: heartbeat 1s infinite;
+  background-color: $color__object--accent;
+  display: inline-block;
+  height: 8px;
+  margin: 0;
+    
+  top: 25%;
+  left: -10%;
+  transform: rotate(-45deg);
+  position: absolute; 
+  width: 10px;
+}
+  
+.heart:before,
+.heart:after {
+  content: "";
+  background-color: $color__object--accent;
+  border-radius: 50%;
+  height: 8px;
+  position: absolute;
+  width: 8px;
+}
+  
+.heart:before {
+  top: -5px;
+  left: 0;
+}
+  
+.heart:after {
+  left: 5px;
+  top: 0;
+}
+  
+@keyframes heartbeat{
+  0%
+  {
+    transform: scale( 1 )
+    rotate(-45deg);    
+  }
+  20%
+  {
+    transform: scale( 1.25 )
+    rotate(-45deg);  
+  }
+  40%
+  {
+    transform: scale( 1.5 )
+    rotate(-45deg);
+  }
+}
