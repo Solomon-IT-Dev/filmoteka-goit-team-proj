@@ -52,7 +52,18 @@ async function searchMovies(event) {
     // --- DEBUG TESTING
     searchString = prompt("What to search? (empty string for trending): ");
     console.log("Searching for: " + searchString);
-    const URL_handler = new TMDB_URL_handler(searchString, 1);
+    let URL_handler = {};
+    if (searchString === "") {
+        URL_handler = new TMDB_URL_handler("TMDB_trending");
+    }
+    else {
+        const handler_params = {
+            queryString: searchString,
+            page: 1,
+            language: "",
+        }
+        URL_handler = new TMDB_URL_handler("TMDB_search", handler_params);
+    }
     console.log("Generated query: " + URL_handler.toString());
     // --- END TESTING
 
@@ -72,8 +83,7 @@ async function searchMovies(event) {
 
         if (serverResponse.data.results.length > 0) {
             //If we have non-zero matches, render them
-            renderResults(serverResponse.data.results);
-            console.log(serverResponse.data); //debug line
+            renderResults(serverResponse.data.results);           
         }
     }
     catch (error) {
