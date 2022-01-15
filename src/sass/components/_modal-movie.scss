@@ -1,1 +1,130 @@
 // Тут будут стили для оформления содержания модального окна фильма
+.modal-movies__cell {
+  display: flex;
+  justify-content: space-between;
+}
+.modal__container {
+  @include mq('phone') {
+    padding: 48px 20px 41px 20px;
+  }
+  @include mq('tablet') {
+    padding: 42px 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  @include mq('desktop') {
+    padding: 50px 30px 40px 30px;
+    grid-template-rows: 1fr 44px 100px;
+    column-gap: 30px;
+  }
+}
+.modal-movies__image {
+  margin: 0 auto;
+  @include mq('phone', max) {
+    max-width: 240px;
+  }
+  @include mq('tablet', max) {
+    max-width: 264px;
+  }
+  @include mq('desktop') {
+    width: 396px;
+    height: 477px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+}
+.modal-movies__image-box {
+  @include mq('phone') {
+    margin-bottom: 30px;
+  }
+  @include mq('tablet') {
+    margin: 0;
+    grid-row-start: 1;
+    grid-row-end: 4;
+  }
+  @include mq('desktop') {
+  }
+}
+.modal-movies__primary-header {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 23px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  @include mq('phone') {
+  }
+  @include mq('tablet') {
+  }
+  @include mq('desktop') {
+    font-size: 30px;
+    line-height: 35px;
+  }
+}
+.modal-movies__cell {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  @include mq('phone') {
+    &:not(:last-of-type) {
+      margin-bottom: 10px;
+    }
+    &:last-of-type {
+      margin-bottom: 21px;
+    }
+  }
+  @include mq('tablet') {
+    margin: 0;
+  }
+  @include mq('desktop') {
+  }
+}
+.modal-movies__cell-category {
+  color: $color__text--primary-lighten;
+}
+.modal-movies__cell-value {
+  text-transform: capitalize;
+}
+.modal-movies__cell-value-colored {
+  padding: 1px 10px;
+  border-radius: 5px;
+  background-color: $color__object--accent;
+  color: $color__text--secondary;
+}
+
+.modal-movies__secondary-header {
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 16px;
+}
+.modal-movies__text-content {
+  font-size: 12px;
+  line-height: 20px;
+  margin-bottom: 20px;
+}
+.modal-movies__button-cell {
+  display: flex;
+  justify-content: space-between;
+  grid-column-start: 2;
+}
+.modal-movies__button {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase;
+  border: 1px solid $color__text--primary;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background-color: transparent;
+  padding: 14px 8px;
+  width: 48%;
+  &:hover,
+  &:focus {
+    border: transparent;
+    color: $color__text--secondary;
+    background-color: $color__object--accent;
+  }
+  @include transition(all, transform);
+}
