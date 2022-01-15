@@ -1,0 +1,154 @@
+.header-container {
+  min-height: 230px;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  @include mq('phone') {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+      url(../images/header/blackhallphone.jpg);
+  }
+
+  @include mq('tablet') {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+      url(../images/header/blackhalltablet.jpg);
+  }
+
+  @include mq('desktop') {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+      url(../images/header/blackhall.jpg);
+  }
+}
+
+.header-menu {
+  display: flex;
+  padding-top: 41px;
+  margin-bottom: 37px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-form {
+  display: flex;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  font-family: $mainFont;
+  font-style: normal;
+  font-weight: $medium-weight;
+  font-size: 30px;
+  line-height: 35px;
+
+  color: $white-color;
+}
+
+.header__logo-icon {
+  margin-right: 10px;
+}
+
+.header__logo-title {
+  display: none;
+  @include mq('tablet') {
+    display: inline;
+  }
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  font-family: $mainFont;
+  font-style: normal;
+  font-weight: $medium-weight;
+  font-size: 12px;
+  line-height: 14px;
+
+  color: $white-color;
+
+  text-transform: uppercase;
+}
+
+.nav-list__item + .nav-list__item {
+  margin-left: 39px;
+}
+
+.header-form {
+  display: flex;
+  justify-content: center;
+}
+
+.search-position {
+  position: relative;
+}
+
+.header__input {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid $white-color;
+
+  color: $white-color;
+
+  font-family: $mainFont;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+
+  @include mq('phone') {
+    width: 280px;
+  }
+  @include mq('tablet') {
+    width: 336px;
+  }
+  @include mq('desktop') {
+    width: 336px;
+  }
+}
+
+.header__input::placeholder {
+  color: $white-color;
+
+  font-family: $mainFont;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.search-button {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+
+  position: absolute;
+  top: 25%;
+  right: 0;
+}
+
+.nav-list__link {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.nav-list__link.current {
+  position: relative;
+}
+
+.nav-list__link.current::after {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #ff6b08;
+}
