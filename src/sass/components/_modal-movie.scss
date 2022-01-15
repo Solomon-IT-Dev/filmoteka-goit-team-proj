@@ -1,7 +1,7 @@
 // Тут будут стили для оформления содержания модального окна фильма
 .modal-movies__cell {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 .modal__container {
   @include mq('phone') {
@@ -91,6 +91,11 @@
   background-color: $color__object--accent;
   color: $color__text--secondary;
 }
+.modal-movies__cell-value-colored-lighten {
+  padding: 1px 10px;
+  border-radius: 5px;
+  background-color: $color__object;
+}
 
 .modal-movies__secondary-header {
   text-transform: uppercase;
@@ -106,6 +111,9 @@
   display: flex;
   justify-content: space-between;
   grid-column-start: 2;
+  @include mq('desktop') {
+    justify-content: start;
+  }
 }
 .modal-movies__button {
   font-weight: 500;
@@ -127,4 +135,10 @@
     background-color: $color__object--accent;
   }
   @include transition(all, transform);
+  @include mq('desktop') {
+    width: 136px;
+    &:not(:last-of-type) {
+      margin-right: 15px;
+    }
+  }
 }
