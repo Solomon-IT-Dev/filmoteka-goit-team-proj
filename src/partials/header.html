@@ -1,5 +1,5 @@
 <header class="header" id="header">
-<div class="header-container container">
+<div class="header-container-red container">
 
 <div class="header-menu">
 <a href="./index.html" class="link header__logo">
@@ -19,7 +19,7 @@
     </ul>
 </nav>
 </div>
-    <div class="header-form">
+    <div class="header-form visually-hidden">
         <form class="search-form">
             <div class="search-position">
             <input type="text" name="searchQuery" placeholder="Поиск фильмов" class="header__input">       
@@ -30,6 +30,16 @@
             </button>
             </div>
         </form>
+    </div>
+    <div class="library-buttons">
+<ul class="library-buttons__list">
+    <li class="library-buttons__item">
+        <button type="button" class="library-button">watched</button>
+    </li>
+    <li class="library-buttons__item">
+        <button type="button" class="library-button">queue</button>
+    </li>
+</ul>
     </div>
 
 </div>
