@@ -27,6 +27,26 @@ class TMDB_GET_method {
     };
 }
 
+class TMDB_movieData extends TMDB_GET_method {
+    TMDB_API_ENTRY = "movie/";
+    movie_id; //required
+    TMDB_API_params = {
+        language: "", //example: en-US
+    }
+
+    constructor(movie_id, language = "") {
+        super();
+        this.movie_id = movie_id;
+        this.TMDB_API_params.language = language;
+    }
+
+    toString() {
+        //example: https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
+        const URL_with_params = super.toString.call(this);
+        return URL_with_params.replace('?', this.movie_id + '?');
+    }
+}
+
 class TMDB_search extends TMDB_GET_method {
     TMDB_API_ENTRY = "search/movie";
     TMDB_API_params = {
@@ -44,18 +64,18 @@ class TMDB_search extends TMDB_GET_method {
         //RegEx *should* do this: search one or more [space] (note the 'Kleene plus') and replace. 
     }
     
-    constructor(queryString, page = 1) {
+    constructor(queryString, page = 1, language = "") {
         super();
         this.TMDB_API_params.query = TMDB_search.#sanitizeString(queryString);
         this.TMDB_API_params.page = page;
+        this.TMDB_API_params.language = language;
     }
 }
 
-
 class TMDB_trending extends TMDB_GET_method {
     TMDB_API_ENTRY = "trending/";
-    // media_type = all | movie | tv | person
-    // time_window = day | week
+    media_type; // all | movie | tv | person
+    time_window; // day | week
 
     constructor(media_type = "movie", time_window = "week") {
         super();
@@ -82,27 +102,27 @@ class TMDB_URL_handler {
         return queryString.replace('?', '?' + "api_key=" + api_key);
     }
 
-    constructor(queryString = "", page = 1) {
-        //if no search string is provided, init trending
-        if (queryString === "") {
-            this.handler = new TMDB_trending("movie", "week");
-        }
-        else {
-            this.handler = new TMDB_search(queryString, page);
+    constructor(handler, handler_parameters = {}) {
+        //watch closely here for handler_parameters format in each case!
+        switch (handler) {
+            case "TMDB_trending":
+                this.handler = new TMDB_trending("movie", "week");
+                break;
+            case "TMDB_search":
+                const { queryString, page, language } = handler_parameters; //destruct object into separate parameters
+                this.handler = new TMDB_search(queryString, page, language);
+                break;
+            case "TMDB_movieData":
+                const {movie_id, movie_language} = handler_parameters;
+                this.handler = new TMDB_movieData(movie_id, movie_language);
+                break;
+            default:
+                throw new Error("Unknown handler for TMDB_URL_handler: " + handler);
         }
     }
 
     toString() {
-        if (this.handler.constructor.name === "TMDB_search") {
-            //generate link for searching movies
-            return this.TMDB_API + this.insertApiKey(this.handler.toString());
-        }
-        else {
-            if (this.handler.constructor.name === "TMDB_trending") {
-                //generate link for trending movies
-                return this.TMDB_API + this.insertApiKey(this.handler.toString());
-            }
-        }
+        return this.TMDB_API + this.insertApiKey(this.handler.toString());
     }
 };
 
