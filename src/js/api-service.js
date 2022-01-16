@@ -106,7 +106,7 @@ Only this class is exported and used externally in other modules. An API of sort
 Its first (and only) function is to generate correct URLs for TheMovieDatabase API (which you can later use in Axios). */
 
 class TMDB_URL_handler {
-    //some constants for API first
+    //Backend host address
     TMDB_API = "https://api.themoviedb.org/3/";
 
     //injects api key into the query
@@ -119,6 +119,7 @@ class TMDB_URL_handler {
     }
 
     constructor(handler, handler_parameters = {}) {
+        //each "handler" is a type of request for TheMovieDatabase API (in other words, a GET described here: https://developers.themoviedb.org/3/).
         //watch closely here for handler_parameters format in each case!
         switch (handler) {
             case "TMDB_trending":
@@ -142,6 +143,7 @@ class TMDB_URL_handler {
     }
 
     toString() {
+        //Generate API URL: add host address and API key
         return this.TMDB_API + this.insertApiKey(this.handler.toString());
     }
 };
