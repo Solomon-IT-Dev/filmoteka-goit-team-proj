@@ -26,6 +26,17 @@ class TMDB_GET_method {
         return asString; //no api_key, remember to insert it!
     };
 }
+/* This handler generates queries for names of genres based on their IDs from IMDB */
+class TMDB_genres extends TMDB_GET_method {
+    TMDB_API_ENTRY = "genre/movie/list";
+
+    constructor(language = "") {
+        super();
+        this.TMDB_API_params.language = language;
+    }
+
+    //toString() example: https://api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
+}
 
 class TMDB_movieData extends TMDB_GET_method {
     TMDB_API_ENTRY = "movie/";
@@ -89,6 +100,11 @@ class TMDB_trending extends TMDB_GET_method {
     }
 }
 
+/* This class is a wrapper.
+Only this class is exported and used externally in other modules. An API of sorts? Start your work with studying it.
+
+Its first (and only) function is to generate correct URLs for TheMovieDatabase API (which you can later use in Axios). */
+
 class TMDB_URL_handler {
     //some constants for API first
     TMDB_API = "https://api.themoviedb.org/3/";
@@ -115,6 +131,10 @@ class TMDB_URL_handler {
             case "TMDB_movieData":
                 const {movie_id, movie_language} = handler_parameters;
                 this.handler = new TMDB_movieData(movie_id, movie_language);
+                break;
+            case "TMDB_genres":
+                const { genres_language } = handler_parameters;
+                this.handler = new TMDB_genres(genres_language);
                 break;
             default:
                 throw new Error("Unknown handler for TMDB_URL_handler: " + handler);

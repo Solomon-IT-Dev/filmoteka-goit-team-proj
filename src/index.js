@@ -9,6 +9,7 @@ const { TMDB_URL_handler } = require("./js/api-service");
 const { Pagination } = require("./js/pagination");
 
 const pageCounter = new Pagination();
+let TMDB_GENRE_CACHE; //undefined. Clean it when we change language!
 
 async function renderResults(TMDB_response_results) {
     /* Accepts serverResponse.data.resuts from Axios */
@@ -44,6 +45,49 @@ async function renderResults(TMDB_response_results) {
     //imageLightBox.refresh(); //force update SimpleLightbox
 }
 
+/* This function adds field "genres" with an array of genres in text into a single movie object (and removes "genre_ids").
+'movieData' should have a proper 'genre_ids[]' field!
+If you have an array of movies, run it for EACH of them 
+Pure function: returns a modified COPY of movieData */
+async function addGenreNames(movieData, language = "") {
+    //do ONCE - cache genres from the backend
+    try {
+        if (TMDB_GENRE_CACHE === undefined) {
+            const AxiosGenreParams = {
+                method: 'get',
+                url: new TMDB_URL_handler("TMDB_genres", { language: language }).toString(),
+            };
+
+            const serverResponse = await axios(AxiosGenreParams);
+
+            if (serverResponse.statusText != "OK" && searchResult.status != 200) {
+                throw new ServerError(`Unable to cache genres from TMDB. Request: ${AxiosGenreParams.url}. TMDB response: ${serverResponse.statusText}. BAD TMDB RESPONSE STATUS: ${serverResponse.status}`);
+            }
+
+            TMDB_GENRE_CACHE = serverResponse.data.genres;
+        }
+
+
+    }
+    catch (error) {
+        console.log(error.message);
+    }
+
+    //console.log(TMDB_GENRE_CACHE); //DEBUG line
+
+    const movieData_with_genres = {...movieData}; //clone movie object BY VALUE!
+    delete movieData_with_genres.genre_ids;
+    
+    movieData_with_genres.genres = movieData.genre_ids.map((genre_id) => {
+        const genreObject = TMDB_GENRE_CACHE.find((genre) => {
+            return genre.id === genre_id;
+        });
+        return genreObject.name;
+    });
+
+    return movieData_with_genres;
+}
+
 async function searchMovies(event) {
     //event.preventDefault();
 
@@ -76,14 +120,15 @@ async function searchMovies(event) {
         const serverResponse = await axios(AxiosSearchParams);
 
         if (serverResponse.statusText != "OK" && searchResult.status != 200) {
-            throw new ServerError("TMDB response: " + serverResponse.statusText + " " + "BAD TMDB RESPONSE STATUS: " + serverResponse.status);
+            throw new ServerError(`Unable to cache genres from TMDB. Request: ${AxiosGenreParams.url}. TMDB response: ${serverResponse.statusText}. BAD TMDB RESPONSE STATUS: ${serverResponse.status}`);
         }
 
         pageCounter.resetNewPage(searchString, serverResponse.data.total_results, serverResponse.data.total_pages);
 
         if (serverResponse.data.results.length > 0) {
             //If we have non-zero matches, render them
-            renderResults(serverResponse.data.results);           
+            renderResults(serverResponse.data.results);
+            console.log(serverResponse.data); //debug line
         }
     }
     catch (error) {
@@ -116,7 +161,7 @@ async function movePage(direction) {
             //TODO: additionally disable interface elements responsible for switching here accordingly
 
             renderResults(serverResponse.data.results);
-            console.log(serverResponse.data); //debug line
+            //console.log(serverResponse.data); //debug line
         }   
     }
     catch (error) {
