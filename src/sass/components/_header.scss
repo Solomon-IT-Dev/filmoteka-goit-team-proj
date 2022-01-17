@@ -1,4 +1,12 @@
-.header-container {
+.header-black {
+  background-color: $bg-color__header;
+}
+
+.header-red {
+  background-color: $bg-color__header--additional;
+}
+
+.header-container-black {
   min-height: 230px;
   max-width: 1024px;
   margin-left: auto;
@@ -65,13 +73,12 @@
   align-items: center;
   text-align: center;
 
-  font-family: $mainFont;
   font-style: normal;
   font-weight: $medium-weight;
   font-size: 30px;
   line-height: 35px;
 
-  color: $white-color;
+  color: $color__text--secondary;
 }
 
 .header__logo-icon {
@@ -90,13 +97,12 @@
   align-items: center;
   text-align: center;
 
-  font-family: $mainFont;
   font-style: normal;
   font-weight: $medium-weight;
   font-size: 12px;
   line-height: 14px;
 
-  color: $white-color;
+  color: $color__text--secondary;
 
   text-transform: uppercase;
 }
@@ -117,11 +123,10 @@
 .header__input {
   background-color: transparent;
   border: 0;
-  border-bottom: 1px solid $white-color;
+  border-bottom: 1px solid $color__object;
 
-  color: $white-color;
+  color: $color__text--secondary;
 
-  font-family: $mainFont;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -139,9 +144,8 @@
 }
 
 .header__input::placeholder {
-  color: $white-color;
+  color: $color__text--secondary;
 
-  font-family: $mainFont;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -158,16 +162,26 @@
   right: 0;
 }
 
-.nav-list__link {
-  padding-top: 3px;
-  padding-bottom: 3px;
+.nav-list__button {
+  padding: 3px 0 3px 0;
+
+  font-style: normal;
+  font-weight: $medium-weight;
+  font-size: 12px;
+  line-height: 14px;
+
+  color: $color__text--secondary;
+
+  text-transform: uppercase;
+
+  background-color: transparent;
 }
 
-.nav-list__link.current {
+.nav-list__button.current {
   position: relative;
 }
 
-.nav-list__link.current::after {
+.nav-list__button.current::after {
   position: absolute;
   left: 0;
   bottom: 0;
@@ -190,7 +204,6 @@
   height: 44px;
   border-radius: 5px;
 
-  font-family: $mainFont;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -199,14 +212,15 @@
   text-transform: uppercase;
 
   background-color: transparent;
-  color: $white-color;
-  border: 1px solid $white-color;
+  color: $color__text--secondary;
+  border: 1px solid $color__btn-border;
 
   &:hover,
   &:focus {
     border-style: none;
     background-color: $color__btn;
-    color: $white-color;
+    color: $color__text--secondary;
+    box-shadow: $color__btn-shadow;
   }
 }
 
