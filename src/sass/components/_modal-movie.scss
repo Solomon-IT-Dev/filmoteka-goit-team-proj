@@ -122,7 +122,7 @@
   align-items: center;
   text-align: center;
   text-transform: uppercase;
-  border: 1px solid $color__text--primary;
+  border: 1px solid $color__btn-border--darken;
   box-sizing: border-box;
   border-radius: 5px;
   background-color: transparent;
@@ -130,11 +130,11 @@
   width: 48%;
   &:hover,
   &:focus {
-    border: transparent;
+    border: 1px solid $color__btn;
     color: $color__text--secondary;
-    background-color: $color__object--accent;
+    background-color: $color__btn;
   }
-  @include transition(all, transform);
+  @include transition(border, color, background-color);
   @include mq('desktop') {
     width: 136px;
     &:not(:last-of-type) {
