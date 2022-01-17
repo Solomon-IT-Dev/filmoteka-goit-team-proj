@@ -11,11 +11,57 @@ const { Pagination } = require("./js/pagination");
 const pageCounter = new Pagination();
 let TMDB_GENRE_CACHE; //undefined. Clean it when we change language!
 
+let TMDB_CONFIG; //undefined
+
+/* Returns full path for images from IMDB.
+file_path: short path from 'movieData' or a search result
+size: any size that IMDB supports. Optional. See IMDB_CONFIG for valid sizes. Default is "original" */
+
+async function getImagePathFromTMDB(file_path, size) {
+    //do ONCE - cache IMDB config with base_path and sizes for images
+    //reference for config format: https://developers.themoviedb.org/3/configuration/get-api-configuration 
+    if (TMDB_CONFIG === undefined) {
+        try {
+            const AxiosConfigParams = {
+                method: 'get',
+                url: new TMDB_URL_handler("TMDB_config").toString(),
+            };
+
+            const serverResponse = await axios(AxiosConfigParams);
+
+            if (serverResponse.statusText != "OK" && searchResult.status != 200) {
+                throw new ServerError(`Unable to cache Getsconfiguration from TMDB. Request: ${AxiosConfigParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
+            }
+
+            TMDB_CONFIG = serverResponse.data;
+            //console.log(TMDB_CONFIG); //debug line
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    const handler_params = {
+        TMDB_base_url: TMDB_CONFIG.images.secure_base_url,
+        size: size,
+        file_path: file_path,
+    };
+    const URL_handler = new TMDB_URL_handler("TMDB_image", handler_params);
+
+    return URL_handler.toString();
+}
+
+//DEBUG IMAGE - gets backdrop image path for 'Batman Begins', width=780
+// console.log( getImagePathFromTMDB("/y9AuabF1SXnn3xZ0tAJLLhv33Uj.jpg", "w780") );
+//END DEBUG IMAGE
+
 async function renderMovieDetails(event, movieData) {
     /* Accepts serverResponse.data.results from Axios 
     see https://developers.themoviedb.org/3/movies/get-movie-details for reference */
 
-    //TODO: add markup to event.target based on what movieData has and open modal window
+    //TODO: add markup to event.target based on what movieData has, open modal window
+
+    //get full image paths in sizes with getImagePathFromIMDB()
 }
 
 async function showMovieDetails(event = new Event("default")) {
@@ -102,8 +148,8 @@ Pure function: returns a modified COPY of movieData */
 
 async function addGenreNames(movieData, language) {
     //do ONCE - cache genres from the backend
-    try {
-        if (TMDB_GENRE_CACHE === undefined) {
+    if (TMDB_GENRE_CACHE === undefined) {
+        try {
             const AxiosGenreParams = {
                 method: 'get',
                 url: new TMDB_URL_handler("TMDB_genres", { language: language }).toString(),
@@ -117,11 +163,9 @@ async function addGenreNames(movieData, language) {
 
             TMDB_GENRE_CACHE = serverResponse.data.genres;
         }
-
-
-    }
-    catch (error) {
-        console.log(error.message);
+        catch (error) {
+            console.log(error.message);
+        }
     }
 
     //console.log(TMDB_GENRE_CACHE); //DEBUG line
@@ -144,7 +188,7 @@ async function searchMovies(event = new Event("default")) {
 
     let searchString;
 
-    // --- DEBUG TESTING
+    // --- DEBUG TESTING - replace with actual search
     searchString = prompt("What to search? (empty string for trending): ");
     console.log("Searching for: " + searchString);
     let URL_handler = {};
@@ -179,7 +223,7 @@ async function searchMovies(event = new Event("default")) {
         if (serverResponse.data.results.length > 0) {
             //If we have non-zero matches, render them
             renderResults(serverResponse.data.results);
-            console.log(serverResponse.data); //debug line
+            //console.log(serverResponse.data); //debug line
         }
     }
     catch (error) {

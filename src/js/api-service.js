@@ -26,7 +26,8 @@ class TMDB_GET_method {
         return asString; //no api_key, remember to insert it!
     };
 }
-/* This handler generates queries for names of genres based on their IDs from IMDB */
+/* This handler gets names of genres for their IDs from IMDB. 
+Cache results in main js. */
 class TMDB_genres extends TMDB_GET_method {
     TMDB_API_ENTRY = "genre/movie/list";
 
@@ -55,6 +56,32 @@ class TMDB_movieData extends TMDB_GET_method {
         //example: https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
         const URL_with_params = super.toString.call(this);
         return URL_with_params.replace('?', this.movie_id + '?');
+    }
+}
+
+class TMDB_image extends TMDB_GET_method {
+    TMDB_API_ENTRY = "";
+
+    constructor(TMDB_API_ENTRY_secure, size = "original", file_path) {
+        super();
+        this.TMDB_API_ENTRY = TMDB_API_ENTRY_secure;
+        this.size = size;
+        this.file_path = file_path;
+    }
+
+    toString() {
+        //example: https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg
+        return this.TMDB_API_ENTRY + this.size + this.file_path;
+    }   
+}
+
+/* retrieves TMDB configuration for requesting images.
+Cache results in main js. */
+class TMDB_config extends TMDB_GET_method {
+    TMDB_API_ENTRY = "configuration";
+
+    constructor() {
+        super();
     }
 }
 
@@ -137,12 +164,24 @@ class TMDB_URL_handler {
                 const { genres_language } = handler_parameters;
                 this.handler = new TMDB_genres(genres_language);
                 break;
+            case "TMDB_image":
+                const { TMDB_base_url, size, file_path } =  handler_parameters; //get first 2 from running TMDB_config once
+                    this.handler = new TMDB_image(TMDB_base_url, size, file_path);
+                break;
+            case "TMDB_config":
+                this.handler = new TMDB_config();
+                break;
             default:
                 throw new Error("Unknown handler for TMDB_URL_handler: " + handler);
         }
     }
 
     toString() {
+        if (this.handler.constructor === TMDB_image) {
+            return this.handler.toString();          
+            //API method for images doesn't need an API key or host address. Everything is in the handler.
+        }
+
         //Generate API URL: add host address and API key
         return this.TMDB_API + this.insertApiKey(this.handler.toString());
     }
