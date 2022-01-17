@@ -37,13 +37,13 @@
 
   @include mq('tablet', max) {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
   }
 
   @media screen and (min-width: 450px) and (max-width: $befor-tablet) {
     max-width: 450px;
     width: 100vw;
-    height: 92vh;
+    height: 95vh;
   }
 
   @include mq('tablet') {

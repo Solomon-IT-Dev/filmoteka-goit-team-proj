@@ -9,6 +9,10 @@
     position: absolute;
     bottom: 20px;
 
+    @include mq('tablet', max) {
+      bottom: 30px;
+    }
+
     display: block;
     width: 95%;
     height: 4px;
@@ -31,7 +35,7 @@
 
   @include mq('tablet', max) {
     margin-top: 58px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 
   @include mq('tablet') {
@@ -60,6 +64,10 @@
   justify-content: space-evenly;
 
   margin: 0 30px 0 30px;
+
+  @include mq('tablet', max) {
+    margin: 0 20px 0 20px;
+  }
 }
 
 .team__member {
@@ -67,6 +75,9 @@
   transform: scale(1);
   @include transition(transform);
 
+  @include mq('tablet', max) {
+    margin: 10px 0 10px 0;
+  }
   @include mq-tablet-only {
     margin: 7px;
 
@@ -94,10 +105,13 @@
 }
 
 .member__picture {
-  width: 150px;
-  height: 170px;
   border-radius: 5px;
   overflow: hidden;
+
+  @include mq('tablet', max) {
+    width: 220px;
+    height: 240px;
+  }
 
   @include mq-tablet-only {
     width: 125px;
@@ -142,6 +156,11 @@
     width: 140px;
     height: 2px;
 
+    @include mq('tablet', max) {
+      left: 30px;
+      width: 160px;
+    }
+
     @include mq-tablet-only {
       bottom: 31px;
       width: 115px;
@@ -166,6 +185,10 @@
 .service {
   display: flex;
   margin-top: 10px;
+
+  @include mq('tablet', max) {
+    margin-bottom: 10px;
+  }
 
   @include mq-tablet-only {
     margin-top: 45px;
