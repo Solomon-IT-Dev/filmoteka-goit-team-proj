@@ -9,7 +9,41 @@ const { TMDB_URL_handler } = require('./js/api-service');
 
 const { Pagination } = require('./js/pagination');
 
-const pageCounter = new Pagination();
+import TuiPagination from 'tui-pagination';
+import "tui-pagination/dist/tui-pagination.css";
+
+let searchString = '';
+
+
+const tuiOptions = {
+    totalItems: 210, //set proper value in search
+    itemsPerPage: 20, //default from TMDB API
+    visiblePages: 4,
+    page: 1,
+    centerAlign: false,
+    firstItemClassName: 'tui-first-child',
+    lastItemClassName: 'tui-last-child',
+    template: {
+        page: '<a href="#" class="tui-page-btn">{{page}}</a>',
+        currentPage: '<strong class="tui-page-btn tui-is-selected">{{page}}</strong>',
+        moveButton:
+            '<a href="#" class="tui-page-btn tui-{{type}}">' +
+            '<span class="tui-ico-{{type}}">{{type}}</span>' +
+            '</a>',
+        disabledMoveButton:
+            '<span class="tui-page-btn tui-is-disabled tui-{{type}}">' +
+            '<span class="tui-ico-{{type}}">{{type}}</span>' +
+            '</span>',
+        moreButton:
+            '<a href="#" class="tui-page-btn tui-{{type}}-is-ellip">' +
+            '<span class="tui-ico-ellip">...</span>' +
+            '</a>'
+    },
+    usageStatistics: true, //GoogleStats for usage of TuiP
+};
+const tuiPaginationInstance = new TuiPagination(document.getElementById('tui-pagination-container'), tuiOptions);
+
+//const pageCounter = new Pagination();
 let TMDB_GENRE_CACHE; //undefined. Clean it when we change language!
 
 let TMDB_CONFIG; //undefined
@@ -188,14 +222,14 @@ async function addGenreNames(movieData, language) {
 async function searchMovies(event = new Event('default')) {
   event.preventDefault();
 
-  let searchString;
+  //let searchString;
 
   // --- DEBUG TESTING - replace with actual search
   searchString = prompt('What to search? (empty string for trending): ');
   console.log('Searching for: ' + searchString);
   let URL_handler = {};
   if (searchString === '') {
-    URL_handler = new TMDB_URL_handler('TMDB_trending');
+    URL_handler = new TMDB_URL_handler('TMDB_trending', {page: 1});
   } else {
     const handler_params = {
       queryString: searchString,
@@ -221,11 +255,12 @@ async function searchMovies(event = new Event('default')) {
       );
     }
 
-    pageCounter.resetNewPage(
-      searchString,
-      serverResponse.data.total_results,
-      serverResponse.data.total_pages,
-    );
+    tuiPaginationInstance.setTotalItems(serverResponse.data.total_results);
+    // pageCounter.resetNewPage(
+    //   searchString,
+    //   serverResponse.data.total_results,
+    //   serverResponse.data.total_pages,
+    // );
 
     if (serverResponse.data.results.length > 0) {
       //If we have non-zero matches, render them
@@ -240,17 +275,33 @@ async function searchMovies(event = new Event('default')) {
 /* Requests another page for the same search string. Calls render afterwars.
 Needs a wrapper telling it what page to load (direction)*/
 
-async function movePage(direction) {
+tuiPaginationInstance.on('afterMove', (event) => { 
+    movePage(event);
+});
+
+async function movePage(event) { //direction) {
+    /*
   //valid values for direction: next | prev | first | last
   if (pageCounter.movePage(direction) === false) {
     console.log(pageCounter.movePage(direction));
     return false; //try to move page, early exit if it fails
   }
+  */
+    let URL_handler;
+    //TESTING
+   if (searchString === '') {
+    URL_handler = new TMDB_URL_handler('TMDB_trending', {page: event.page});
+  } else {
+    const handler_params = {
+      queryString: searchString,
+      page: event.page,
+      language: '',
+    };
+    URL_handler = new TMDB_URL_handler('TMDB_search', handler_params);
+  }
+  console.log('Generated query: ' + URL_handler.toString());
 
-  const URL_handler = new TMDB_URL_handler(
-    pageCounter.currentSearchString,
-    pageCounter.currentPage,
-  );
+    //END TESTING
 
   const AxiosSearchParams = {
     method: 'get',
@@ -272,7 +323,7 @@ async function movePage(direction) {
       //TODO: additionally disable interface elements responsible for switching here accordingly
 
       renderResults(serverResponse.data.results);
-      //console.log(serverResponse.data); //debug line
+      console.log(serverResponse.data); //debug line
     }
   } catch (error) {
     console.log(error.message);
