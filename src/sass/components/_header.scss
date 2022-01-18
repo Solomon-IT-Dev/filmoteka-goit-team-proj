@@ -1,9 +1,14 @@
 .header-black {
-  background-color: $bg-color__header;
+  background: radial-gradient(circle at center, $bg-color__header 85%, #26150b, #040200);
 }
 
 .header-red {
-  background-color: $bg-color__header--additional;
+  background: radial-gradient(
+    circle at center,
+    #080101 85%,
+    $bg-color__header--additional,
+    #060000
+  );
 }
 
 .header-container-black {
@@ -16,17 +21,17 @@
   background-size: cover;
 
   @include mq('phone') {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+    background-image: radial-gradient(circle at center, #00000000, $bg-color__header 80%),
       url(../images/header/blackhallphone.jpg);
   }
 
   @include mq('tablet') {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+    background-image: radial-gradient(circle at center, #00000000, $bg-color__header 80%),
       url(../images/header/blackhalltablet.jpg);
   }
 
   @include mq('desktop') {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+    background-image: radial-gradient(circle at center, #00000000, $bg-color__header 80%),
       url(../images/header/blackhall.jpg);
   }
 }
@@ -41,17 +46,17 @@
   background-size: cover;
 
   @include mq('phone') {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+    background-image: radial-gradient(circle at center, #00000000, #080101 80%),
       url(../images/header/redhallphone.jpg);
   }
 
   @include mq('tablet') {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+    background-image: radial-gradient(circle at center, #00000000, #080101 80%),
       url(../images/header/redhalltablet.jpg);
   }
 
   @include mq('desktop') {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+    background-image: radial-gradient(circle at center, #00000000, #080101 80%),
       url(../images/header/redhall.jpg);
   }
 }
@@ -140,6 +145,7 @@
   background-color: transparent;
   border: 0;
   border-bottom: 1px solid $color__object;
+  border-radius: 0px;
 
   color: $color__text--secondary;
 
