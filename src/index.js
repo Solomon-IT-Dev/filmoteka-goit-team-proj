@@ -250,11 +250,11 @@ async function movePage(direction) {
 
     try {
         const serverResponse = await axios(AxiosSearchParams);
-
+document.querySelector('.error-message').classList.add('visually-hidden');
         if (serverResponse.statusText != "OK" && searchResult.status != 200) {
             throw new ServerError(`Unable to get new page from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. "TMDB RESPONSE STATUS: ${serverResponse.status}`);
         }    
-
+if (serverResponse.data.results.length === 0){document.querySelector('.error-message').classList.remove('visually-hidden');}
         if (serverResponse.data.results.length > 0) {
             //TODO: additionally disable interface elements responsible for switching here accordingly
 

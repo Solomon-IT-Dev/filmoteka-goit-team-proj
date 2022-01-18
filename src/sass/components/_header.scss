@@ -280,3 +280,14 @@
 .library-buttons__item + .library-buttons__item {
   margin-left: 15px;
 }
+
+.error-message {
+  margin-top: 22px;
+
+  text-align: center;
+  font-weight: $normal-weight;
+  font-size: $text-xs;
+  line-height: 1.14;
+
+  color: $color__text--notification;
+}

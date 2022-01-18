@@ -30,6 +30,8 @@ const addRedHeader = () => {
 
   document.querySelector('.library-buttons').classList.remove('visually-hidden');
   document.querySelector('.header-form').classList.add('visually-hidden');
+
+  document.querySelector('.error-message').classList.add('visually-hidden');
 };
 
 buttonMyLibrary.addEventListener('click', addRedHeader);
