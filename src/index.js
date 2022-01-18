@@ -1,12 +1,13 @@
 import './sass/main.scss';
 import './js/header-switcher';
+import './js/scroll';
 import './js/modal';
 const axios = require('axios').default;
 
 //module for generating correct API queries for TheMovieDatabase
 const { TmdbUrlHandler } = require("./js/api-service");
 
-const { Pagination } = require("./js/pagination");
+const { Pagination } = require('./js/pagination');
 
 const pageCounter = new Pagination();
 let TMDB_GENRE_CACHE; //undefined. Clean it when we change language!
@@ -39,6 +40,7 @@ async function getImagePathFromTMDB(file_path, size) {
             console.log(error.message);
         }
     }
+  }
 
     const handler_params = {
         TMDB_base_url: TMDB_CONFIG.images.secure_base_url,
@@ -47,12 +49,12 @@ async function getImagePathFromTMDB(file_path, size) {
     };
     const URL_handler = new TmdbUrlHandler("TMDB_image", handler_params);
 
-    return URL_handler.toString();
+  return URL_handler.toString();
 }
 
 
 async function renderMovieDetails(event, movieData) {
-    /* Accepts serverResponse.data.results from Axios 
+  /* Accepts serverResponse.data.results from Axios 
     see https://developers.themoviedb.org/3/movies/get-movie-details for reference */
 
     //TODO: add markup to event.target based on what movieData has, open modal window
@@ -60,8 +62,8 @@ async function renderMovieDetails(event, movieData) {
     //get full image paths in sizes with: await getImagePathFromIMDB()
 }
 
-async function showMovieDetails(event = new Event("default")) {
-    event.preventDefault();
+async function showMovieDetails(event = new Event('default')) {
+  event.preventDefault();
 
     const movie_id = event.target.dataset.id; //read ID from data attribute from HTML (added in renderResults). Example: 272 = `Batman Begins`
     const handler_params = {
@@ -70,25 +72,26 @@ async function showMovieDetails(event = new Event("default")) {
     };
     const URL_handler = new TmdbUrlHandler("TMDB_movieData", handler_params);
 
-    const AxiosMovieParams = {
-        method: 'get',
-        url: URL_handler.toString(),
-    };
+  const AxiosMovieParams = {
+    method: 'get',
+    url: URL_handler.toString(),
+  };
 
-    try {
-        const serverResponse = await axios(AxiosMovieParams);
+  try {
+    const serverResponse = await axios(AxiosMovieParams);
 
-        if (serverResponse.statusText != "OK" && serverResponse.status != 200) {
-            throw new ServerError(`Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
-        }
-
-        //add movie data to modal window here
-        renderMovieDetails(event, serverResponse.data);
-        //console.log(serverResponse.data); //debug line
+    if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
+      throw new ServerError(
+        `Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
+      );
     }
-    catch (error) {
-        console.log(error.message);
-    }
+
+    //add movie data to modal window here
+    renderMovieDetails(event, serverResponse.data);
+    //console.log(serverResponse.data); //debug line
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 // DEBUG MOVIE DETAILS
@@ -98,9 +101,9 @@ async function showMovieDetails(event = new Event("default")) {
 // END DEBUG MOVIE DETAILS
 
 async function renderResults(TMDB_response_results) {
-    /* Accepts serverResponse.data.results from Axios 
+  /* Accepts serverResponse.data.results from Axios 
     see https://developers.themoviedb.org/3/search/search-movies for reference */
-    /* single movie Object format from TMDB:
+  /* single movie Object format from TMDB:
     (some fields are optional and may not be present!)
     {
         adult: false​​​
@@ -119,18 +122,18 @@ async function renderResults(TMDB_response_results) {
         vote_count: 0
     }
 	*/
-    
-    const markup = TMDB_response_results.reduce((currentMarkup, currentMovie) => {
-        const currentMovieWithGenres = addGenreNames(currentMovie);
-        const currentImageMarkup = ``; //TODO: single movie card markup here
 
-        //Add ID from each movie as a data attribute to the external element (the one which opens a modal window). Format: data-id="{TMDB id}"
-        
-        return currentMarkup += currentImageMarkup;
-    }, "");
+  const markup = TMDB_response_results.reduce((currentMarkup, currentMovie) => {
+    const currentMovieWithGenres = addGenreNames(currentMovie);
+    const currentImageMarkup = ``; //TODO: single movie card markup here
 
-    //movieGalleryElement.insertAdjacentHTML("beforeend", markup);
-    //imageLightBox.refresh(); //force update SimpleLightbox
+    //Add ID from each movie as a data attribute to the external element (the one which opens a modal window). Format: data-id="{TMDB id}"
+
+    return (currentMarkup += currentImageMarkup);
+  }, '');
+
+  //movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+  //imageLightBox.refresh(); //force update SimpleLightbox
 }
 
 /* Adds field "genres" with an array of genres in text into a single movie object (and removes "genre_ids").
@@ -160,12 +163,12 @@ async function addGenreNames(movieData, language) {
         }
     }
 
-    const movieData_with_genres = {...movieData}; //clone movie object BY VALUE!
+    const movieData_with_genres = { ...movieData }; //clone movie object BY VALUE!
     delete movieData_with_genres.genre_ids;
-    
-    movieData_with_genres.genres = movieData.genre_ids.map((genre_id) => {
-        const genreObject = TMDB_GENRE_CACHE.find((genre) => {
-            return genre.id === genre_id;
+
+    movieData_with_genres.genres = movieData.genre_ids.map(genre_id => {
+        const genreObject = TMDB_GENRE_CACHE.find(genre => {
+        return genre.id === genre_id;
         });
         return genreObject.name;
     });
@@ -173,10 +176,8 @@ async function addGenreNames(movieData, language) {
     return movieData_with_genres;
 }
 
-async function searchMovies(event = new Event("default")) {
-    event.preventDefault();
-
-    let searchString;
+async function searchMovies(event = new Event('default')) {
+  event.preventDefault();
 
     // --- DEBUG TESTING - replace with actual search
     searchString = prompt("What to search? (empty string for trending): ");
@@ -196,27 +197,30 @@ async function searchMovies(event = new Event("default")) {
     console.log("Generated query: " + URL_handler.toString());
     // --- END TESTING
 
-    const AxiosSearchParams = {
-        method: 'get',
-        url: URL_handler.toString(),
-    };
+  const AxiosSearchParams = {
+    method: 'get',
+    url: URL_handler.toString(),
+  };
 
-    try {
+  try {
         const serverResponse = await axios(AxiosSearchParams);
 
         if (serverResponse.statusText != "OK" && serverResponse.status != 200) {
             throw new ServerError(`Unable to get search results from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
         }
 
-        pageCounter.resetNewPage(searchString, serverResponse.data.total_results, serverResponse.data.total_pages);
+        pageCounter.resetNewPage(
+        searchString,
+        serverResponse.data.total_results,
+        serverResponse.data.total_pages,
+        );
 
         if (serverResponse.data.results.length > 0) {
-            //If we have non-zero matches, render them
-            renderResults(serverResponse.data.results);
-            //console.log(serverResponse.data); //debug line
+        //If we have non-zero matches, render them
+        renderResults(serverResponse.data.results);
+        //console.log(serverResponse.data); //debug line
         }
-    }
-    catch (error) {
+    } catch (error) {
         console.log(error.message);
     }
 }
@@ -255,8 +259,7 @@ async function movePage(direction) {
             renderResults(serverResponse.data.results);
             //console.log(serverResponse.data); //debug line
         }   
-    }
-    catch (error) {
+    } catch (error) {
         console.log(error.message);
     }
 }
