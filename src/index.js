@@ -40,7 +40,6 @@ async function getImagePathFromTMDB(file_path, size) {
             console.log(error.message);
         }
     }
-  }
 
     const handler_params = {
         TMDB_base_url: TMDB_CONFIG.images.secure_base_url,
