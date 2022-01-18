@@ -1,5 +1,4 @@
 import './sass/main.scss';
-import './js/header';
 import './js/header-switcher';
 import './js/scroll';
 import './js/modal';
@@ -242,30 +241,35 @@ async function searchMovies(event = new Event('default')) {
 Needs a wrapper telling it what page to load (direction)*/
 
 async function movePage(direction) {
+  //valid values for direction: next | prev | first | last
+  if (pageCounter.movePage(direction) === false) {
+    console.log(pageCounter.movePage(direction));
+    return false; //try to move page, early exit if it fails
+  }
 
-  
-    //valid values for direction: next | prev | first | last
-    if (pageCounter.movePage(direction) === false) {
-        console.log(pageCounter.movePage(direction));
-        return false; //try to move page, early exit if it fails
-    };
+  const URL_handler = new TMDB_URL_handler(
+    pageCounter.currentSearchString,
+    pageCounter.currentPage,
+  );
 
-    const URL_handler = new TMDB_URL_handler(pageCounter.currentSearchString, pageCounter.currentPage);
+  const AxiosSearchParams = {
+    method: 'get',
+    url: URL_handler.toString(),
+  };
 
-    const AxiosSearchParams = {
-        method: 'get',
-        url: URL_handler.toString(),
-    };
-
-    try {
-        const serverResponse = await axios(AxiosSearchParams);
-document.querySelector('.error-message').classList.add('visually-hidden');
-        if (serverResponse.statusText != "OK" && searchResult.status != 200) {
-            throw new ServerError(`Unable to get new page from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. "TMDB RESPONSE STATUS: ${serverResponse.status}`);
-        }    
-if (serverResponse.data.results.length === 0){document.querySelector('.error-message').classList.remove('visually-hidden');}
-        if (serverResponse.data.results.length > 0) {
-            //TODO: additionally disable interface elements responsible for switching here accordingly
+  try {
+    const serverResponse = await axios(AxiosSearchParams);
+    document.querySelector('.error-message').classList.add('visually-hidden');
+    if (serverResponse.statusText != 'OK' && searchResult.status != 200) {
+      throw new ServerError(
+        `Unable to get new page from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. "TMDB RESPONSE STATUS: ${serverResponse.status}`,
+      );
+    }
+    if (serverResponse.data.results.length === 0) {
+      document.querySelector('.error-message').classList.remove('visually-hidden');
+    }
+    if (serverResponse.data.results.length > 0) {
+      //TODO: additionally disable interface elements responsible for switching here accordingly
 
       renderResults(serverResponse.data.results);
       //console.log(serverResponse.data); //debug line
