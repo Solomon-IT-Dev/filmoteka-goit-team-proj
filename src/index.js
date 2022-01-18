@@ -4,7 +4,7 @@ import './js/modal';
 const axios = require('axios').default;
 
 //module for generating correct API queries for TheMovieDatabase
-const { TMDB_URL_handler } = require("./js/api-service");
+const { TmdbUrlHandler } = require("./js/api-service");
 
 const { Pagination } = require("./js/pagination");
 
@@ -24,7 +24,7 @@ async function getImagePathFromTMDB(file_path, size) {
         try {
             const AxiosConfigParams = {
                 method: 'get',
-                url: new TMDB_URL_handler("TMDB_config").toString(),
+                url: new TmdbUrlHandler("TMDB_config").toString(),
             };
 
             const serverResponse = await axios(AxiosConfigParams);
@@ -46,7 +46,7 @@ async function getImagePathFromTMDB(file_path, size) {
         size: size,
         file_path: file_path,
     };
-    const URL_handler = new TMDB_URL_handler("TMDB_image", handler_params);
+    const URL_handler = new TmdbUrlHandler("TMDB_image", handler_params);
 
     return URL_handler.toString();
 }
@@ -72,7 +72,7 @@ async function showMovieDetails(event = new Event("default")) {
         movie_id: movie_id,
         language : "",
     };
-    const URL_handler = new TMDB_URL_handler("TMDB_movieData", handler_params);
+    const URL_handler = new TmdbUrlHandler("TMDB_movieData", handler_params);
 
     console.log("Generated query: " + URL_handler.toString()); //debug line
 
@@ -152,7 +152,7 @@ async function addGenreNames(movieData, language) {
         try {
             const AxiosGenreParams = {
                 method: 'get',
-                url: new TMDB_URL_handler("TMDB_genres", { language: language }).toString(),
+                url: new TmdbUrlHandler("TMDB_genres", { language: language }).toString(),
             };
 
             const serverResponse = await axios(AxiosGenreParams);
@@ -193,7 +193,7 @@ async function searchMovies(event = new Event("default")) {
     console.log("Searching for: " + searchString);
     let URL_handler = {};
     if (searchString === "") {
-        URL_handler = new TMDB_URL_handler("TMDB_trending");
+        URL_handler = new TmdbUrlHandler("TMDB_trending");
     }
     else {
         const handler_params = {
@@ -201,7 +201,7 @@ async function searchMovies(event = new Event("default")) {
             page: 1,
             language: "",
         }
-        URL_handler = new TMDB_URL_handler("TMDB_search", handler_params);
+        URL_handler = new TmdbUrlHandler("TMDB_search", handler_params);
     }
     console.log("Generated query: " + URL_handler.toString());
     // --- END TESTING
@@ -241,7 +241,7 @@ async function movePage(direction) {
         return false; //try to move page, early exit if it fails
     };
 
-    const URL_handler = new TMDB_URL_handler(pageCounter.currentSearchString, pageCounter.currentPage);
+    const URL_handler = new TmdbUrlHandler(pageCounter.currentSearchString, pageCounter.currentPage);
 
     const AxiosSearchParams = {
         method: 'get',

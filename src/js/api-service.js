@@ -189,4 +189,4 @@ class TmdbUrlHandler {
     }
 };
 
-exports.TMDB_URL_handler = TmdbUrlHandler;
+exports.TmdbUrlHandler = TmdbUrlHandler;
