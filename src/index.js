@@ -13,7 +13,7 @@ let TMDB_GENRE_CACHE; //undefined. Clean it when we change language!
 
 let TMDB_CONFIG; //undefined
 
-/* Returns full path for images from IMDB.
+/* Generates full path for images from IMDB.
 file_path: short path from 'movieData' or a search result
 size: any size that IMDB supports. Optional. See IMDB_CONFIG for valid sizes. Default is "original" */
 
@@ -29,12 +29,11 @@ async function getImagePathFromTMDB(file_path, size) {
 
             const serverResponse = await axios(AxiosConfigParams);
 
-            if (serverResponse.statusText != "OK" && searchResult.status != 200) {
-                throw new ServerError(`Unable to cache Getsconfiguration from TMDB. Request: ${AxiosConfigParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
+            if (serverResponse.statusText != "OK" && serverResponse.status != 200) {
+                throw new ServerError(`Unable to cache configuration from TMDB. Request: ${AxiosConfigParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
             }
 
             TMDB_CONFIG = serverResponse.data;
-            //console.log(TMDB_CONFIG); //debug line
         }
         catch (error) {
             console.log(error.message);
@@ -51,9 +50,6 @@ async function getImagePathFromTMDB(file_path, size) {
     return URL_handler.toString();
 }
 
-//DEBUG IMAGE - gets backdrop image path for 'Batman Begins', width=780
-// console.log( getImagePathFromTMDB("/y9AuabF1SXnn3xZ0tAJLLhv33Uj.jpg", "w780") );
-//END DEBUG IMAGE
 
 async function renderMovieDetails(event, movieData) {
     /* Accepts serverResponse.data.results from Axios 
@@ -61,7 +57,7 @@ async function renderMovieDetails(event, movieData) {
 
     //TODO: add markup to event.target based on what movieData has, open modal window
 
-    //get full image paths in sizes with getImagePathFromIMDB()
+    //get full image paths in sizes with: await getImagePathFromIMDB()
 }
 
 async function showMovieDetails(event = new Event("default")) {
@@ -74,8 +70,6 @@ async function showMovieDetails(event = new Event("default")) {
     };
     const URL_handler = new TmdbUrlHandler("TMDB_movieData", handler_params);
 
-    console.log("Generated query: " + URL_handler.toString()); //debug line
-
     const AxiosMovieParams = {
         method: 'get',
         url: URL_handler.toString(),
@@ -84,7 +78,7 @@ async function showMovieDetails(event = new Event("default")) {
     try {
         const serverResponse = await axios(AxiosMovieParams);
 
-        if (serverResponse.statusText != "OK" && searchResult.status != 200) {
+        if (serverResponse.statusText != "OK" && serverResponse.status != 200) {
             throw new ServerError(`Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
         }
 
@@ -135,8 +129,6 @@ async function renderResults(TMDB_response_results) {
         return currentMarkup += currentImageMarkup;
     }, "");
 
-    //console.log(TMDB_response_results); //debug line
-
     //movieGalleryElement.insertAdjacentHTML("beforeend", markup);
     //imageLightBox.refresh(); //force update SimpleLightbox
 }
@@ -157,7 +149,7 @@ async function addGenreNames(movieData, language) {
 
             const serverResponse = await axios(AxiosGenreParams);
 
-            if (serverResponse.statusText != "OK" && searchResult.status != 200) {
+            if (serverResponse.statusText != "OK" && serverResponse.status != 200) {
                 throw new ServerError(`Unable to cache genres from TMDB. Request: ${AxiosGenreParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
             }
 
@@ -167,8 +159,6 @@ async function addGenreNames(movieData, language) {
             console.log(error.message);
         }
     }
-
-    //console.log(TMDB_GENRE_CACHE); //DEBUG line
 
     const movieData_with_genres = {...movieData}; //clone movie object BY VALUE!
     delete movieData_with_genres.genre_ids;
@@ -214,8 +204,8 @@ async function searchMovies(event = new Event("default")) {
     try {
         const serverResponse = await axios(AxiosSearchParams);
 
-        if (serverResponse.statusText != "OK" && searchResult.status != 200) {
-            throw new ServerError(`Unable to cache genres from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
+        if (serverResponse.statusText != "OK" && serverResponse.status != 200) {
+            throw new ServerError(`Unable to get search results from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
         }
 
         pageCounter.resetNewPage(searchString, serverResponse.data.total_results, serverResponse.data.total_pages);
@@ -250,11 +240,15 @@ async function movePage(direction) {
 
     try {
         const serverResponse = await axios(AxiosSearchParams);
-document.querySelector('.error-message').classList.add('visually-hidden');
-        if (serverResponse.statusText != "OK" && searchResult.status != 200) {
+
+        document.querySelector('.error-message').classList.add('visually-hidden');
+
+        if (serverResponse.statusText != "OK" && serverResponse.status != 200) {
             throw new ServerError(`Unable to get new page from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. "TMDB RESPONSE STATUS: ${serverResponse.status}`);
         }    
-if (serverResponse.data.results.length === 0){document.querySelector('.error-message').classList.remove('visually-hidden');}
+
+        if (serverResponse.data.results.length === 0) { document.querySelector('.error-message').classList.remove('visually-hidden'); }
+        
         if (serverResponse.data.results.length > 0) {
             //TODO: additionally disable interface elements responsible for switching here accordingly
 
