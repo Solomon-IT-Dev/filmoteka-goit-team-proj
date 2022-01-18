@@ -1,5 +1,5 @@
 import './sass/main.scss';
-import './js/header';
+import './js/header-switcher';
 import './js/modal';
 const axios = require('axios').default;
 
