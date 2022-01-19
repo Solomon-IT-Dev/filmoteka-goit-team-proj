@@ -1,1 +1,208 @@
-// Тут будут стили для оформления содержания модального окна команды
+// Стили для оформления содержания модального окна команды
+.team__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 20px;
+
+    @include mq('tablet', max) {
+      bottom: 30px;
+    }
+
+    display: block;
+    width: 95%;
+    height: 4px;
+
+    border-radius: 2px;
+    background-color: $color__object--accent;
+  }
+}
+
+.team__link--logo {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.team__title {
+  font-size: 20px;
+  line-height: 23px;
+  font-weight: 500;
+
+  @include mq('tablet', max) {
+    margin-top: 58px;
+    margin-bottom: 10px;
+  }
+
+  @include mq('tablet') {
+    margin-top: 42px;
+    margin-bottom: 42px;
+  }
+
+  @include mq('desktop') {
+    margin-top: 50px;
+    margin-bottom: 5px;
+    font-size: 30px;
+    line-height: 35px;
+  }
+
+  color: $color__text--primary;
+
+  &.team__title--accent {
+    color: $color__text--additional;
+    text-decoration: underline;
+  }
+}
+
+.team__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
+  margin: 0 30px 0 30px;
+
+  @include mq('tablet', max) {
+    margin: 0 20px 0 20px;
+  }
+}
+
+.team__member {
+  margin: 10px;
+  transform: scale(1);
+  @include transition(transform);
+
+  @include mq('tablet', max) {
+    margin: 10px 0 10px 0;
+  }
+  @include mq-tablet-only {
+    margin: 7px;
+
+    &:nth-child(1) {
+      margin-left: 30px;
+    }
+    &:nth-child(3) {
+      margin-right: 30px;
+    }
+  }
+
+  @include mq('desktop') {
+    &:nth-child(1) {
+      margin-left: 110px;
+    }
+    &:nth-child(3) {
+      margin-right: 110px;
+    }
+  }
+
+  &:hover,
+  &:focus {
+    transform: scale(1.04);
+  }
+}
+
+.member__picture {
+  border-radius: 5px;
+  overflow: hidden;
+
+  @include mq('tablet', max) {
+    width: 220px;
+    height: 240px;
+  }
+
+  @include mq-tablet-only {
+    width: 125px;
+    height: 135px;
+  }
+
+  @include mq('desktop') {
+    width: 150px;
+    height: 170px;
+  }
+}
+
+.member__photo {
+  height: 100%;
+  object-fit: cover;
+}
+
+.member__info {
+  @include centered-content;
+  flex-direction: column;
+  text-align: center;
+
+  @include mq-tablet-only {
+    width: 125px;
+  }
+}
+
+.member__name {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: $color__text--primary;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 18px;
+    left: 5px;
+
+    display: block;
+    width: 140px;
+    height: 2px;
+
+    @include mq('tablet', max) {
+      left: 30px;
+      width: 160px;
+    }
+
+    @include mq-tablet-only {
+      bottom: 31px;
+      width: 115px;
+    }
+
+    border-radius: 2px;
+    background-color: $color__object--accent;
+  }
+}
+
+.member__description {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  color: $color__text--primary;
+
+  @include mq-tablet-only {
+    line-height: 16px;
+  }
+}
+
+.service {
+  display: flex;
+  margin-top: 10px;
+
+  @include mq('tablet', max) {
+    margin-bottom: 10px;
+  }
+
+  @include mq-tablet-only {
+    margin-top: 45px;
+  }
+}
+
+.service__text {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: $color__text--primary;
+}
+
+.service__link--logo {
+  @include centered-content;
+  margin-left: 4px;
+}
