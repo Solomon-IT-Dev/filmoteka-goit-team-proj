@@ -32,7 +32,9 @@
     transform: scale(1.04);
   }
 }
-
+.films-list__img img {
+  border-radius: 4px;
+}
 .films-list__info {
   padding-top: 10px;
 }
@@ -44,7 +46,7 @@
 }
 .films-list__title {
   text-transform: uppercase;
-  padding-bottom: 5px;
+  margin-bottom: 5px;
 }
 .films-list__box {
   display: flex;

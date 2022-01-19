@@ -106,7 +106,7 @@ class TmdbSearch extends TmdbGetMethod {
     
     constructor(queryString, page = 1, language = "") {
         super();
-        this.TMDB_API_PARAMS.query = TMDB_search.#sanitizeString(queryString);
+        this.TMDB_API_PARAMS.query = TmdbSearch.#sanitizeString(queryString);
         this.TMDB_API_PARAMS.page = page;
         this.TMDB_API_PARAMS.language = language;
     }

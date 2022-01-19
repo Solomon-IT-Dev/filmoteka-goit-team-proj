@@ -2,12 +2,18 @@ import './sass/main.scss';
 import './js/header-switcher';
 import './js/scroll';
 import './js/modal';
+import mainMovieTemplate from './templates/main-movie-card.hbs';
 const axios = require('axios').default;
 
 //module for generating correct API queries for TheMovieDatabase
 const { TmdbUrlHandler } = require("./js/api-service");
 
 const { Pagination } = require('./js/pagination');
+
+const movieGalleryElement = document.querySelector('.films-list');
+const searchFormEl = document.querySelector('.search-form');
+
+searchFormEl.addEventListener('submit', searchMovies);
 
 const pageCounter = new Pagination();
 let TMDB_GENRE_CACHE; //undefined. Clean it when we change language!
@@ -99,6 +105,28 @@ async function showMovieDetails(event = new Event('default')) {
 // showMovieDetails(testClickOnMovie);
 // END DEBUG MOVIE DETAILS
 
+async function makeMoviesDataforRendering(TMDB_response_results) {
+    const moviesListForRendering = [];
+    for (const movie of TMDB_response_results) {
+        let movieForRendering = {};
+        if (movie.title) {
+            movieForRendering = await addGenreNames(movie);
+            if (movieForRendering.genres.length !== 0) {
+                movieForRendering.short_genres = movieForRendering.genres.slice(0, 3);
+            } else {
+                movieForRendering.short_genres = "Genre unknown";
+            }
+            const movieFullAdress = await getImagePathFromTMDB(movie.poster_path, "w780");
+            movieForRendering.poster_full_path = movieFullAdress;
+            if (movie.release_date) {
+                movieForRendering.release_year = movie.release_date.slice(0, 4);
+            }
+                
+            moviesListForRendering.push(movieForRendering);
+        }
+    }
+    return moviesListForRendering;
+ }
 async function renderResults(TMDB_response_results) {
   /* Accepts serverResponse.data.results from Axios 
     see https://developers.themoviedb.org/3/search/search-movies for reference */
@@ -121,18 +149,10 @@ async function renderResults(TMDB_response_results) {
         vote_count: 0
     }
 	*/
+    const moviesListForRendering = await makeMoviesDataforRendering(TMDB_response_results);
+    const markup = mainMovieTemplate(moviesListForRendering);
+    movieGalleryElement.insertAdjacentHTML("beforeend", markup);
 
-  const markup = TMDB_response_results.reduce((currentMarkup, currentMovie) => {
-    const currentMovieWithGenres = addGenreNames(currentMovie);
-    const currentImageMarkup = ``; //TODO: single movie card markup here
-
-    //Add ID from each movie as a data attribute to the external element (the one which opens a modal window). Format: data-id="{TMDB id}"
-
-    return (currentMarkup += currentImageMarkup);
-  }, '');
-
-  //movieGalleryElement.insertAdjacentHTML("beforeend", markup);
-  //imageLightBox.refresh(); //force update SimpleLightbox
 }
 
 /* Adds field "genres" with an array of genres in text into a single movie object (and removes "genre_ids").
@@ -176,11 +196,14 @@ async function addGenreNames(movieData, language) {
 }
 
 async function searchMovies(event = new Event('default')) {
-  event.preventDefault();
-
+    event.preventDefault();
+    let searchString;
+    searchString = event.currentTarget.elements.searchQuery.value.trim();
+    console.log(searchString);
+    movieGalleryElement.innerHTML = '';
     // --- DEBUG TESTING - replace with actual search
-    searchString = prompt("What to search? (empty string for trending): ");
-    console.log("Searching for: " + searchString);
+    // searchString = prompt("What to search? (empty string for trending): ");
+    // console.log("Searching for: " + searchString);
     let URL_handler = {};
     if (searchString === "") {
         URL_handler = new TmdbUrlHandler("TMDB_trending");
@@ -217,12 +240,13 @@ async function searchMovies(event = new Event('default')) {
         if (serverResponse.data.results.length > 0) {
         //If we have non-zero matches, render them
         renderResults(serverResponse.data.results);
-        //console.log(serverResponse.data); //debug line
+        console.log(serverResponse.data.results); //debug line
         }
     } catch (error) {
         console.log(error.message);
     }
 }
+// searchMovies();
 
 /* Requests another page for the same search string. Calls render afterwars.
 Needs a wrapper telling it what page to load (direction)*/
