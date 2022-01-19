@@ -1,23 +1,23 @@
 /* CLass TMDB_handler is abstract. Instances of this class can't be created. However, any classes extending this one can (unless they are abstract, too) - and will inherit its fields and methods.
 Essentially, it's a way to describe common methods for several classes in one place. */
-class TMDB_GET_method {
+class TmdbGetMethod {
     TMDB_API_ENTRY = "";
-    TMDB_API_params = {};
+    TMDB_API_PARAMS = {};
 
     constructor() {
-        if (this.constructor == TMDB_GET_method) {
-            throw new Error("TMDB_GET_method class is abstract. Abstract classes can't be instantiated.");
+        if (this.constructor == TmdbGetMethod) {
+            throw new Error("TmdbGetMethod class is abstract. Abstract classes can't be instantiated.");
         }
     };
     
     toString() {
-        let asString = Object.keys(this.TMDB_API_params).reduce((urlPart, currentParam) => {
+        let asString = Object.keys(this.TMDB_API_PARAMS).reduce((urlPart, currentParam) => {
             //if currentParam is empty, skip it, otherwise concat
-            if (this.TMDB_API_params[currentParam] === "") {
+            if (this.TMDB_API_PARAMS[currentParam] === "") {
                 return urlPart;
             }
             else {
-                return urlPart + "&" + currentParam + "=" + this.TMDB_API_params[currentParam];
+                return urlPart + "&" + currentParam + "=" + this.TMDB_API_PARAMS[currentParam];
             };
         }, "");
 
@@ -26,30 +26,32 @@ class TMDB_GET_method {
         return asString; //no api_key, remember to insert it!
     };
 }
+
 /* This handler gets names of genres for their IDs from IMDB. 
 Cache results in main js. */
-class TMDB_genres extends TMDB_GET_method {
+
+class TmdbGenres extends TmdbGetMethod {
     TMDB_API_ENTRY = "genre/movie/list";
 
     constructor(language = "") {
         super();
-        this.TMDB_API_params.language = language;
+        this.TMDB_API_PARAMS.language = language;
     }
 
     //toString() example: https://api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
 }
 
-class TMDB_movieData extends TMDB_GET_method {
+class TmdbMovieData extends TmdbGetMethod {
     TMDB_API_ENTRY = "movie/";
     movie_id; //required
-    TMDB_API_params = {
+    TMDB_API_PARAMS = {
         language: "", //example: en-US
     }
 
     constructor(movie_id, language = "") {
         super();
         this.movie_id = movie_id;
-        this.TMDB_API_params.language = language;
+        this.TMDB_API_PARAMS.language = language;
     }
 
     toString() {
@@ -59,7 +61,7 @@ class TMDB_movieData extends TMDB_GET_method {
     }
 }
 
-class TMDB_image extends TMDB_GET_method {
+class TmdbImage extends TmdbGetMethod {
     TMDB_API_ENTRY = "";
 
     constructor(TMDB_API_ENTRY_secure, size = "original", file_path) {
@@ -77,7 +79,7 @@ class TMDB_image extends TMDB_GET_method {
 
 /* retrieves TMDB configuration for requesting images.
 Cache results in main js. */
-class TMDB_config extends TMDB_GET_method {
+class TmdbConfig extends TmdbGetMethod {
     TMDB_API_ENTRY = "configuration";
 
     constructor() {
@@ -85,9 +87,9 @@ class TMDB_config extends TMDB_GET_method {
     }
 }
 
-class TMDB_search extends TMDB_GET_method {
+class TmdbSearch extends TmdbGetMethod {
     TMDB_API_ENTRY = "search/movie";
-    TMDB_API_params = {
+    TMDB_API_PARAMS = {
         language : "", //example: en-US
         //sort_by = "original_title.asc",
         query : "",
@@ -104,30 +106,30 @@ class TMDB_search extends TMDB_GET_method {
     
     constructor(queryString, page = 1, language = "") {
         super();
-        this.TMDB_API_params.query = TMDB_search.#sanitizeString(queryString);
-        this.TMDB_API_params.page = page;
-        this.TMDB_API_params.language = language;
+        this.TMDB_API_PARAMS.query = TmdbSearch.#sanitizeString(queryString);
+        this.TMDB_API_PARAMS.page = page;
+        this.TMDB_API_PARAMS.language = language;
     }
 }
 
-class TMDB_trending extends TMDB_GET_method {
+class TmdbTrending extends TmdbGetMethod {
     TMDB_API_ENTRY = "trending/";
     media_type; // all | movie | tv | person
     time_window; // day | week
-    TMDB_API_params = {};
+    TMDB_API_PARAMS = {};
 
     constructor(page = 1, media_type = "movie", time_window = "week") {
         super();
         this.media_type = media_type;
         this.time_window = time_window;
-        this.TMDB_API_params.page = page;
+        this.TMDB_API_PARAMS.page = page;
     }
 
     toString() {
         //return this.TMDB_API_ENTRY + this.media_type + "/" + this.time_window + "?";
         const URL_with_params = super.toString.call(this);
         return URL_with_params.replace('?', this.media_type + "/" + this.time_window + '?');
-        //example: "/trending/movie/week?"
+        //example: "/trending/movie/week?&page=<page>"
     }
 }
 
@@ -136,7 +138,7 @@ Only this class is exported and used externally in other modules. An API of sort
 
 Its first (and only) function is to generate correct URLs for TheMovieDatabase API (which you can later use in Axios). */
 
-class TMDB_URL_handler {
+class TmdbUrlHandler {
     //Backend host address
     TMDB_API = "https://api.themoviedb.org/3/";
 
@@ -149,38 +151,37 @@ class TMDB_URL_handler {
         return queryString.replace('?', '?' + "api_key=" + api_key);
     }
 
-    constructor(handler, handler_parameters = {}) {
+    constructor(handler, handlerParameters = {}) {
         //each "handler" is a type of request for TheMovieDatabase API (in other words, a GET described here: https://developers.themoviedb.org/3/).
-        //watch closely here for handler_parameters format in each case!
+        //watch closely here for handlerParameters format in each case!
         switch (handler) {
             case "TMDB_trending": {
                 const { page } = handler_parameters;
-                this.handler = new TMDB_trending(page, "movie", "week");
-                console.log("page:" + page);
+                this.handler = new TmdbTrending(page, "movie", "week");
                 break;
             }
             case "TMDB_search": {
-                const { queryString, page, language } = handler_parameters; //destruct object into separate parameters
-                this.handler = new TMDB_search(queryString, page, language);
+                const { queryString, page, language } = handlerParameters; //destruct object into separate parameters
+                this.handler = new TmdbSearch(queryString, page, language);
                 break;
             }
             case "TMDB_movieData": {
-                const { movie_id, language } = handler_parameters;
-                this.handler = new TMDB_movieData(movie_id, language);
+                const { movie_id, language } = handlerParameters;
+                this.handler = new TmdbMovieData(movie_id, language);
                 break;
             }
             case "TMDB_genres": {
-                const { language } = handler_parameters;
-                this.handler = new TMDB_genres(language);
+                const { language } = handlerParameters;
+                this.handler = new TmdbGenres(language);
                 break;
             }
             case "TMDB_image": {
-                const { TMDB_base_url, size, file_path } = handler_parameters; //get first 2 from running TMDB_config once
-                this.handler = new TMDB_image(TMDB_base_url, size, file_path);
+                const { TMDB_base_url, size, file_path } = handlerParameters; //get first 2 from running TMDB_config once
+                this.handler = new TmdbImage(TMDB_base_url, size, file_path);
                 break;
             }
             case "TMDB_config": {
-                this.handler = new TMDB_config();
+                this.handler = new TmdbConfig();
                 break;
             }
             default: {
@@ -190,7 +191,7 @@ class TMDB_URL_handler {
     }
 
     toString() {
-        if (this.handler.constructor === TMDB_image) {
+        if (this.handler.constructor === TmdbImage) {
             return this.handler.toString();          
             //API method for images doesn't need an API key or host address. Everything is in the handler.
         }
@@ -200,4 +201,4 @@ class TMDB_URL_handler {
     }
 };
 
-exports.TMDB_URL_handler = TMDB_URL_handler;
+exports.TmdbUrlHandler = TmdbUrlHandler;
