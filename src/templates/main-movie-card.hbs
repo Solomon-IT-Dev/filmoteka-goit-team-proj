@@ -1,0 +1,35 @@
+{{!-- 
+adult: false
+backdrop_path: "/w2PMyoyLU22YvrGK3smVM9fW1jj.jpg"
+genres: (3) ['Action', 'Adventure', 'Science Fiction']
+id: 299537
+original_language: "en"
+original_title: "Captain Marvel"
+overview: "The story follows Carol Danvers as she becomes one of the universe’s most powerful heroes when Earth is caught in the middle of a galactic war between two alien races. Set in the 1990s, Captain Marvel is an all-new adventure from a previously unseen period in the history of the Marvel Cinematic Universe."
+popularity: 145.038
+poster_full_path: "https://image.tmdb.org/t/p/w780/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg"
+poster_path: "/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg"
+release_date: "2019-03-06"
+release_year: "2019"
+short_genres: (3) ['Action', 'Adventure', 'Science Fiction']
+title: "Captain Marvel"
+video: false
+vote_average: 6.9
+vote_count: 12536 --}}
+{{#each this}}
+<li class="films-list__item">
+        <a href="#~" class="films-list__link" data-modal-open data-id={{id}}>
+          <div class="films-list__img">
+            <img src="{{poster_full_path}}" alt="{{title}}" />
+          </div>
+          <div class="films-list__info">
+            <h2 class="films-list__title">{{title}}</h2>
+            <div class="films-list__box">
+              <p class="films-list__genre">{{short_genres}}</p>
+              <span class="films-list__year">{{release_year}}</span>
+              <span class="films-list__rating">{{vote_average}}</span>
+            </div>
+          </div>
+        </a>
+      </li>
+{{/each}}
