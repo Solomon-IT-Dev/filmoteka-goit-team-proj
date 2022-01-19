@@ -1,0 +1,12 @@
+.dark-body{
+    @include transition(background-color);
+    background-color: #2c2b2b; 
+}
+.dark-footer{
+    @include transition(background-color);
+    background-color: #181717; 
+}
+.dark-footer-text{
+    @include transition(color);
+    color: white;
+}

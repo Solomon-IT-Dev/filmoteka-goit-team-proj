@@ -2,6 +2,7 @@ import './sass/main.scss';
 import './js/header-switcher';
 import './js/scroll';
 import './js/modal';
+import './js/dark-theme';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
 const axios = require('axios').default;
 

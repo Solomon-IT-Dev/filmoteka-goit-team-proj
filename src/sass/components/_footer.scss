@@ -47,6 +47,10 @@
 .footer_modal{
   text-decoration: underline;  
 }
+.footer_modal:hover{
+  @include transition(color);
+  color: $color__object--accent;
+}
 
 .heart_box{
   position: relative;
