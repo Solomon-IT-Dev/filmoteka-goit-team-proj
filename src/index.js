@@ -13,8 +13,6 @@ const { Pagination } = require('./js/pagination');
 import TuiPagination from 'tui-pagination';
 import "tui-pagination/dist/tui-pagination.css";
 
-let searchString = '';
-
 const tuiOptions = {
     totalItems: 210, //set proper value in search
     itemsPerPage: 20, //default from TMDB API
@@ -183,6 +181,8 @@ async function renderResults(TMDB_response_results) {
         vote_count: 0
     }
 	*/
+    movieGalleryElement.innerHTML = '';
+
     const moviesListForRendering = await makeMoviesDataforRendering(TMDB_response_results);
     const markup = mainMovieTemplate(moviesListForRendering);
     movieGalleryElement.insertAdjacentHTML("beforeend", markup);
@@ -231,15 +231,16 @@ async function addGenreNames(movieData, language) {
 
 async function searchMovies(event = new Event('default')) {
     event.preventDefault();
-    searchString = event.currentTarget.elements.searchQuery.value.trim();
-    console.log(searchString);
-    movieGalleryElement.innerHTML = '';
-    // --- DEBUG TESTING - replace with actual search
-    // searchString = prompt("What to search? (empty string for trending): ");
-    // console.log("Searching for: " + searchString);
+
+    const searchString = event.currentTarget.elements.searchQuery.value.trim();
+    //console.log(searchString);
+    // --- DEBUG TESTING - split trends into separate function?
     let URL_handler = {};
     if (searchString === "") {
-        URL_handler = new TmdbUrlHandler("TMDB_trending");
+        const handler_params = {
+            page: 1,
+        };
+        URL_handler = new TmdbUrlHandler("TMDB_trending", {page: 1});
     }
     else {
         const handler_params = {
@@ -249,7 +250,7 @@ async function searchMovies(event = new Event('default')) {
         }
         URL_handler = new TmdbUrlHandler("TMDB_search", handler_params);
     }
-    console.log("Generated query: " + URL_handler.toString());
+    //console.log("Generated query: " + URL_handler.toString());
     // --- END TESTING
 
   const AxiosSearchParams = {
@@ -264,17 +265,14 @@ async function searchMovies(event = new Event('default')) {
             throw new ServerError(`Unable to get search results from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
         }
 
-        tuiPaginationInstance.setTotalItems(serverResponse.data.total_results);
-        // pageCounter.resetNewPage(
-        //   searchString,
-        //   serverResponse.data.total_results,
-        //   serverResponse.data.total_pages,
-        // );
+      tuiPaginationInstance.reset(serverResponse.data.total_results); //update total found movies
+      
+      tuiPaginationInstance.currentSearchString = searchString; ///important: we need to preserve searchString between func calls to make pagination possible. Here it's done via saving it into pagination object
 
         if (serverResponse.data.results.length > 0) {
         //If we have non-zero matches, render them
         renderResults(serverResponse.data.results);
-        console.log(serverResponse.data.results); //debug line
+        //console.log(serverResponse.data.results); //debug line
         }
     } catch (error) {
         console.log(error.message);
@@ -299,17 +297,20 @@ async function movePage(event) { //direction) {
   */
     let URL_handler;
     //TESTING
-   if (searchString === '') {
-    URL_handler = new TmdbUrlHandler('TMDB_trending', {page: event.page});
-  } else {
-    const handler_params = {
-      queryString: searchString,
-      page: event.page,
-      language: '',
-    };
-    URL_handler = new TmdbUrlHandler('TMDB_search', handler_params);
-  }
-  console.log('Generated query: ' + URL_handler.toString());
+    if (tuiPaginationInstance.currentSearchString === '') {
+        const handler_params = {
+            page: event.page,
+        };
+        URL_handler = new TmdbUrlHandler('TMDB_trending', handler_params);
+    } else {
+        const handler_params = {
+        queryString: tuiPaginationInstance.currentSearchString,
+        page: event.page,
+        language: '',
+        };
+        URL_handler = new TmdbUrlHandler('TMDB_search', handler_params);
+    }
+    //console.log('Generated query: ' + URL_handler.toString());
 
     //END TESTING
 

@@ -156,7 +156,7 @@ class TmdbUrlHandler {
         //watch closely here for handlerParameters format in each case!
         switch (handler) {
             case "TMDB_trending": {
-                const { page } = handler_parameters;
+                const { page } = handlerParameters;
                 this.handler = new TmdbTrending(page, "movie", "week");
                 break;
             }
