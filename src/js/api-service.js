@@ -51,7 +51,7 @@ class TmdbMovieData extends TmdbGetMethod {
     constructor(movie_id, language = "") {
         super();
         this.movie_id = movie_id;
-        this.TMDB_API_params.language = language;
+        this.TMDB_API_PARAMS.language = language;
     }
 
     toString() {
@@ -98,7 +98,7 @@ class TmdbSearch extends TmdbGetMethod {
     };
 
     //private static method. Can only be called FROM the class (not instance) and BY the class/instance. Unreachable from the outside
-    static #sanitizeString(dirtyString) {
+    static #sanitizeString(dirtyString = "") {
         return dirtyString.trim().replaceAll(/ +/g, '+');
         //some RegExp magic. While it's a homemade one, it should trim spaces at the ends and replace inner spaces with a '+'
         //RegEx *should* do this: search one or more [space] (note the 'Kleene plus') and replace. 
@@ -116,16 +116,20 @@ class TmdbTrending extends TmdbGetMethod {
     TMDB_API_ENTRY = "trending/";
     media_type; // all | movie | tv | person
     time_window; // day | week
+    TMDB_API_PARAMS = {};
 
-    constructor(media_type = "movie", time_window = "week") {
+    constructor(page = 1, media_type = "movie", time_window = "week") {
         super();
         this.media_type = media_type;
         this.time_window = time_window;
+        this.TMDB_API_PARAMS.page = page;
     }
 
     toString() {
-        return this.TMDB_API_ENTRY + this.media_type + "/" + this.time_window + "?";
-        //example: "/trending/movie/week?"
+        //return this.TMDB_API_ENTRY + this.media_type + "/" + this.time_window + "?";
+        const URL_with_params = super.toString.call(this);
+        return URL_with_params.replace('?', this.media_type + "/" + this.time_window + '?');
+        //example: "/trending/movie/week?&page=<page>"
     }
 }
 
@@ -151,30 +155,38 @@ class TmdbUrlHandler {
         //each "handler" is a type of request for TheMovieDatabase API (in other words, a GET described here: https://developers.themoviedb.org/3/).
         //watch closely here for handlerParameters format in each case!
         switch (handler) {
-            case "TMDB_trending":
-                this.handler = new TmdbTrending("movie", "week");
+            case "TMDB_trending": {
+                const { page } = handlerParameters;
+                this.handler = new TmdbTrending(page, "movie", "week");
                 break;
-            case "TMDB_search":
+            }
+            case "TMDB_search": {
                 const { queryString, page, language } = handlerParameters; //destruct object into separate parameters
                 this.handler = new TmdbSearch(queryString, page, language);
                 break;
-            case "TMDB_movieData":
-                const {movie_id, movie_language} = handlerParameters;
-                this.handler = new TmdbMovieData(movie_id, movie_language);
+            }
+            case "TMDB_movieData": {
+                const { movie_id, language } = handlerParameters;
+                this.handler = new TmdbMovieData(movie_id, language);
                 break;
-            case "TMDB_genres":
-                const { genres_language } = handlerParameters;
-                this.handler = new TmdbGenres(genres_language);
+            }
+            case "TMDB_genres": {
+                const { language } = handlerParameters;
+                this.handler = new TmdbGenres(language);
                 break;
-            case "TMDB_image":
-                const { TMDB_base_url, size, file_path } =  handlerParameters; //get first 2 from running TMDB_config once
-                    this.handler = new TmdbImage(TMDB_base_url, size, file_path);
+            }
+            case "TMDB_image": {
+                const { TMDB_base_url, size, file_path } = handlerParameters; //get first 2 from running TMDB_config once
+                this.handler = new TmdbImage(TMDB_base_url, size, file_path);
                 break;
-            case "TMDB_config":
+            }
+            case "TMDB_config": {
                 this.handler = new TmdbConfig();
                 break;
-            default:
+            }
+            default: {
                 throw new Error("Unknown handler for TMDB_URL_handler: " + handler);
+            }
         }
     }
 
