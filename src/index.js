@@ -144,7 +144,7 @@ async function makeMoviesDataforRendering(TMDB_response_results) {
         if (movie.title) {
             movieForRendering = await addGenreNames(movie);
             if (movieForRendering.genres.length !== 0) {
-                movieForRendering.short_genres = movieForRendering.genres.slice(0, 3);
+                movieForRendering.short_genres = movieForRendering.genres.slice(0, 3).sort().join(", ");
             } else {
                 movieForRendering.short_genres = "Genre unknown";
             }
