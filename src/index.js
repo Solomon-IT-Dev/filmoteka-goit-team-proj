@@ -152,7 +152,7 @@ async function makeMoviesDataforRendering(TMDB_response_results) {
                 const movieFullAdress = await getImagePathFromTMDB(movie.poster_path, "w780");
                 movieForRendering.poster_full_path = movieFullAdress;
             } else { 
-                movieForRendering.poster_full_path = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
+                movieForRendering.poster_full_path = "https://www.southwest-windows.co.uk/wp-content/uploads/sites/68/2013/11/dummy-image-portrait.jpg"
             }
             if (movie.release_date) {
                 movieForRendering.release_year = movie.release_date.slice(0, 4);
