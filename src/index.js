@@ -1,4 +1,4 @@
-import './sass/main.scss';
+//IMPORTS
 import './js/header-switcher';
 import './js/scroll';
 import './js/modal';
@@ -6,16 +6,23 @@ import './js/dark-theme';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
 const axios = require('axios').default;
 
-//module for generating correct API queries for TheMovieDatabase
-const { TmdbUrlHandler } = require("./js/api-service");
-
-const { Pagination } = require('./js/pagination');
-
 import TuiPagination from 'tui-pagination';
 import "tui-pagination/dist/tui-pagination.css";
 
+import './sass/main.scss';
+//module for generating correct API queries for TheMovieDatabase
+const { TmdbUrlHandler } = require("./js/api-service");
+
+//CODE
+
+const movieGalleryElement = document.querySelector('.films-list');
+const searchFormEl = document.querySelector('.search-form');
+
+searchFormEl.addEventListener('submit', searchMovies);
+document.addEventListener("DOMContentLoaded", searchTrendMovies); //upload 1 page of trends on first load of the page
+
 const tuiOptions = {
-    totalItems: 210, //set proper value in search
+    totalItems: 0, //set proper value in search
     itemsPerPage: 20, //default from TMDB API
     visiblePages: 4,
     page: 1,
@@ -42,13 +49,6 @@ const tuiOptions = {
 };
 const tuiPaginationInstance = new TuiPagination(document.getElementById('tui-pagination-container'), tuiOptions);
 
-
-const movieGalleryElement = document.querySelector('.films-list');
-const searchFormEl = document.querySelector('.search-form');
-
-searchFormEl.addEventListener('submit', searchMovies);
-
-//const pageCounter = new Pagination();
 let TMDB_GENRE_CACHE; //undefined. Clean it when we change language!
 
 let TMDB_CONFIG; //undefined
@@ -149,8 +149,12 @@ async function makeMoviesDataforRendering(TMDB_response_results) {
             } else {
                 movieForRendering.short_genres = "Genre unknown";
             }
-            const movieFullAdress = await getImagePathFromTMDB(movie.poster_path, "w780");
-            movieForRendering.poster_full_path = movieFullAdress;
+            if (movie.poster_path) {
+                const movieFullAdress = await getImagePathFromTMDB(movie.poster_path, "w780");
+                movieForRendering.poster_full_path = movieFullAdress;
+            } else { 
+                movieForRendering.poster_full_path = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
+            }
             if (movie.release_date) {
                 movieForRendering.release_year = movie.release_date.slice(0, 4);
             }
@@ -237,24 +241,54 @@ async function searchMovies(event = new Event('default')) {
     //console.log(searchString);
     // --- DEBUG TESTING - split trends into separate function?
     let URL_handler = {};
-    if (searchString === "") {
-        const handler_params = {
-            page: 1,
-        };
-        URL_handler = new TmdbUrlHandler("TMDB_trending", {page: 1});
+    if (!searchString) {
+        document.querySelector('.error-message').classList.remove('visually-hidden'); 
     }
-    else {
         const handler_params = {
             queryString: searchString,
             page: 1,
             language: "",
         }
         URL_handler = new TmdbUrlHandler("TMDB_search", handler_params);
-    }
+    
     //console.log("Generated query: " + URL_handler.toString());
     // --- END TESTING
 
   const AxiosSearchParams = {
+    method: 'get',
+    url: URL_handler.toString(),
+  };
+
+  try {
+      const serverResponse = await axios(AxiosSearchParams);
+      document.querySelector('.error-message').classList.add('visually-hidden');
+
+        if (serverResponse.statusText != "OK" && serverResponse.status != 200) {
+            throw new ServerError(`Unable to get search results from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`);
+        }
+
+      tuiPaginationInstance.reset(serverResponse.data.total_results); //update total found movies
+      
+      tuiPaginationInstance.currentSearchString = searchString; ///important: we need to preserve searchString between func calls to make pagination possible. Here it's done via saving it into pagination object
+        if (serverResponse.data.results.length === 0) { document.querySelector('.error-message').classList.remove('visually-hidden'); }
+        if (serverResponse.data.results.length > 0) {
+        //If we have non-zero matches, render them
+        renderResults(serverResponse.data.results);
+        //console.log(serverResponse.data.results); //debug line
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+async function searchTrendMovies() {
+    let URL_handler = {};
+    const handler_params = {
+            page: 1,
+        };
+        URL_handler = new TmdbUrlHandler("TMDB_trending", {page: 1});
+
+const AxiosSearchParams = {
     method: 'get',
     url: URL_handler.toString(),
   };
@@ -268,18 +302,18 @@ async function searchMovies(event = new Event('default')) {
 
       tuiPaginationInstance.reset(serverResponse.data.total_results); //update total found movies
       
-      tuiPaginationInstance.currentSearchString = searchString; ///important: we need to preserve searchString between func calls to make pagination possible. Here it's done via saving it into pagination object
+      tuiPaginationInstance.currentSearchString = ""; ///important: we need to preserve searchString between func calls to make pagination possible. Here it's done via saving it into pagination object
 
         if (serverResponse.data.results.length > 0) {
         //If we have non-zero matches, render them
-        renderResults(serverResponse.data.results);
+            renderResults(serverResponse.data.results);
+            onBtnScrollUpwardClick();
         //console.log(serverResponse.data.results); //debug line
         }
     } catch (error) {
         console.log(error.message);
     }
 }
-// searchMovies();
 
 /* Requests another page for the same search string. Calls render afterwars.
 Needs a wrapper telling it what page to load (direction)*/
@@ -288,17 +322,15 @@ tuiPaginationInstance.on('afterMove', (event) => {
     movePage(event);
 });
 
+/* function for pagination
+Works for both trends and search results.
+Is called by tuiPaginationInstance. Should not be called separately.
+event is generated by tuiPaginationInstance and is required for determining correct page */
+
 async function movePage(event) { //direction) {
-    /*
-  //valid values for direction: next | prev | first | last
-  if (pageCounter.movePage(direction) === false) {
-    console.log(pageCounter.movePage(direction));
-    return false; //try to move page, early exit if it fails
-  }
-  */
     let URL_handler;
-    //TESTING
-    if (tuiPaginationInstance.currentSearchString === '') {
+
+    if (!tuiPaginationInstance.currentSearchString) {
         const handler_params = {
             page: event.page,
         };
@@ -312,8 +344,6 @@ async function movePage(event) { //direction) {
         URL_handler = new TmdbUrlHandler('TMDB_search', handler_params);
     }
     //console.log('Generated query: ' + URL_handler.toString());
-
-    //END TESTING
 
     const AxiosSearchParams = {
         method: 'get',
@@ -335,6 +365,7 @@ async function movePage(event) { //direction) {
             //TODO: additionally disable interface elements responsible for switching here accordingly
 
             renderResults(serverResponse.data.results);
+            onBtnScrollUpwardClick();
             //console.log(serverResponse.data); //debug line
         }   
     } catch (error) {
