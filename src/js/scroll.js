@@ -24,3 +24,5 @@ function onBtnScrollUpwardClick() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
+
+exports.onBtnScrollUpwardClick = onBtnScrollUpwardClick;
