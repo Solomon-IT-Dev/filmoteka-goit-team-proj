@@ -1,37 +1,71 @@
 // Темная тема для сайта
-
 const darkThemeBtn = document.querySelector('.dark-theme-btn');
-
 const backgroundBody = document.querySelector('body')
 const backgroundFooter = document.querySelector('footer')
-
 const darkFooterDate = document.querySelector('.footer_date')
 const darkFooterInfoAboutDev = document.querySelector('.footer_info-about-developed')
 const darkFooterInfoAboutUs = document.querySelector('.footer_info-about-us')
+const THEME = localStorage.getItem("THEME");
 
-const darkTextImg = document.querySelector('.films-list__title')
-const darkImgList = document.querySelector('.films-list__item')
+darkThemeBtn.addEventListener('click',OnDarkTheme)
 
-const darkModal = document.querySelector('.modal')
+function OnDarkTheme() {
+   const darkModal = document.querySelector('.team__container')
+   const darkModalBtn = document.querySelector('[data-team-close]')
+   const darkTextImg = document.querySelectorAll('.films-list__title')
+   
+   backgroundBody.classList.toggle('dark-body')
+   backgroundFooter.classList.toggle('dark-footer')
+   darkFooterDate.classList.toggle('inverse-text')
+   darkFooterInfoAboutDev.classList.toggle('inverse-text')
+   darkFooterInfoAboutUs.classList.toggle('inverse-text')
+   darkThemeBtn.classList.toggle('dark-theme-btn-moon') 
+   darkModalBtn.classList.toggle('dark-modal-bg')
+   darkModal.classList.toggle('dark-modal-bg')
+   for (const iterator of darkTextImg) {
+     iterator.classList.toggle('inverse-text')
+   }
 
+   localStorage.setItem('THEME', 'dark');
+}
 
-console.log()
+function SaveTheme(){
+   if(THEME === 'dark'){
+      const darkModal = document.querySelector('.team__container')
+      const darkModalBtn = document.querySelector('[data-team-close]')
+      const darkTextImg = document.querySelectorAll('.films-list__title')
 
+      backgroundBody.classList.toggle('dark-body')
+      backgroundFooter.classList.toggle('dark-footer')
+      darkFooterDate.classList.toggle('inverse-text')
+      darkFooterInfoAboutDev.classList.toggle('inverse-text')
+      darkFooterInfoAboutUs.classList.toggle('inverse-text')
+      darkThemeBtn.classList.toggle('dark-theme-btn-moon') 
+      darkModalBtn.classList.toggle('dark-modal-bg')
+      darkModal.classList.toggle('dark-modal-bg')
+      for (const iterator of darkTextImg) {
+        iterator.classList.toggle('inverse-text')
+      }
 
-async function OnDarkTheme() {
-   await backgroundBody.classList.toggle('dark-body')
-   await backgroundFooter.classList.toggle('dark-footer')
-   await darkFooterDate.classList.toggle('inverse-text')
-   await darkFooterInfoAboutDev.classList.toggle('inverse-text')
-   await darkFooterInfoAboutUs.classList.toggle('inverse-text')
-   await darkTextImg.classList.toggle('inverse-text')
-   await darkImgList.classList.toggle('dark-img')
-   await darkModal.classList.toggle('dark-modal-bg')
-   await darkThemeBtn.classList.toggle('dark-theme-btn-moon')
-  
+   }
    
 }
 
-darkThemeBtn.addEventListener('click',OnDarkTheme)
+function DeleteTheme(){
+   if(!backgroundBody.classList.contains('dark-body')){
+      localStorage.removeItem('THEME')
+   }
+}
+
+darkThemeBtn.addEventListener('click',DeleteTheme)
+
+SaveTheme()
+
+
+
+
+
+
+
 
 
