@@ -5,7 +5,7 @@ import './js/modal';
 import './js/dark-theme';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
 const axios = require('axios').default;
-
+import {SaveTheme} from './js/dark-theme'
 import TuiPagination from 'tui-pagination';
 import "tui-pagination/dist/tui-pagination.css";
 
@@ -191,6 +191,7 @@ async function renderResults(TMDB_response_results) {
     const moviesListForRendering = await makeMoviesDataforRendering(TMDB_response_results);
     const markup = mainMovieTemplate(moviesListForRendering);
     movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+    SaveTheme()
 
 }
 
