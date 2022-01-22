@@ -166,8 +166,7 @@ async function makeMoviesDataforRendering(TMDB_response_results) {
             moviesListForRendering.push(movieForRendering);
         }
     }
-  }
-  return moviesListForRendering;
+    return moviesListForRendering;
 }
 async function renderResults(TMDB_response_results) {
   /* Accepts serverResponse.data.results from Axios 
