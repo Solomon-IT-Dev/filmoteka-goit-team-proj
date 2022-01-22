@@ -143,28 +143,28 @@ async function showMovieDetails(event = new Event('default')) {
 // END DEBUG MOVIE DETAILS
 
 async function makeMoviesDataforRendering(TMDB_response_results) {
-  const moviesListForRendering = [];
-  for (const movie of TMDB_response_results) {
-    let movieForRendering = {};
-    if (movie.title) {
-      movieForRendering = await addGenreNames(movie);
-      if (movieForRendering.genres.length !== 0) {
-        movieForRendering.short_genres = movieForRendering.genres.slice(0, 3).sort().join(', ');
-      } else {
-        movieForRendering.short_genres = 'Genre unknown';
-      }
-      if (movie.poster_path) {
-        const movieFullAdress = await getImagePathFromTMDB(movie.poster_path, 'w780');
-        movieForRendering.poster_full_path = movieFullAdress;
-      } else {
-        movieForRendering.poster_full_path =
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png';
-      }
-      if (movie.release_date) {
-        movieForRendering.release_year = movie.release_date.slice(0, 4);
-      }
-
-      moviesListForRendering.push(movieForRendering);
+    const moviesListForRendering = [];
+    for (const movie of TMDB_response_results) {
+        let movieForRendering = {};
+        if (movie.title) {
+            movieForRendering = await addGenreNames(movie);
+            if (movieForRendering.genres.length !== 0) {
+                movieForRendering.short_genres = movieForRendering.genres.slice(0, 3).sort().join(", ");
+            } else {
+                movieForRendering.short_genres = "Genre unknown";
+            }
+            if (movie.poster_path) {
+                const movieFullAdress = await getImagePathFromTMDB(movie.poster_path, "w780");
+                movieForRendering.poster_full_path = movieFullAdress;
+            } else { 
+                movieForRendering.poster_full_path = "https://www.southwest-windows.co.uk/wp-content/uploads/sites/68/2013/11/dummy-image-portrait.jpg"
+            }
+            if (movie.release_date) {
+                movieForRendering.release_year = movie.release_date.slice(0, 4);
+            }
+                
+            moviesListForRendering.push(movieForRendering);
+        }
     }
   }
   return moviesListForRendering;
