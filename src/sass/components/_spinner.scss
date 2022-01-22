@@ -1,12 +1,25 @@
 .spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
   display: flex;
   justify-content: center;
   align-items: center;
+  width: auto;
+  height: auto;
+
+  &--is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 .spinner__circle {
   display: inline-block;
-  background-color: purple;
+  background-color: brown;
   width: 0;
   height: 0;
   border-radius: 50%;
@@ -15,7 +28,7 @@
   animation: bounce 0.6s infinite alternate;
 
   &:nth-child(2) {
-    background-color: rebeccapurple;
+    background-color: tomato;
     animation-delay: 0.2s;
   }
 
