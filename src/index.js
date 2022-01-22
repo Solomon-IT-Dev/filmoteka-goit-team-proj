@@ -5,6 +5,8 @@ import './js/modal';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
 const axios = require('axios').default;
 
+import { onBtnScrollUpwardClick } from './js/scroll';
+
 import TuiPagination from 'tui-pagination';
 import 'tui-pagination/dist/tui-pagination.css';
 import Spinner from './js/spinner';
