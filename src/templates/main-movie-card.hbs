@@ -17,10 +17,10 @@ video: false
 vote_average: 6.9
 vote_count: 12536 --}}
 {{#each this}}
-<li class="films-list__item">
-        <a href="#~" class="films-list__link" data-modal-open data-id={{id}}>
+<li class="films-list__item"  >
+        <a href="#~" class="films-list__link" data-id={{id}} data-modal-open >
           <div class="films-list__img">
-            <img src="{{poster_full_path}}" alt="{{title}}" />
+            <img class='film-list__image' src="{{poster_full_path}}" alt="{{title}}" />
           </div>
           <div class="films-list__info">
             <h2 class="films-list__title">{{title}}</h2>

@@ -3,12 +3,18 @@ import './js/header-switcher';
 import './js/scroll';
 import './js/modal';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
+import modalMovieTemplate from './templates/modal-movie-card.hbs';
+import './js/modal-movie';
+    
+    
+    
 const axios = require('axios').default;
 
 //module for generating correct API queries for TheMovieDatabase
 const { TmdbUrlHandler } = require("./js/api-service");
 const movieGalleryElement = document.querySelector('.films-list');
 const searchFormEl = document.querySelector('.search-form');
+const modalMovieContainer = document.querySelector('.modal-movies');
 
 searchFormEl.addEventListener('submit', searchMovies);
 document.addEventListener("DOMContentLoaded", searchTrendMovies);
@@ -93,14 +99,22 @@ async function getImagePathFromTMDB(file_path, size) {
 }
 
 
-async function renderMovieDetails(event, movieData) {
+async function renderMovieDetails(movieData) {
   /* Accepts serverResponse.data.results from Axios 
     see https://developers.themoviedb.org/3/movies/get-movie-details for reference */
-
+const ArrayOfOneMovieObject = [];
+  ArrayOfOneMovieObject.push(movieData);
+  const oneMovieDataForRendering = await makeMoviesDataforRendering(ArrayOfOneMovieObject);
     //TODO: add markup to event.target based on what movieData has, open modal window
-
+    
+    modalMovieContainer.innerHTML = '';
+    const markup = modalMovieTemplate(oneMovieDataForRendering[0])
+    // const movieCardForRendering = await showMovieDetails()
+    modalMovieContainer.insertAdjacentHTML("beforeend", markup);
+    
     //get full image paths in sizes with: await getImagePathFromIMDB()
 }
+
 
 async function showMovieDetails(event = new Event('default')) {
   event.preventDefault();
@@ -127,8 +141,8 @@ async function showMovieDetails(event = new Event('default')) {
     }
 
     //add movie data to modal window here
-    renderMovieDetails(event, serverResponse.data);
-    //console.log(serverResponse.data); //debug line
+    renderMovieDetails( serverResponse.data);
+    console.log(serverResponse.data); //debug line
   } catch (error) {
     console.log(error.message);
   }

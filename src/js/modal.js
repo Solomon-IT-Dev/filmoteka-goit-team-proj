@@ -15,10 +15,13 @@
   refs.closeModalMovieBtn.addEventListener('click', toggleModalMovie);
 
   function toggleModalMovie() {
+
     document.body.classList.toggle('modal-open');
     refs.modalMovie.classList.toggle('backdrop--is-hidden');
-  }
+    renderMovieDetails()
 
+
+  }
   refs.openModalTeamBtn.addEventListener('click', toggleModalTeam);
   refs.closeModalTeamBtn.addEventListener('click', toggleModalTeam);
 
