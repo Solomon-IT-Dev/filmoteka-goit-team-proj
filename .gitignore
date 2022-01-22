@@ -110,3 +110,4 @@ dist
 
 #VSCode workspace settings
 *.code-workspace
+package-lock.json
