@@ -32,8 +32,20 @@
     transform: scale(1.04);
   }
 }
+
+.films-list__img {
+  border-radius: 5px;
+  @include mq('tablet') {
+    overflow: hidden;
+    height: 441px;
+  }
+  @include mq('desktop') {
+    height: 411px;
+  }
+}
 .films-list__img img {
-  border-radius: 4px;
+  border-radius: 5px;
+  object-fit: cover;
 }
 .films-list__info {
   padding-top: 10px;
