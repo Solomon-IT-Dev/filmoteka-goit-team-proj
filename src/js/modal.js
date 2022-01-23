@@ -4,8 +4,8 @@ const movieGalleryItem = document.querySelector('[data-id]');
 import modalMovieTemplate from '../templates/modal-movie-card.hbs';
 const { TmdbUrlHandler } = require("./api-service");
 const axios = require('axios').default;
-
 // Осуществление открытия модального окна
+
 
 (() => {
   const refs = {
@@ -17,9 +17,12 @@ const axios = require('axios').default;
     openModalTeamBtn: document.querySelector('[data-team-open]'),
     closeModalTeamBtn: document.querySelector('[data-team-close]'),
     modalTeam: document.querySelector('[data-team]'),
-    modalMovieContainer : document.querySelector('.modal-movies'),
+    modalMovieContainer: document.querySelector('.modal-movies'),
+    backdrop: document.querySelector('.backdrop'),
   };
+ 
 
+  refs.backdrop.addEventListener('click', onBackdropClick);
   refs.openModalMovieBtn.addEventListener('click', openModalMovie);
   refs.closeModalMovieBtn.addEventListener('click', closeModalMovie);
 
@@ -114,13 +117,25 @@ const axios = require('axios').default;
     await showMovieDetails(event);
     document.body.classList.toggle('modal-open');
     refs.modalMovie.classList.toggle('backdrop--is-hidden');
+      window.addEventListener('keydown', onEscKeyPress);
+
   }
 
-  function closeModalMovie(event) {
+  function closeModalMovie() {
     document.body.classList.toggle('modal-open');
     refs.modalMovie.classList.toggle('backdrop--is-hidden');
+    
   }
-
+function onEscKeyPress(e) {
+  if (e.code === 'Escape') {
+    closeModalMovie();
+  }
+  }
+function onBackdropClick(e) {
+  if (e.target === e.currentTarget) {
+    closeModalMovie();
+  }
+}
   refs.openModalTeamBtn.addEventListener('click', toggleModalTeam);
   refs.closeModalTeamBtn.addEventListener('click', toggleModalTeam);
 
