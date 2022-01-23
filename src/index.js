@@ -5,7 +5,7 @@ import './js/modal';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
 import modalMovieTemplate from './templates/modal-movie-card.hbs';
 import './js/modal-movie';
-    
+   
     
     
 const axios = require('axios').default;
@@ -113,8 +113,8 @@ const ArrayOfOneMovieObject = [];
     modalMovieContainer.insertAdjacentHTML("beforeend", markup);
     
     //get full image paths in sizes with: await getImagePathFromIMDB()
+    // console.log(markup)
 }
-
 
 async function showMovieDetails(event = new Event('default')) {
   event.preventDefault();
@@ -142,7 +142,7 @@ async function showMovieDetails(event = new Event('default')) {
 
     //add movie data to modal window here
     renderMovieDetails( serverResponse.data);
-    console.log(serverResponse.data); //debug line
+    // console.log(serverResponse.data); //debug line
   } catch (error) {
     console.log(error.message);
   }
@@ -390,3 +390,7 @@ async function movePage(event) { //direction) {
         console.log(error.message);
     }
 }
+
+
+
+exports.renderMovieDetails = renderMovieDetails;

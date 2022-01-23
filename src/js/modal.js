@@ -1,4 +1,8 @@
+import {renderMovieDetails} from "../index.js"
+const movieGalleryItem = document.querySelector('[data-id]');
+
 // Осуществление открытия модального окна
+
 (() => {
   const refs = {
     // Модальное окно для фильмов
@@ -14,14 +18,17 @@
   refs.openModalMovieBtn.addEventListener('click', toggleModalMovie);
   refs.closeModalMovieBtn.addEventListener('click', toggleModalMovie);
 
+  
   function toggleModalMovie() {
 
     document.body.classList.toggle('modal-open');
     refs.modalMovie.classList.toggle('backdrop--is-hidden');
-    renderMovieDetails()
-
-
+    renderMovieDetails(getId(e))
   }
+
+  function getId(e) {
+    return e.path.find(num => num.className === 'films-list__link').dataset.id;  
+}
   refs.openModalTeamBtn.addEventListener('click', toggleModalTeam);
   refs.closeModalTeamBtn.addEventListener('click', toggleModalTeam);
 
