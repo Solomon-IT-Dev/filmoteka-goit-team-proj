@@ -3,10 +3,7 @@ import './js/header-switcher';
 import './js/scroll';
 import './js/modal';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
-import modalMovieTemplate from './templates/modal-movie-card.hbs';
 import './js/modal-movie';
-   
-    
     
 const axios = require('axios').default;
 
@@ -14,7 +11,6 @@ const axios = require('axios').default;
 const { TmdbUrlHandler } = require("./js/api-service");
 const movieGalleryElement = document.querySelector('.films-list');
 const searchFormEl = document.querySelector('.search-form');
-const modalMovieContainer = document.querySelector('.modal-movies');
 
 searchFormEl.addEventListener('submit', searchMovies);
 document.addEventListener("DOMContentLoaded", searchTrendMovies);
@@ -99,60 +95,6 @@ async function getImagePathFromTMDB(file_path, size) {
 }
 
 
-async function renderMovieDetails(movieData) {
-  /* Accepts serverResponse.data.results from Axios 
-    see https://developers.themoviedb.org/3/movies/get-movie-details for reference */
-const ArrayOfOneMovieObject = [];
-  ArrayOfOneMovieObject.push(movieData);
-  const oneMovieDataForRendering = await makeMoviesDataforRendering(ArrayOfOneMovieObject);
-    //TODO: add markup to event.target based on what movieData has, open modal window
-    
-    modalMovieContainer.innerHTML = '';
-    const markup = modalMovieTemplate(oneMovieDataForRendering[0])
-    // const movieCardForRendering = await showMovieDetails()
-    modalMovieContainer.insertAdjacentHTML("beforeend", markup);
-    
-    //get full image paths in sizes with: await getImagePathFromIMDB()
-    // console.log(markup)
-}
-
-async function showMovieDetails(event = new Event('default')) {
-  event.preventDefault();
-
-    const movie_id = event.target.dataset.id; //read ID from data attribute from HTML (added in renderResults). Example: 272 = `Batman Begins`
-    const handler_params = {
-        movie_id: movie_id,
-        language : "",
-    };
-    const URL_handler = new TmdbUrlHandler("TMDB_movieData", handler_params);
-
-  const AxiosMovieParams = {
-    method: 'get',
-    url: URL_handler.toString(),
-  };
-
-  try {
-    const serverResponse = await axios(AxiosMovieParams);
-
-    if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
-      throw new ServerError(
-        `Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
-      );
-    }
-
-    //add movie data to modal window here
-    renderMovieDetails( serverResponse.data);
-    // console.log(serverResponse.data); //debug line
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-// DEBUG MOVIE DETAILS
-// const testClickOnMovie = { preventDefault() { } }; //dummy Event
-// testClickOnMovie.target = { dataset: { id: 272 } }; //dummy Movie
-// showMovieDetails(testClickOnMovie);
-// END DEBUG MOVIE DETAILS
 
 async function makeMoviesDataforRendering(TMDB_response_results) {
     const moviesListForRendering = [];
@@ -393,4 +335,5 @@ async function movePage(event) { //direction) {
 
 
 
-exports.renderMovieDetails = renderMovieDetails;
+//exports.renderMovieDetails = renderMovieDetails;
+exports.getImagePathFromTMDB = getImagePathFromTMDB;
