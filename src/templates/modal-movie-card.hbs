@@ -1,0 +1,51 @@
+{{!-- 
+adult: false
+backdrop_path: "/w2PMyoyLU22YvrGK3smVM9fW1jj.jpg"
+genres: (3) ['Action', 'Adventure', 'Science Fiction']
+id: 299537
+original_language: "en"
+original_title: "Captain Marvel"
+overview: "The story follows Carol Danvers as she becomes one of the universe’s most powerful heroes when Earth is caught in the middle of a galactic war between two alien races. Set in the 1990s, Captain Marvel is an all-new adventure from a previously unseen period in the history of the Marvel Cinematic Universe."
+popularity: 145.038
+poster_full_path: "https://image.tmdb.org/t/p/w780/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg"
+poster_path: "/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg"
+release_date: "2019-03-06"
+release_year: "2019"
+short_genres: (3) ['Action', 'Adventure', 'Science Fiction']
+title: "Captain Marvel"
+video: false
+vote_average: 6.9
+vote_count: 12536 --}}
+<div class="modal-movies__image-box">
+        <img class="modal-movies__image" src="{{poster_full_path}}" alt="{{title}}" />
+      </div>
+      <div class="modal-movies__data">
+        <h2 class="modal-movies__primary-header">{{title}}</h2>
+        <div class="modal-movies__cell">
+          <p class="modal-movies__cell-category">Vote / Votes</p>
+          <p class="modal-movies__cell-value">
+            <span class="modal-movies__cell-value-colored">{{vote_average}}</span> /
+            <span class="modal-movies__cell-value-colored-lighten">{{vote_count}}</span>
+          </p>
+        </div>
+        <div class="modal-movies__cell">
+    <p class="modal-movies__cell-category">Popularity</p>
+          <p class="modal-movies__cell-value">{{popularity}}</p>
+        </div>
+        <div class="modal-movies__cell">
+          <p class="modal-movies__cell-category">Original Title</p>
+          <p class="modal-movies__cell-value">{{title}}</p>
+        </div>
+        <div class="modal-movies__cell">
+          <p class="modal-movies__cell-category">Genre</p>
+          <p class="modal-movies__cell-value">{{short_genres}}</p>
+        </div>
+        <h3 class="modal-movies__secondary-header">About</h3>
+        <p class="modal-movies__text-content">
+          {{overview}}
+        </p>
+      </div>
+      <div class="modal-movies__button-cell">
+        <button type="button" class="modal-movies__button">add to watched</button>
+        <button type="button" class="modal-movies__button">add to queue</button>
+      </div>
