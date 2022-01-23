@@ -250,7 +250,7 @@ async function searchMovies(event = new Event('default')) {
   event.preventDefault();
 
   spinner.show();
-  SaveTheme()
+
   const searchString = event.currentTarget.elements.searchQuery.value.trim();
   //console.log(searchString);
   // --- DEBUG TESTING - split trends into separate function?
@@ -276,10 +276,9 @@ async function searchMovies(event = new Event('default')) {
   try {
     const serverResponse = await axios(AxiosSearchParams);
     document.querySelector('.error-message').classList.add('visually-hidden');
-
+    
     if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
       spinner.hide();
-      SaveTheme()
       throw new ServerError(
         `Unable to get search results from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
       );
@@ -291,12 +290,12 @@ async function searchMovies(event = new Event('default')) {
     if (serverResponse.data.results.length === 0) {
       document.querySelector('.error-message').classList.remove('visually-hidden');
       spinner.hide();
-      SaveTheme()
     }
     if (serverResponse.data.results.length > 0) {
       //If we have non-zero matches, render them
       renderResults(serverResponse.data.results);
       //console.log(serverResponse.data.results); //debug line
+      SaveTheme()
     }
   } catch (error) {
     console.log(error.message);
@@ -320,7 +319,6 @@ async function searchTrendMovies() {
 
     if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
       spinner.hide();
-      SaveTheme()
       throw new ServerError(
         `Unable to get search results from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
       );
@@ -379,6 +377,8 @@ async function movePage(event) {
 
   try {
     spinner.show();
+    SaveTheme()
+
     const serverResponse = await axios(AxiosSearchParams);
 
     document.querySelector('.error-message').classList.add('visually-hidden');

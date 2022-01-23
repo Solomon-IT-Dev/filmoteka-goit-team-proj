@@ -27,7 +27,6 @@ function OnDarkTheme() {
    darkBtnScroll.classList.toggle('dark-btn-scroll') 
    for (const iterator of darkTextImg) {
      iterator.classList.toggle('inverse-text')
-     console.log('OnDarkTheme:', iterator)
    }
 
    localStorage.setItem('THEME', 'dark');
