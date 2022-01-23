@@ -295,7 +295,6 @@ async function searchMovies(event = new Event('default')) {
       //If we have non-zero matches, render them
       renderResults(serverResponse.data.results);
       //console.log(serverResponse.data.results); //debug line
-      SaveTheme()
     }
   } catch (error) {
     console.log(error.message);
@@ -377,7 +376,6 @@ async function movePage(event) {
 
   try {
     spinner.show();
-    SaveTheme()
 
     const serverResponse = await axios(AxiosSearchParams);
 

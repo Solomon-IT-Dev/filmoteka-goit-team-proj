@@ -3,9 +3,32 @@
 
 const darkThemeBtn = document.querySelector('.dark-theme-btn');
 
-darkThemeBtn.addEventListener('click',OnDarkTheme)
+darkThemeBtn.addEventListener('click',OnThemeSwitch)
 
-function OnDarkTheme() {
+function OnThemeSwitch(event) {
+   //if dark, switch to light. If light, switch to dark
+   const THEME = localStorage.getItem("THEME");
+   const isDarkTheme = (THEME === 'dark'); //check our current theme
+   if (isDarkTheme) {
+      localStorage.removeItem('THEME'); //If theme is dark, switch to default light - clean LocalStorage
+      console.log("restoring default light theme");
+   }
+   else {
+      localStorage.setItem('THEME', 'dark'); //If theme is light (isDarkTheme === false), set to dark
+      console.log("setting dark theme");
+   }
+
+   SaveTheme(); //apply theme changes
+}
+
+function SaveTheme() {
+   //this function does not change the theme. It applies it according to what is the current active theme (enable "dark classes" if current theme is dark, disable them if not).
+
+   //call this function when we need to "enforce" theme - for example, if we re-render part of the page, possibly deleting classes, and want to make sure they are restored after render is complete
+
+   const THEME = localStorage.getItem("THEME");
+   const isDarkTheme = (THEME === 'dark'); //check our current theme
+
    const backgroundFooter = document.querySelector('footer')
    const darkFooterDate = document.querySelector('.footer_date')
    const darkFooterInfoAboutDev = document.querySelector('.footer_info-about-developed')
@@ -16,43 +39,28 @@ function OnDarkTheme() {
    const darkTextImg = document.querySelectorAll('.films-list__title')
    const backgroundBody = document.querySelector('body')
 
-   backgroundBody.classList.toggle('dark-body')
-   backgroundFooter.classList.toggle('dark-footer')
-   darkFooterDate.classList.toggle('inverse-text')
-   darkFooterInfoAboutDev.classList.toggle('inverse-text')
-   darkFooterInfoAboutUs.classList.toggle('inverse-text')
-   darkThemeBtn.classList.toggle('dark-theme-btn-moon') 
-   darkModalBtn.classList.toggle('dark-modal-bg')
-   darkModal.classList.toggle('dark-modal-bg')
-   darkBtnScroll.classList.toggle('dark-btn-scroll') 
+   backgroundBody.classList.toggle('dark-body', isDarkTheme)
+   backgroundFooter.classList.toggle('dark-footer', isDarkTheme)
+   darkFooterDate.classList.toggle('inverse-text', isDarkTheme)
+   darkFooterInfoAboutDev.classList.toggle('inverse-text', isDarkTheme)
+   darkFooterInfoAboutUs.classList.toggle('inverse-text', isDarkTheme)
+   darkThemeBtn.classList.toggle('dark-theme-btn-moon', isDarkTheme) 
+   darkModalBtn.classList.toggle('dark-modal-bg', isDarkTheme)
+   darkModal.classList.toggle('dark-modal-bg', isDarkTheme)
+   darkBtnScroll.classList.toggle('dark-btn-scroll', isDarkTheme) 
    for (const iterator of darkTextImg) {
-     iterator.classList.toggle('inverse-text')
-   }
-
-   localStorage.setItem('THEME', 'dark');
-}
-
-function SaveTheme(){
-   const THEME = localStorage.getItem("THEME");
-   if(THEME === 'dark'){
-      OnDarkTheme()
-      
-   }
-   
-}
-
-function DeleteTheme(){
-   const backgroundBody = document.querySelector('body')
-   if(!backgroundBody.classList.contains('dark-body')){
-      localStorage.removeItem('THEME')
+     iterator.classList.toggle('inverse-text', isDarkTheme)
    }
 }
 
-darkThemeBtn.addEventListener('click',DeleteTheme)
+// function DeleteTheme(){
+//    const backgroundBody = document.querySelector('body')
+//    if(!backgroundBody.classList.contains('dark-body')){
+//       localStorage.removeItem('THEME')
+//    }
+// }
 
-
-
-
+//darkThemeBtn.addEventListener('click',DeleteTheme)
 
 exports.SaveTheme = SaveTheme
 
