@@ -2,12 +2,15 @@
 import './js/header-switcher';
 import './js/scroll';
 import './js/modal';
+import './js/dark-theme';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
 const axios = require('axios').default;
+import {SaveTheme} from './js/dark-theme'
+import TuiPagination from 'tui-pagination';
+import "tui-pagination/dist/tui-pagination.css";
 
 import { onBtnScrollUpwardClick } from './js/scroll';
 
-import TuiPagination from 'tui-pagination';
 import 'tui-pagination/dist/tui-pagination.css';
 import Spinner from './js/spinner';
 import './sass/main.scss';
@@ -192,12 +195,14 @@ async function renderResults(TMDB_response_results) {
         vote_count: 0
     }
 	*/
-  movieGalleryElement.innerHTML = '';
+    movieGalleryElement.innerHTML = '';
 
-  const moviesListForRendering = await makeMoviesDataforRendering(TMDB_response_results);
-  const markup = mainMovieTemplate(moviesListForRendering);
-  movieGalleryElement.insertAdjacentHTML('beforeend', markup);
-  spinner.hide();
+    const moviesListForRendering = await makeMoviesDataforRendering(TMDB_response_results);
+    const markup = mainMovieTemplate(moviesListForRendering);
+    movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+    SaveTheme()
+    spinner.hide()
+
 }
 
 /* Adds field "genres" with an array of genres in text into a single movie object (and removes "genre_ids").
@@ -271,7 +276,7 @@ async function searchMovies(event = new Event('default')) {
   try {
     const serverResponse = await axios(AxiosSearchParams);
     document.querySelector('.error-message').classList.add('visually-hidden');
-
+    
     if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
       spinner.hide();
       throw new ServerError(
@@ -371,6 +376,7 @@ async function movePage(event) {
 
   try {
     spinner.show();
+
     const serverResponse = await axios(AxiosSearchParams);
 
     document.querySelector('.error-message').classList.add('visually-hidden');

@@ -1,0 +1,43 @@
+.dark-body{
+    @include transition(background-color);
+    background-color: #0a0909; 
+}
+.dark-footer{
+    @include transition(background-color);
+    background-color: #020203; 
+}
+.inverse-text{
+    @include transition(color);
+    color: white;
+}
+
+.dark-modal-bg{
+    @include transition(background-color);
+    background-color: #3c3535;
+}
+
+.dark-theme-btn{
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    background-image: url(../images/header/sun.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    background-color: transparent;
+    border-radius: 50%;
+    border: none;
+    
+}
+.dark-theme-btn-moon{
+    background-image: url(../images/header/moon.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.dark-theme-btn:hover{
+    @include transition(box-shadow);
+    box-shadow:  1px 1px 5px 2px rgba(233, 105, 40, 1);
+}
+.dark-btn-scroll{
+    background-color: transparent;
+}

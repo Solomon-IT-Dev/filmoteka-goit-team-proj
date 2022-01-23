@@ -1,4 +1,7 @@
 .footer{
+  padding-top: 30px;
+  padding-bottom: 28px;
+
   background-color: $bg-color__footer;
 }
 .upper-part-of-footer {
@@ -43,6 +46,10 @@
 }
 .footer_modal{
   text-decoration: underline;  
+}
+.footer_modal:hover{
+  @include transition(color);
+  color: $color__object--accent;
 }
 
 .heart_box{
