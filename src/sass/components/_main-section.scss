@@ -86,3 +86,15 @@
   line-height: 1.2;
   border-radius: 5px;
 }
+
+.empty-library {
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  text-align: center;
+  font-weight: $normal-weight;
+  font-size: $text-sm;
+  line-height: 1.14;
+
+  color: $color__text--notification;
+}
