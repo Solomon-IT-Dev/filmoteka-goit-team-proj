@@ -11,11 +11,9 @@ function OnThemeSwitch(event) {
    const isDarkTheme = (THEME === 'dark'); //check our current theme
    if (isDarkTheme) {
       localStorage.removeItem('THEME'); //If theme is dark, switch to default light - clean LocalStorage
-      console.log("restoring default light theme");
    }
    else {
       localStorage.setItem('THEME', 'dark'); //If theme is light (isDarkTheme === false), set to dark
-      console.log("setting dark theme");
    }
 
    SaveTheme(); //apply theme changes
