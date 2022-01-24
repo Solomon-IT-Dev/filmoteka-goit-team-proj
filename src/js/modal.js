@@ -39,6 +39,7 @@ if (parsedDataQueue) {
     modalTeam: document.querySelector('[data-team]'),
     modalMovieContainer: document.querySelector('.modal-movies'),
     backdrop: document.querySelector('.backdrop'),
+    backdropTeam: document.querySelector('.backdrop-team'),
     movieGalleryElement: document.querySelector('.films-list'),
   };
  
@@ -196,37 +197,49 @@ function saveFilmToQueue() {
 function onEscKeyPress(e) {
   if (e.code === 'Escape') {
     closeModalMovie();
-    openModalTeam();
   }
   }
 function onBackdropClick(e) {
   if (e.target === e.currentTarget) {
     closeModalMovie();
-    closeModalTeam();
   }
   }
   
 
 
-  refs.openModalTeamBtn.addEventListener('click', toggleModalTeam);
-  refs.closeModalTeamBtn.addEventListener('click', toggleModalTeam);
+// OPEN/CLOSE MODAL TEAM
+    refs.backdropTeam.addEventListener('click', onTeamBackdropClick);
 
-  function toggleModalTeam() {
+  refs.openModalTeamBtn.addEventListener('click', openModalTeam);
+  refs.closeModalTeamBtn.addEventListener('click', closeModalTeam);
+  
+  // function toggleModalTeam() {
+    //   document.body.classList.toggle('modal-open');
+    //   refs.modalTeam.classList.toggle('backdrop--is-hidden');
+    // }
+    
+  function onTeamEscKeyPress(e) {
+    if (e.code === 'Escape') {
+      closeModalTeam();
+    }
+  }
+  function onTeamBackdropClick(e) {
+  if (e.target === e.currentTarget) {
+    closeModalTeam();
+  }
+  }
+  function openModalTeam() {
     document.body.classList.toggle('modal-open');
     refs.modalTeam.classList.toggle('backdrop--is-hidden');
+        window.addEventListener('keydown', onTeamEscKeyPress);
+
   }
-  // function openModalTeam() {
-  //   document.body.classList.toggle('modal-open');
-  //   refs.modalTeam.classList.toggle('backdrop--is-hidden');
-  //       window.addEventListener('keydown', onEscKeyPress);
+    function closeModalTeam() {
+    document.body.classList.toggle('modal-open');
+      refs.modalTeam.classList.toggle('backdrop--is-hidden');
+          window.removeEventListener('keydown', onTeamEscKeyPress);
 
-  // }
-  //   function closeModalTeam() {
-  //   document.body.classList.toggle('modal-open');
-  //     refs.modalTeam.classList.toggle('backdrop--is-hidden');
-  //         window.removeEventListener('keydown', onEscKeyPress);
-
-  // }
+  }
 
 })();
 
