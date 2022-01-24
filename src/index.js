@@ -5,6 +5,7 @@ import './js/modal';
 import './js/dark-theme';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
 import './js/modal-movie';
+
     
 const axios = require('axios').default;
 import {SaveTheme} from './js/dark-theme'
@@ -27,9 +28,12 @@ const spinner = new Spinner({
 
 const movieGalleryElement = document.querySelector('.films-list');
 const searchFormEl = document.querySelector('.search-form');
+const buttonHome = document.querySelector('.button-home');
+
 
 searchFormEl.addEventListener('submit', searchMovies);
 document.addEventListener('DOMContentLoaded', searchTrendMovies); //upload 1 page of trends on first load of the page
+buttonHome.addEventListener('click', searchTrendMovies);
 
 const tuiOptions = {
   totalItems: 0, //set proper value in search
@@ -361,3 +365,105 @@ async function movePage(event) {
 }
 
 exports.getImagePathFromTMDB = getImagePathFromTMDB;
+
+
+
+// //local-storage
+// const buttonAddToWached = document.querySelector('.button-watched');
+// const buttonWached = document.querySelector('.library-button__watched');
+
+// console.log(movieDataModal);
+// buttonAddToWached.addEventListener('click', saveWatchedFilm);
+
+//  const filmsArray = [];
+
+// function saveWatchedFilm() {    
+  
+
+//     const watchedListData = movieDataModal;
+//     // console.log("watchedListData", watchedListData);
+    
+//     filmsArray.push(watchedListData);
+
+//     localStorage.setItem('watched',JSON.stringify(filmsArray) );
+// };
+
+// buttonWached.addEventListener('click', renderWachedFilms);
+
+// function renderWachedFilms() {
+//     const savedData = localStorage.getItem('watched');
+//     const parsedData = JSON.parse(savedData);
+//     console.log(parsedData);
+   
+//     movieGalleryElement.innerHTML = '';
+    
+//     const markup = mainMovieTemplate(parsedData);
+//     console.log(markup);
+
+//     movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+      
+// };
+
+
+
+
+
+// const buttonAddToQueue = document.querySelector('.modal-movies__button-queue');
+// const buttonQueue = document.querySelector('.library-button__queue');
+
+// buttonAddToQueue.addEventListener('click', saveFilmToQueue);
+
+// function saveFilmToQueue() {
+//     const queueListData = movieForLocalStorage;
+//     console.log("queueListData",queueListData);
+//     localStorage.setItem('queue',JSON.stringify(queueListData) );
+// };
+
+// buttonQueue.addEventListener('click', renderQueueFilms);
+
+// function renderQueueFilms() {
+//     const savedData = localStorage.getItem('queue');
+//     const parsedData = JSON.parse(savedData);
+   
+//     movieGalleryElement.innerHTML = '';
+    
+    
+//     const markup = mainMovieTemplate(parsedData);
+//     movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+      
+// };
+
+
+
+
+const buttonWached = document.querySelector('.library-button__watched');
+buttonWached.addEventListener('click', renderWachedFilms);
+
+function renderWachedFilms() {
+    const savedData = localStorage.getItem('watched');
+    const parsedData = JSON.parse(savedData);
+    // console.log(parsedData);
+   
+    movieGalleryElement.innerHTML = '';
+    
+    const markup = mainMovieTemplate(parsedData);    
+
+    movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+      
+};
+
+
+const buttonQueue = document.querySelector('.library-button__queue');
+buttonQueue.addEventListener('click', renderQueueFilms);
+
+function renderQueueFilms() {
+    const savedData = localStorage.getItem('queue');
+    const parsedData = JSON.parse(savedData);
+   
+    movieGalleryElement.innerHTML = '';
+    
+    const markup = mainMovieTemplate(parsedData);  
+
+    movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+      
+};
