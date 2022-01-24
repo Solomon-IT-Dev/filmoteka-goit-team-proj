@@ -35,7 +35,9 @@ function SaveTheme() {
    const darkFooterInfoAboutUs = document.querySelector('.footer_info-about-us')
    const darkBtnScroll = document.querySelector('.btn__scroll')
    const darkModal = document.querySelector('.team__container')
+   const darkMovieModal = document.querySelector('.modal__container')
    const darkModalBtn = document.querySelector('[data-team-close]')
+   const darkMovieModalBtn = document.querySelector('[data-modal-close]')
    const darkTextImg = document.querySelectorAll('.films-list__title')
    const backgroundBody = document.querySelector('body')
 
@@ -46,7 +48,9 @@ function SaveTheme() {
    darkFooterInfoAboutUs.classList.toggle('inverse-text', isDarkTheme)
    darkThemeBtn.classList.toggle('dark-theme-btn-moon', isDarkTheme) 
    darkModalBtn.classList.toggle('dark-modal-bg', isDarkTheme)
+   darkMovieModalBtn.classList.toggle('dark-modal-bg', isDarkTheme)
    darkModal.classList.toggle('dark-modal-bg', isDarkTheme)
+   darkMovieModal.classList.toggle('dark-modal-bg', isDarkTheme)
    darkBtnScroll.classList.toggle('dark-btn-scroll', isDarkTheme) 
    for (const iterator of darkTextImg) {
      iterator.classList.toggle('inverse-text', isDarkTheme)
