@@ -183,25 +183,31 @@ function saveFilmToQueue() {
     await showMovieDetails(event);
     document.body.classList.toggle('modal-open');
     refs.modalMovie.classList.toggle('backdrop--is-hidden');
-      window.addEventListener('keydown', onEscKeyPress);
+    window.addEventListener('keydown', onEscKeyPress);
 
   }
 
   function closeModalMovie() {
     document.body.classList.toggle('modal-open');
     refs.modalMovie.classList.toggle('backdrop--is-hidden');
+    window.removeEventListener('keydown', onEscKeyPress);
     
   }
 function onEscKeyPress(e) {
   if (e.code === 'Escape') {
     closeModalMovie();
+    openModalTeam();
   }
   }
 function onBackdropClick(e) {
   if (e.target === e.currentTarget) {
     closeModalMovie();
+    closeModalTeam();
   }
-}
+  }
+  
+
+
   refs.openModalTeamBtn.addEventListener('click', toggleModalTeam);
   refs.closeModalTeamBtn.addEventListener('click', toggleModalTeam);
 
@@ -209,5 +215,18 @@ function onBackdropClick(e) {
     document.body.classList.toggle('modal-open');
     refs.modalTeam.classList.toggle('backdrop--is-hidden');
   }
+  // function openModalTeam() {
+  //   document.body.classList.toggle('modal-open');
+  //   refs.modalTeam.classList.toggle('backdrop--is-hidden');
+  //       window.addEventListener('keydown', onEscKeyPress);
+
+  // }
+  //   function closeModalTeam() {
+  //   document.body.classList.toggle('modal-open');
+  //     refs.modalTeam.classList.toggle('backdrop--is-hidden');
+  //         window.removeEventListener('keydown', onEscKeyPress);
+
+  // }
+
 })();
 

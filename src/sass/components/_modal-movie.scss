@@ -18,31 +18,55 @@
     column-gap: 30px;
   }
 }
+// .modal-movies__image {
+//   margin: 0 auto;
+//   @include mq('phone', max) {
+//     max-width: 240px;
+//   }
+//   @include mq('tablet', max) {
+//     max-width: 264px;
+//   }
+//   @include mq('desktop') {
+//     width: 396px;
+//     height: 477px;
+//     object-fit: cover;
+//     border-radius: 5px;
+//   }
+// }
+// .modal-movies__image-box {
+//   @include mq('phone') {
+//     margin-bottom: 30px;
+//   }
+//   @include mq('tablet') {
+//     margin: 0;
+//     grid-row-start: 1;
+//     grid-row-end: 4;
+//   }
+//   @include mq('desktop') {
+//   }
+// }
 .modal-movies__image {
-  margin: 0 auto;
-  @include mq('phone', max) {
-    max-width: 240px;
-  }
-  @include mq('tablet', max) {
-    max-width: 264px;
-  }
-  @include mq('desktop') {
-    width: 396px;
-    height: 477px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
+  object-fit: cover;
+  border-radius: 5px;
 }
 .modal-movies__image-box {
-  @include mq('phone') {
-    margin-bottom: 30px;
+  overflow: hidden;
+  border-radius: 5px;
+  @include mq('tablet', max) {
+    max-width: 240px;
+    max-height: 357px;
+    margin: 0 auto 30px auto;
   }
   @include mq('tablet') {
     margin: 0;
     grid-row-start: 1;
     grid-row-end: 4;
+    width: 264px;
+    height: 374px;
   }
   @include mq('desktop') {
+    width: 396px;
+    height: 477px;
   }
 }
 .modal-movies__primary-header {
