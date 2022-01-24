@@ -35,6 +35,7 @@
 
 .films-list__img {
   border-radius: 5px;
+  height: 420px;
   @include mq('tablet') {
     overflow: hidden;
     height: 441px;
