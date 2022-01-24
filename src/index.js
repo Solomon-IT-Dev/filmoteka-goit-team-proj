@@ -221,6 +221,8 @@ async function searchMovies(event = new Event('default')) {
   let URL_handler = {};
   if (!searchString) {
     document.querySelector('.error-message').classList.remove('visually-hidden');
+    spinner.hide();
+    return;
   }
   const handler_params = {
     queryString: searchString,
