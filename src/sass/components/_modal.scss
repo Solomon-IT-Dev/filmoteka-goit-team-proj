@@ -35,7 +35,7 @@
 
   background-color: $bg-color__main;
 
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-49%, -50%) scale(1);
 
   @include transition(transform);
 
@@ -50,12 +50,12 @@
   }
 
   @include mq('tablet') {
-    width: 618px;
+    width: 622px;
     height: 562px;
   }
 
   @include mq('desktop') {
-    width: 882px;
+    width: 888px;
     height: 568px;
   }
 }
