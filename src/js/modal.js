@@ -141,20 +141,20 @@ function saveFilmToQueue() {
     localStorage.setItem('queue',JSON.stringify(queueArray) );
 };
 
-buttonQueue.addEventListener('click', renderQueueFilms);
+// buttonQueue.addEventListener('click', renderQueueFilms);
 
-function renderQueueFilms() {
-    const savedData = localStorage.getItem('queue');
-    const parsedData = JSON.parse(savedData);
+// function renderQueueFilms() {
+//     const savedData = localStorage.getItem('queue');
+//     const parsedData = JSON.parse(savedData);
    
-    refs.movieGalleryElement.innerHTML = '';
+//     refs.movieGalleryElement.innerHTML = '';
     
-    const markup = mainMovieTemplate(parsedData);
-    // console.log(markup);
+//     const markup = mainMovieTemplate(parsedData);
+//     // console.log(markup);
 
-    refs.movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+//     refs.movieGalleryElement.insertAdjacentHTML("beforeend", markup);
       
-};
+// };
     
     
   }
