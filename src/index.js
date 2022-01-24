@@ -5,6 +5,7 @@ import './js/modal';
 import './js/dark-theme';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
 import './js/modal-movie';
+
     
 const axios = require('axios').default;
 import {SaveTheme} from './js/dark-theme'
@@ -27,9 +28,14 @@ const spinner = new Spinner({
 
 const movieGalleryElement = document.querySelector('.films-list');
 const searchFormEl = document.querySelector('.search-form');
+const buttonHome = document.querySelector('.button-home');
+const buttonMyLibrary = document.querySelector('.button-mylibrary');
+
 
 searchFormEl.addEventListener('submit', searchMovies);
 document.addEventListener('DOMContentLoaded', searchTrendMovies); //upload 1 page of trends on first load of the page
+buttonHome.addEventListener('click', searchTrendMovies);
+buttonMyLibrary.addEventListener('click', myLibraryPage);
 
 const tuiOptions = {
   totalItems: 0, //set proper value in search
@@ -361,3 +367,43 @@ async function movePage(event) {
 }
 
 exports.getImagePathFromTMDB = getImagePathFromTMDB;
+
+
+
+//local-storage
+
+const buttonWached = document.querySelector('.library-button__watched');
+buttonWached.addEventListener('click', renderWachedFilms);
+
+function renderWachedFilms() {
+    const savedData = localStorage.getItem('watched');
+    const parsedData = JSON.parse(savedData);
+       
+    movieGalleryElement.innerHTML = '';
+    
+    const markup = mainMovieTemplate(parsedData);    
+
+    movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+      
+};
+
+
+const buttonQueue = document.querySelector('.library-button__queue');
+buttonQueue.addEventListener('click', renderQueueFilms);
+
+function renderQueueFilms() {
+    const savedData = localStorage.getItem('queue');
+    const parsedData = JSON.parse(savedData);
+   
+    movieGalleryElement.innerHTML = '';
+    
+    const markup = mainMovieTemplate(parsedData);  
+
+    movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+      
+};
+
+function myLibraryPage() {
+  movieGalleryElement.innerHTML = '';
+  renderWachedFilms();
+}
