@@ -137,6 +137,8 @@ function saveFilmToQueue() {
     if (event.target.nodeName === "UL") {
       return;
     }
+    document.body.classList.toggle('modal-open');
+    refs.modalMovie.classList.toggle('backdrop--is-hidden');
     let cardElement = event.target;
     while (cardElement.nodeName != "LI") {
       cardElement = cardElement.parentNode;
@@ -182,8 +184,8 @@ function saveFilmToQueue() {
     //renderMovieDetails(getId(event))
     
     await showMovieDetails(event);
-    document.body.classList.toggle('modal-open');
-    refs.modalMovie.classList.toggle('backdrop--is-hidden');
+    // document.body.classList.toggle('modal-open');
+    // refs.modalMovie.classList.toggle('backdrop--is-hidden');
     window.addEventListener('keydown', onEscKeyPress);
 
   }
