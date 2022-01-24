@@ -5,6 +5,8 @@ import modalMovieTemplate from '../templates/modal-movie-card.hbs';
 import mainMovieTemplate from '../templates/main-movie-card.hbs';
 const { TmdbUrlHandler } = require('./api-service');
 const axios = require('axios').default;
+import { scrollUpwardBtn } from './scroll';
+
 // Осуществление открытия модального окна
 let movieForRendering;
 
@@ -160,6 +162,7 @@ if (parsedDataQueue) {
 
   // OPEN/CLOSE MODAL MOVIE
   async function openModalMovie(event) {
+    scrollUpwardBtn.classList.remove('btn__scroll--show');
     await showMovieDetails(event);
     window.addEventListener('keydown', onEscKeyPress);
   }
@@ -167,6 +170,14 @@ if (parsedDataQueue) {
   function closeModalMovie() {
     document.body.classList.toggle('modal-open');
     refs.modalMovie.classList.toggle('backdrop--is-hidden');
+
+    const scrollParam = window.scrollY;
+    const coords = document.documentElement.clientHeight;
+
+    if (scrollParam > coords) {
+      scrollUpwardBtn.classList.add('btn__scroll--show');
+    }
+
     window.removeEventListener('keydown', onEscKeyPress);
   }
   function onEscKeyPress(e) {
@@ -182,7 +193,6 @@ if (parsedDataQueue) {
 
   // OPEN/CLOSE MODAL TEAM
   refs.backdropTeam.addEventListener('click', onTeamBackdropClick);
-
   refs.openModalTeamBtn.addEventListener('click', openModalTeam);
   refs.closeModalTeamBtn.addEventListener('click', closeModalTeam);
 
@@ -197,6 +207,7 @@ if (parsedDataQueue) {
     }
   }
   function openModalTeam() {
+    scrollUpwardBtn.classList.remove('btn__scroll--show');
     document.body.classList.toggle('modal-open');
     refs.modalTeam.classList.toggle('backdrop--is-hidden');
     window.addEventListener('keydown', onTeamEscKeyPress);
@@ -204,6 +215,14 @@ if (parsedDataQueue) {
   function closeModalTeam() {
     document.body.classList.toggle('modal-open');
     refs.modalTeam.classList.toggle('backdrop--is-hidden');
+
+    const scrollParam = window.scrollY;
+    const coords = document.documentElement.clientHeight;
+
+    if (scrollParam > coords) {
+      scrollUpwardBtn.classList.add('btn__scroll--show');
+    }
+
     window.removeEventListener('keydown', onTeamEscKeyPress);
   }
 })();

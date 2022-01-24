@@ -1,6 +1,6 @@
 // Обработчик события клика на кнопку скрола наверх страницы
 
-const scrollUpwardBtn = document.querySelector('.btn__scroll');
+export const scrollUpwardBtn = document.querySelector('.btn__scroll');
 
 window.addEventListener('scroll', pageScrollHandler);
 scrollUpwardBtn.addEventListener('click', onBtnScrollUpwardClick);
