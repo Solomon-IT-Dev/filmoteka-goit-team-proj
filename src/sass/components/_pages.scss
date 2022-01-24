@@ -7,14 +7,18 @@
 
 .tui-pagination .tui-is-selected,
 .tui-pagination strong {
-  background: #ff6b08;
-  border-color: #ff6b08;
+  background: $color__object--accent;
+  border-color: $color__object--accent;
 }
 
 .tui-pagination .tui-first-child.tui-is-selected {
-  border-left-color: #ff6b08;
+  border-left-color: $color__object--accent;
 }
 
 .tui-pagination .tui-last-child.tui-is-selected {
-  border-right-color: #ff6b08;
+  border-right-color: $color__object--accent;
+}
+
+.tui-pagination .tui-is-selected:hover {
+  background-color: $color__object--accent;
 }
