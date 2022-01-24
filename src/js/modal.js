@@ -43,7 +43,7 @@ if (parsedDataQueue) {
     movieGalleryElement: document.querySelector('.films-list'),
   };
  
-
+// Work of Modal Movie
   refs.backdrop.addEventListener('click', onBackdropClick);
   refs.openModalMovieBtn.addEventListener('click', openModalMovie);
   refs.closeModalMovieBtn.addEventListener('click', closeModalMovie);
