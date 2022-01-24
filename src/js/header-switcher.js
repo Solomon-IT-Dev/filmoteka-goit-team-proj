@@ -12,6 +12,8 @@ const addBlackHeader = () => {
 
   document.querySelector('.header-form').classList.remove('visually-hidden');
   document.querySelector('.library-buttons').classList.add('visually-hidden');
+
+  togglePagination("visually-hidden", !(document.querySelector(".button-home").classList.contains("current")) );
 };
 
 buttonHome.addEventListener('click', addBlackHeader);
@@ -32,6 +34,13 @@ const addRedHeader = () => {
   document.querySelector('.header-form').classList.add('visually-hidden');
 
   document.querySelector('.error-message').classList.add('visually-hidden');
+
+  togglePagination("visually-hidden", !(document.querySelector(".button-home").classList.contains("current")) );
 };
 
 buttonMyLibrary.addEventListener('click', addRedHeader);
+
+function togglePagination(invisibleClass = "visually-hidden", hidePagination = false) {
+  const paginationElement = document.getElementById('tui-pagination-container');
+  paginationElement.classList.toggle(invisibleClass, hidePagination);
+}

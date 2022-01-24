@@ -34,7 +34,7 @@ const buttonMyLibrary = document.querySelector('.button-mylibrary');
 
 searchFormEl.addEventListener('submit', searchMovies);
 document.addEventListener('DOMContentLoaded', searchTrendMovies); //upload 1 page of trends on first load of the page
-buttonHome.addEventListener('click', searchTrendMovies);
+buttonHome.addEventListener('click', backToHome);
 buttonMyLibrary.addEventListener('click', myLibraryPage);
 
 const tuiOptions = {
@@ -221,6 +221,8 @@ async function searchMovies(event = new Event('default')) {
   let URL_handler = {};
   if (!searchString) {
     document.querySelector('.error-message').classList.remove('visually-hidden');
+    spinner.hide();
+    return;
   }
   const handler_params = {
     queryString: searchString,
@@ -378,7 +380,12 @@ buttonWached.addEventListener('click', renderWachedFilms);
 function renderWachedFilms() {
     const savedData = localStorage.getItem('watched');
     const parsedData = JSON.parse(savedData);
-       
+    
+  if (!parsedData) {
+    document.querySelector('.empty-library').classList.remove('visually-hidden');
+  } else {document.querySelector('.empty-library').classList.add('visually-hidden'); };
+  
+  
     movieGalleryElement.innerHTML = '';
     
     const markup = mainMovieTemplate(parsedData);    
@@ -395,6 +402,10 @@ function renderQueueFilms() {
     const savedData = localStorage.getItem('queue');
     const parsedData = JSON.parse(savedData);
    
+ if (!parsedData) {
+    document.querySelector('.empty-library').classList.remove('visually-hidden');
+  } else {document.querySelector('.empty-library').classList.add('visually-hidden'); };
+  
     movieGalleryElement.innerHTML = '';
     
     const markup = mainMovieTemplate(parsedData);  
@@ -405,5 +416,12 @@ function renderQueueFilms() {
 
 function myLibraryPage() {
   movieGalleryElement.innerHTML = '';
+
   renderWachedFilms();
-}
+};
+
+function backToHome() {
+  document.querySelector('.empty-library').classList.add('visually-hidden');
+  searchTrendMovies();
+ };
+
