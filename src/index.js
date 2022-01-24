@@ -29,11 +29,13 @@ const spinner = new Spinner({
 const movieGalleryElement = document.querySelector('.films-list');
 const searchFormEl = document.querySelector('.search-form');
 const buttonHome = document.querySelector('.button-home');
+const buttonMyLibrary = document.querySelector('.button-mylibrary');
 
 
 searchFormEl.addEventListener('submit', searchMovies);
 document.addEventListener('DOMContentLoaded', searchTrendMovies); //upload 1 page of trends on first load of the page
 buttonHome.addEventListener('click', searchTrendMovies);
+buttonMyLibrary.addEventListener('click', myLibraryPage);
 
 const tuiOptions = {
   totalItems: 0, //set proper value in search
@@ -400,3 +402,8 @@ function renderQueueFilms() {
     movieGalleryElement.insertAdjacentHTML("beforeend", markup);
       
 };
+
+function myLibraryPage() {
+  movieGalleryElement.innerHTML = '';
+  renderWachedFilms();
+}
