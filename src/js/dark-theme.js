@@ -34,8 +34,8 @@ function SaveTheme() {
    const darkFooterInfoAboutDev = document.querySelector('.footer_info-about-developed')
    const darkFooterInfoAboutUs = document.querySelector('.footer_info-about-us')
    const darkBtnScroll = document.querySelector('.btn__scroll')
-   const darkModal = document.querySelector('.team__container')
-   const darkMovieModal = document.querySelector('.modal__container')
+   const darkModal = document.querySelectorAll('[data-modal-dark]')
+   
    const darkModalBtn = document.querySelector('[data-team-close]')
    const darkMovieModalBtn = document.querySelector('[data-modal-close]')
    const darkTextImg = document.querySelectorAll('.films-list__title')
@@ -49,22 +49,16 @@ function SaveTheme() {
    darkThemeBtn.classList.toggle('dark-theme-btn-moon', isDarkTheme) 
    darkModalBtn.classList.toggle('dark-modal-bg', isDarkTheme)
    darkMovieModalBtn.classList.toggle('dark-modal-bg', isDarkTheme)
-   darkModal.classList.toggle('dark-modal-bg', isDarkTheme)
-   darkMovieModal.classList.toggle('dark-modal-bg', isDarkTheme)
    darkBtnScroll.classList.toggle('dark-btn-scroll', isDarkTheme) 
    for (const iterator of darkTextImg) {
      iterator.classList.toggle('inverse-text', isDarkTheme)
    }
+   for (const iterator of darkModal){
+      iterator.classList.toggle('dark-modal-bg', isDarkTheme)
+   }
 }
 
-// function DeleteTheme(){
-//    const backgroundBody = document.querySelector('body')
-//    if(!backgroundBody.classList.contains('dark-body')){
-//       localStorage.removeItem('THEME')
-//    }
-// }
 
-//darkThemeBtn.addEventListener('click',DeleteTheme)
 
 exports.SaveTheme = SaveTheme
 
