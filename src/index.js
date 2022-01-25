@@ -131,7 +131,6 @@ async function makeMoviesDataforRendering(TMDB_response_results) {
             if (movie.release_date) {
                 movieForRendering.release_year = movie.release_date.slice(0, 4);
             }
-                
             moviesListForRendering.push(movieForRendering);
         }
     }

@@ -15,7 +15,10 @@
   @include transition(background-color);
   background-color: #3c3535;
 }
-
+.dark-modal-movie-btn{
+  border: 1px solid white;
+  color: white;
+}
 .dark-theme-btn {
   width: 30px;
   height: 30px;

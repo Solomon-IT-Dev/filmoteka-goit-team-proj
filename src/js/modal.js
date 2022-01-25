@@ -6,6 +6,8 @@ import mainMovieTemplate from '../templates/main-movie-card.hbs';
 const { TmdbUrlHandler } = require('./api-service');
 const axios = require('axios').default;
 import { scrollUpwardBtn } from './scroll';
+import './dark-theme';
+import {SaveTheme} from './dark-theme'
 
 // Осуществление открытия модального окна
 let movieForRendering;
@@ -51,6 +53,7 @@ if (parsedDataQueue) {
   refs.closeModalMovieBtn.addEventListener('click', closeModalMovie);
 
   async function renderMovieDetails(movieData) {
+
     /* Accepts serverResponse.data.results from Axios 
       see https://developers.themoviedb.org/3/movies/get-movie-details for reference */
     //TODO: add markup to event.target based on what movieData has, open modal window
@@ -67,7 +70,7 @@ if (parsedDataQueue) {
     if (movieData.release_date) {
       movieForRendering.release_year = movieData.release_date.slice(0, 4);
     }
-
+   
     const genresForRender = movieForRendering.genres
       .slice(0, 3)
       .map(genre => genre.name)
@@ -78,14 +81,14 @@ if (parsedDataQueue) {
     refs.modalMovieContainer.innerHTML = '';
     const markup = modalMovieTemplate(movieForRendering);
     refs.modalMovieContainer.insertAdjacentHTML('beforeend', markup);
-
+   
     //get full image paths in sizes with: await getImagePathFromIMDB()
     // console.log(markup)
     //local-storage
 
     const buttonAddToWached = document.querySelector('.modal-movies__button-watched');
     buttonAddToWached.addEventListener('click', saveWatchedFilm);
-
+  
     function saveWatchedFilm() {
       for (const oneFilm of filmsArray) {
         if (oneFilm.id === movieForRendering.id) {
@@ -112,12 +115,14 @@ if (parsedDataQueue) {
       queueArray.push(queueListData);
       localStorage.setItem('queue', JSON.stringify(queueArray));
     }
+    SaveTheme();
   }
 
   
 
   async function showMovieDetails(event = new Event('default')) {
     event.preventDefault();
+
 
     if (event.target.nodeName === 'UL') {
       return;
@@ -191,10 +196,13 @@ if (parsedDataQueue) {
     }
   }
   function openModalTeam() {
+ 
     scrollUpwardBtn.classList.remove('btn__scroll--show');
     document.body.classList.toggle('modal-open');
     refs.modalTeam.classList.toggle('backdrop--is-hidden');
     window.addEventListener('keydown', onTeamEscKeyPress);
+    
+    
   }
   function closeModalTeam() {
     document.body.classList.toggle('modal-open');
@@ -209,4 +217,5 @@ if (parsedDataQueue) {
 
     window.removeEventListener('keydown', onTeamEscKeyPress);
   }
+
 })();
