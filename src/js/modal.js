@@ -92,8 +92,9 @@ if (parsedDataQueue) {
           return;
         }
       }
-      const watchedListData = movieForRendering;
+      const watchedListData = movieForRendering.id;
       filmsArray.push(watchedListData);
+      // console.log(filmsArray);
 
       localStorage.setItem('watched', JSON.stringify(filmsArray));
     }
@@ -107,7 +108,7 @@ if (parsedDataQueue) {
           return;
         }
       }
-      const queueListData = movieForRendering;
+      const queueListData = movieForRendering.id;
       queueArray.push(queueListData);
       localStorage.setItem('queue', JSON.stringify(queueArray));
     }

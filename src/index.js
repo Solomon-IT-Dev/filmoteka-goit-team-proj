@@ -385,11 +385,11 @@ function renderWachedFilms() {
     document.querySelector('.empty-library').classList.remove('visually-hidden');
   } else {document.querySelector('.empty-library').classList.add('visually-hidden'); };
   
-  
+  console.log("parsedData", parsedData);//в parsedData хранится массив ID фильмов
     movieGalleryElement.innerHTML = '';
     
     const markup = mainMovieTemplate(parsedData);    
-
+    
     movieGalleryElement.insertAdjacentHTML("beforeend", markup);
       
 };
@@ -409,7 +409,7 @@ function renderQueueFilms() {
     movieGalleryElement.innerHTML = '';
     
     const markup = mainMovieTemplate(parsedData);  
-
+console.log("queue", parsedData);//в parsedData хранится массив ID фильмов
     movieGalleryElement.insertAdjacentHTML("beforeend", markup);
       
 };
