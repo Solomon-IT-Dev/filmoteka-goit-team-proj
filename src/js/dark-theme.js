@@ -33,11 +33,22 @@ function SaveTheme() {
    const darkFooterInfoAboutUs = document.querySelector('.footer_info-about-us')
    const darkBtnScroll = document.querySelector('.btn__scroll')
    const darkModal = document.querySelectorAll('[data-modal-dark]')
-   
    const darkModalBtn = document.querySelector('[data-team-close]')
    const darkMovieModalBtn = document.querySelector('[data-modal-close]')
    const darkTextImg = document.querySelectorAll('.films-list__title')
    const backgroundBody = document.querySelector('body')
+
+   
+   const darkModalMovieHeader = document.querySelector('.modal-movies__primary-header')
+   const darkModalMovieSecondaryHeader = document.querySelector('.modal-movies__secondary-header')
+   const darkModalMovieText = document.querySelector('.modal-movies__text-content')
+   const darkModalMovieInfo = document.querySelectorAll('.modal-movies__cell-value')
+   const darkModalMovieBgInfo = document.querySelector('.modal-movies__cell-value-colored-lighten')
+   const darkModalMoviesBtnBorder = document.querySelectorAll('.modal-movies__button')
+
+   const darkModalTeamHeader = document.querySelector('[data-dark-modal-header]')
+   const darkModalTeamMemberName = document.querySelectorAll('[data-dark-modal-member-name]')
+   const darkModalTeamMemberInfo = document.querySelectorAll('[data-dark-modal-member-ifo]')
 
    backgroundBody.classList.toggle('dark-body', isDarkTheme)
    backgroundFooter.classList.toggle('dark-footer', isDarkTheme)
@@ -48,12 +59,31 @@ function SaveTheme() {
    darkModalBtn.classList.toggle('dark-modal-bg', isDarkTheme)
    darkMovieModalBtn.classList.toggle('dark-modal-bg', isDarkTheme)
    darkBtnScroll.classList.toggle('dark-btn-scroll', isDarkTheme) 
+   
+   darkModalTeamHeader.classList.toggle('inverse-text', isDarkTheme)
+   for(const iterator of darkModalTeamMemberName){
+      iterator.classList.toggle('inverse-text',isDarkTheme)
+   }
+   for(const iterator of darkModalTeamMemberInfo){
+      iterator.classList.toggle('inverse-text',isDarkTheme)
+   }
    for (const iterator of darkTextImg) {
      iterator.classList.toggle('inverse-text', isDarkTheme)
    }
    for (const iterator of darkModal){
       iterator.classList.toggle('dark-modal-bg', isDarkTheme)
    }
+   for(const iterator of darkModalMovieInfo){
+      iterator.classList.toggle('inverse-text',isDarkTheme)
+   }
+   for(const iterator of darkModalMoviesBtnBorder){
+      iterator.classList.toggle('dark-modal-movie-btn',isDarkTheme)
+   }
+   darkModalMovieHeader.classList.toggle('inverse-text',isDarkTheme)
+   darkModalMovieSecondaryHeader.classList.toggle('inverse-text',isDarkTheme)
+   darkModalMovieText.classList.toggle('inverse-text',isDarkTheme)
+   darkModalMovieBgInfo.classList.toggle('dark-footer',isDarkTheme)
+
 }
 
 
