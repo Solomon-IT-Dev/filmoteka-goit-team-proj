@@ -394,6 +394,62 @@ function renderWachedFilms() {
       
 };
 
+/* function retrieves movie data from IMDB based on ids in localStorage
+
+libraryPage: 'watched' (default) | 'queue' */
+
+function getLibraryFilms(event = new Event("default"), libraryPage = 'watched') {
+  const savedData = localStorage.getItem(libraryPage);
+  const parsedData = JSON.parse(savedData); //IDs of movies
+
+  toggleHideLibrary(!parsedData); //hide move cards and clear list if there are no movies in localStorage
+
+  if (!parsedData) {
+    return; //no movies in localStorage, early exit
+  }
+  
+  spinner.show();
+
+  const arrayOfMovies = parsedData.map((id) => {
+    const handler_params = {
+      movie_id: id,
+      language: '',
+    };
+    const URL_handler = new TmdbUrlHandler('TMDB_movieData', handler_params);
+
+    const AxiosSearchParams = {
+    method: 'get',
+    url: URL_handler.toString(),
+    };
+
+    try {
+      const serverResponse = await axios(AxiosMovieParams);
+
+      if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
+        throw new ServerError(
+          `Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
+        );
+      }
+
+      
+      return serverResponse.data;
+    } catch (error) {
+      console.log(error.message);
+    }   
+  });
+
+  //console.log(arrayOfMovies); //debug line
+  //TODO: render here
+
+  spinner.hide();
+
+}
+
+function toggleHideLibrary(hide = true) {
+  document.querySelector('.empty-library').classList.toggle('visually-hidden', hide);
+  movieGalleryElement.innerHTML = '';
+}
+
 
 const buttonQueue = document.querySelector('.library-button__queue');
 buttonQueue.addEventListener('click', renderQueueFilms);
