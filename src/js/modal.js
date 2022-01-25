@@ -114,23 +114,10 @@ if (parsedDataQueue) {
     }
   }
 
-  async function showMovieDetails(event = new Event('default')) {
-    event.preventDefault();
-
-    if (event.target.nodeName === 'UL') {
-      return;
-    }
-    document.body.classList.toggle('modal-open');
-    refs.modalMovie.classList.toggle('backdrop--is-hidden');
-    let cardElement = event.target;
-    while (cardElement.nodeName != 'LI') {
-      cardElement = cardElement.parentNode;
-    }
-
-    const movie_id = cardElement.dataset.id; //read ID from data attribute from HTML (added in renderResults). Example: 272 = `Batman Begins`
+  async function getMovieDetails(movie_id, language = '') {
     const handler_params = {
       movie_id: movie_id,
-      language: '',
+      language: language,
     };
     const URL_handler = new TmdbUrlHandler('TMDB_movieData', handler_params);
 
@@ -147,13 +134,34 @@ if (parsedDataQueue) {
           `Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
         );
       }
-
-      //add movie data to modal window here
       //console.log(serverResponse.data); //debug line
-      renderMovieDetails(serverResponse.data);
+      return serverResponse.data; //return detailed movie data
     } catch (error) {
       console.log(error.message);
     }
+    return false; //otherwise return false
+  }
+
+  async function showMovieDetails(event = new Event('default')) {
+    event.preventDefault();
+
+    if (event.target.nodeName === 'UL') {
+      return;
+    }
+    document.body.classList.toggle('modal-open');
+    refs.modalMovie.classList.toggle('backdrop--is-hidden');
+    let cardElement = event.target;
+    while (cardElement.nodeName != 'LI') {
+      cardElement = cardElement.parentNode;
+    }
+
+    const movie_id = cardElement.dataset.id; //read ID from data attribute from HTML (added in renderResults). Example: 272 = `Batman Begins`
+    
+    const movieData = await getMovieDetails(movie_id, "");
+
+    //add movie data to modal window here
+    
+    renderMovieDetails(movieData);
   }
   // DEBUG MOVIE DETAILS
   // const testClickOnMovie = { preventDefault() { } }; //dummy Event

@@ -394,11 +394,11 @@ function renderWachedFilms() {
       
 };
 
-/* function retrieves movie data from IMDB based on ids in localStorage
+/* function retrieves movie data from IMDB based on ids in localStorage and calls render
 
 libraryPage: 'watched' (default) | 'queue' */
 
-function getLibraryFilms(event = new Event("default"), libraryPage = 'watched') {
+async function getLibraryFilms(event = new Event("default"), libraryPage = 'watched') {
   const savedData = localStorage.getItem(libraryPage);
   const parsedData = JSON.parse(savedData); //IDs of movies
 
@@ -411,7 +411,7 @@ function getLibraryFilms(event = new Event("default"), libraryPage = 'watched') 
   spinner.show();
 
   const arrayOfMovies = parsedData.map((id) => {
-    const handler_params = {
+    /*const handler_params = {
       movie_id: id,
       language: '',
     };
@@ -435,10 +435,10 @@ function getLibraryFilms(event = new Event("default"), libraryPage = 'watched') 
       return serverResponse.data;
     } catch (error) {
       console.log(error.message);
-    }   
+    }*/   
   });
 
-  //console.log(arrayOfMovies); //debug line
+  console.log(arrayOfMovies); //debug line
   //TODO: render here
 
   spinner.hide();
