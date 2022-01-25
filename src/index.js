@@ -198,14 +198,24 @@ async function addGenreNames(movieData, language) {
   }
 
   const movieData_with_genres = { ...movieData }; //clone movie object BY VALUE!
-  delete movieData_with_genres.genre_ids;
 
-  movieData_with_genres.genres = movieData.genre_ids.map(genre_id => {
-    const genreObject = TMDB_GENRE_CACHE.find(genre => {
-      return genre.id === genre_id;
+  if (movieData_with_genres.genre_ids) {
+    //we have short movie data without genres from search
+    delete movieData_with_genres.genre_ids;
+
+    movieData_with_genres.genres = movieData.genre_ids.map(genre_id => {
+      const genreObject = TMDB_GENRE_CACHE.find(genre => {
+        return genre.id === genre_id;
+      });
+      return genreObject.name;
     });
-    return genreObject.name;
-  });
+  }
+  else if (movieData_with_genres.genres && movieData_with_genres.genres.every( (genre) => genre.name ) ) {
+    //we have full movie data from Library, objects have names
+    movieData_with_genres.genres = movieData.genres.map(genre => {
+      return genre.name;
+    });
+  } 
 
   return movieData_with_genres;
 }
@@ -368,58 +378,30 @@ async function movePage(event) {
   }
 }
 
-exports.getImagePathFromTMDB = getImagePathFromTMDB;
-
-
 
 //local-storage
 
 const buttonWached = document.querySelector('.library-button__watched');
-buttonWached.addEventListener('click', renderWachedFilms);
+// buttonWached.addEventListener('click', renderWachedFilms);
+buttonWached.addEventListener('click', (event) => getLibraryFilms(event, "watched"));
 
-function renderWachedFilms() {
-    const savedData = localStorage.getItem('watched');
-    const parsedData = JSON.parse(savedData);
-    
-  if (!parsedData) {
-    document.querySelector('.empty-library').classList.remove('visually-hidden');
-  } else {document.querySelector('.empty-library').classList.add('visually-hidden'); };
-  
-  console.log("parsedData", parsedData);//в parsedData хранится массив ID фильмов
-    movieGalleryElement.innerHTML = '';
-    
-    const markup = mainMovieTemplate(parsedData);    
-    
-    movieGalleryElement.insertAdjacentHTML("beforeend", markup);
-      
-};
+const buttonQueue = document.querySelector('.library-button__queue');
+// buttonQueue.addEventListener('click', (renderQueueFilms);
+buttonQueue.addEventListener('click', (event) => getLibraryFilms(event, "queue"));
 
-/* function retrieves movie data from IMDB based on ids in localStorage and calls render
 
-libraryPage: 'watched' (default) | 'queue' */
+/* get single movieData object from IMDB */
 
-async function getLibraryFilms(event = new Event("default"), libraryPage = 'watched') {
-  const savedData = localStorage.getItem(libraryPage);
-  const parsedData = JSON.parse(savedData); //IDs of movies
-
-  toggleHideLibrary(!parsedData); //hide move cards and clear list if there are no movies in localStorage
-
-  if (!parsedData) {
-    return; //no movies in localStorage, early exit
-  }
-  
-  spinner.show();
-
-  const arrayOfMovies = parsedData.map((id) => {
-    /*const handler_params = {
-      movie_id: id,
-      language: '',
+async function getMovieDetails(movie_id, language) {
+    const handler_params = {
+      movie_id: movie_id,
+      language: language,
     };
     const URL_handler = new TmdbUrlHandler('TMDB_movieData', handler_params);
 
-    const AxiosSearchParams = {
-    method: 'get',
-    url: URL_handler.toString(),
+    const AxiosMovieParams = {
+      method: 'get',
+      url: URL_handler.toString(),
     };
 
     try {
@@ -430,50 +412,49 @@ async function getLibraryFilms(event = new Event("default"), libraryPage = 'watc
           `Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
         );
       }
-
-      
-      return serverResponse.data;
+      //console.log(serverResponse.data); //debug line
+      return serverResponse.data; //return detailed movie data
     } catch (error) {
       console.log(error.message);
-    }*/   
-  });
+    }
+    return false; //otherwise return false
+}
 
-  console.log(arrayOfMovies); //debug line
-  //TODO: render here
+/* function retrieves movie data from IMDB based on ids in localStorage and calls render
+
+libraryPage: 'watched' (default) | 'queue' */
+
+async function getLibraryFilms(event = new Event("default"), libraryPage = 'watched') {
+  const savedData = localStorage.getItem(libraryPage.toLowerCase());
+  const parsedData = JSON.parse(savedData); //IDs of movies
+
+  movieGalleryElement.innerHTML = '';
+
+  if (!parsedData) {
+    const showEmptyGalleryMessage = !parsedData;
+    document.querySelector('.empty-library').classList.toggle('visually-hidden', !showEmptyGalleryMessage); //hide gallery if there are no movies in localStorage
+    return; //no movies in localStorage, early exit
+  }
+  
+  spinner.show();
+
+  try {
+    const arrayOfMovies = await Promise.all( parsedData.map(async (id) => getMovieDetails(id, "") ) );
+
+    renderResults(arrayOfMovies);
+  }
+  catch (error) {
+    console.log(error.message);
+  }
 
   spinner.hide();
-
 }
 
-function toggleHideLibrary(hide = true) {
-  document.querySelector('.empty-library').classList.toggle('visually-hidden', hide);
-  movieGalleryElement.innerHTML = '';
-}
-
-
-const buttonQueue = document.querySelector('.library-button__queue');
-buttonQueue.addEventListener('click', renderQueueFilms);
-
-function renderQueueFilms() {
-    const savedData = localStorage.getItem('queue');
-    const parsedData = JSON.parse(savedData);
-   
- if (!parsedData) {
-    document.querySelector('.empty-library').classList.remove('visually-hidden');
-  } else {document.querySelector('.empty-library').classList.add('visually-hidden'); };
-  
-    movieGalleryElement.innerHTML = '';
-    
-    const markup = mainMovieTemplate(parsedData);  
-console.log("queue", parsedData);//в parsedData хранится массив ID фильмов
-    movieGalleryElement.insertAdjacentHTML("beforeend", markup);
-      
-};
-
-function myLibraryPage() {
+function myLibraryPage(event) {
   movieGalleryElement.innerHTML = '';
 
-  renderWachedFilms();
+  // renderWachedFilms();
+  getLibraryFilms(event, "watched");
 };
 
 function backToHome() {
@@ -481,3 +462,7 @@ function backToHome() {
   searchTrendMovies();
  };
 
+//export common functions
+
+exports.getImagePathFromTMDB = getImagePathFromTMDB;
+exports.getMovieDetails = getMovieDetails;
