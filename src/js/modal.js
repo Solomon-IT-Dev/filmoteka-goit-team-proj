@@ -4,15 +4,10 @@ const movieGalleryItem = document.querySelector('[data-id]');
 import modalMovieTemplate from '../templates/modal-movie-card.hbs';
 import mainMovieTemplate from '../templates/main-movie-card.hbs';
 const { TmdbUrlHandler } = require('./api-service');
-const axios = require('axios').default;
 import { scrollUpwardBtn } from './scroll';
 import './dark-theme';
 import { SaveTheme } from './dark-theme'
-import Spinner from './spinner';
-
-// const modalSpinner = new Spinner({
-//   hidden: true,
-// });
+import Notiflix from 'notiflix';
 
 // Осуществление открытия модального окна
 let movieForRendering;
@@ -91,33 +86,35 @@ const refs = {
     const buttonAddToQueue = document.querySelector('.modal-movies__button-queue');
     if (watchedArray.includes(movieForRendering.id)) {
       buttonAddToWatched.textContent = 'Delete from watched';
-      buttonAddToWatched.addEventListener('click', () => {
-          buttonAddToWatched.textContent = 'Deleted from watched';
-          deleteWatchedFilm();
-        })
+      buttonAddToWatched.addEventListener('click', deleteWatchedFilm);
     } else { 
       buttonAddToWatched.textContent = 'Add to watched';
-      buttonAddToWatched.addEventListener('click', () => {
-        buttonAddToWatched.textContent = 'Added to watched';
-        saveWatchedFilm();
-      });
+      buttonAddToWatched.addEventListener('click', saveWatchedFilm);
     };
 
     if (queueArray.includes(movieForRendering.id)) {
       buttonAddToQueue.textContent = 'Delete from queue';
-      buttonAddToQueue.addEventListener('click', () => {
-        buttonAddToQueue.textContent = 'Deleted from queue';
-        deleteQueueFilm()
-      })
+      buttonAddToQueue.addEventListener('click', deleteQueueFilm);
     } else { 
       buttonAddToQueue.textContent = 'Add to queue';
-      buttonAddToQueue.addEventListener('click', () => {
-        buttonAddToQueue.textContent = 'Added to queue';
-        saveFilmToQueue();
-      });
+      buttonAddToQueue.addEventListener('click', saveFilmToQueue);
+    }
+
+    function deleteWatchedFilm(event) { 
+      for (let i = 0; i < watchedArray.length; i++) {
+        if (watchedArray[i] === movieForRendering.id) { 
+          watchedArray.splice(i, 1);
+        }
+      }
+      localStorage.setItem('watched', JSON.stringify(watchedArray));
+
+      event.currentTarget.removeEventListener("click", deleteWatchedFilm);
+      event.currentTarget.addEventListener('click', saveWatchedFilm);
+      event.currentTarget.textContent = 'Add to watched';
+      Notiflix.Notify.success(`Deleted ${movieForRendering.title} from watched`);
     }
   
-    function saveWatchedFilm() {
+    function saveWatchedFilm(event) {
       for (const filmID of watchedArray) {
         if (filmID === movieForRendering.id) {
           return;
@@ -125,9 +122,28 @@ const refs = {
       }
       watchedArray.push(movieForRendering.id);
       localStorage.setItem('watched', JSON.stringify(watchedArray));
+      
+      event.currentTarget.removeEventListener("click", saveWatchedFilm);
+      event.currentTarget.addEventListener('click', deleteWatchedFilm);
+      event.currentTarget.textContent = 'Delete from watched';
+      Notiflix.Notify.success(`Added ${movieForRendering.title} to watched`);
     }
 
-    function saveFilmToQueue() {
+    function deleteQueueFilm(event) { 
+      for (let i = 0; i < queueArray.length; i++) {
+        if (queueArray[i] === movieForRendering.id) { 
+          queueArray.splice(i, 1);
+        }
+      }
+      localStorage.setItem('queue', JSON.stringify(queueArray));
+
+      event.currentTarget.removeEventListener("click", deleteQueueFilm);
+      event.currentTarget.addEventListener('click', saveFilmToQueue);
+      event.currentTarget.textContent = 'Add to queue';
+      Notiflix.Notify.success(`Deleted ${movieForRendering.title} from queue`);
+    }
+
+    function saveFilmToQueue(event) {
       for (const filmID of queueArray) {
         if (filmID === movieForRendering.id) {
           return;
@@ -135,25 +151,12 @@ const refs = {
       }
       queueArray.push(movieForRendering.id);
       localStorage.setItem('queue', JSON.stringify(queueArray));
-    }
-    
-    function deleteWatchedFilm() { 
-      for (let i = 0; i < watchedArray.length; i++) {
-        if (watchedArray[i] === movieForRendering.id) { 
-          watchedArray.splice(i, 1);
-        }
-      }
-      localStorage.setItem('watched', JSON.stringify(watchedArray));
-    }
 
-    function deleteQueueFilm() { 
-      for (let i = 0; i < queueArray.length; i++) {
-        if (queueArray[i] === movieForRendering.id) { 
-          queueArray.splice(i, 1);
-        }
-      }
-      localStorage.setItem('queue', JSON.stringify(queueArray));
-    }
+      event.currentTarget.removeEventListener("click", saveFilmToQueue);
+      event.currentTarget.addEventListener('click', deleteQueueFilm);
+      event.currentTarget.textContent = 'Delete from queue';
+      Notiflix.Notify.success(`Added ${movieForRendering.title} to queue`);
+    } 
 
     SaveTheme();
   }
