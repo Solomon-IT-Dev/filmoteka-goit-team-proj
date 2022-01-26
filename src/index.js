@@ -467,7 +467,7 @@ function myLibraryPage(event) {
 
   // renderWachedFilms();
   getLibraryFilms(event, "watched");
-    document.querySelector('.library-button__queue').classList.remove('library-button-current');
+  document.querySelector('.library-button__queue').classList.remove('library-button-current');
   document.querySelector('.library-button__watched').classList.add('library-button-current');
 };
 
