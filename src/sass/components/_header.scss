@@ -276,6 +276,12 @@
     box-shadow: 0 8px 43px 0 $color__btn-shadow;
   }
 }
+.library-button-current {
+  border: 1px solid $color__btn;
+  background-color: $color__btn;
+  color: $color__text--secondary;
+  box-shadow: 0 8px 43px 0 $color__btn-shadow;
+}
 
 .library-buttons__item + .library-buttons__item {
   margin-left: 15px;

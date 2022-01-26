@@ -1,5 +1,5 @@
 //import { renderMovieDetails } from "../index.js";
-import { getImagePathFromTMDB, getMovieDetails, spinner } from '../index.js';
+import { getImagePathFromTMDB, getMovieDetails, spinner, getLibraryFilms } from '../index.js';
 const movieGalleryItem = document.querySelector('[data-id]');
 import modalMovieTemplate from '../templates/modal-movie-card.hbs';
 import mainMovieTemplate from '../templates/main-movie-card.hbs';
@@ -36,8 +36,7 @@ if (parsedDataQueue) {
   }
 }
 
-(() => {
-  const refs = {
+const refs = {
     // Модальное окно для фильмов
     openModalMovieBtn: document.querySelector('[data-modal-open]'),
     closeModalMovieBtn: document.querySelector('[data-modal-close]'),
@@ -207,6 +206,13 @@ if (parsedDataQueue) {
     }
 
     window.removeEventListener('keydown', onEscKeyPress);
+    
+    if (document.querySelector('.library-button__watched').classList.contains('library-button-current')) { 
+      getLibraryFilms( event, "watched");
+    }
+    if (document.querySelector('.library-button__queue').classList.contains('library-button-current')) { 
+     getLibraryFilms(event, "queue");
+    }
   }
   function onEscKeyPress(e) {
     if (e.code === 'Escape') {
@@ -257,4 +263,4 @@ if (parsedDataQueue) {
     window.removeEventListener('keydown', onTeamEscKeyPress);
   }
 
-})();
+

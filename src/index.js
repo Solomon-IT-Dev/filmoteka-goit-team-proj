@@ -386,11 +386,19 @@ async function movePage(event) {
 
 const buttonWached = document.querySelector('.library-button__watched');
 // buttonWached.addEventListener('click', renderWachedFilms);
-buttonWached.addEventListener('click', (event) => getLibraryFilms(event, "watched"));
+buttonWached.addEventListener('click', (event) => {
+  getLibraryFilms(event, "watched");
+  document.querySelector('.library-button__queue').classList.remove('library-button-current');
+  document.querySelector('.library-button__watched').classList.add('library-button-current');
+});
 
 const buttonQueue = document.querySelector('.library-button__queue');
 // buttonQueue.addEventListener('click', (renderQueueFilms);
-buttonQueue.addEventListener('click', (event) => getLibraryFilms(event, "queue"));
+buttonQueue.addEventListener('click', (event) => {
+  getLibraryFilms(event, "queue");
+  document.querySelector('.library-button__watched').classList.remove('library-button-current');
+  document.querySelector('.library-button__queue').classList.add('library-button-current');
+});
 
 
 /* get single movieData object from IMDB */
@@ -459,6 +467,8 @@ function myLibraryPage(event) {
 
   // renderWachedFilms();
   getLibraryFilms(event, "watched");
+    document.querySelector('.library-button__queue').classList.remove('library-button-current');
+  document.querySelector('.library-button__watched').classList.add('library-button-current');
 };
 
 function backToHome() {
@@ -471,3 +481,4 @@ function backToHome() {
 exports.getImagePathFromTMDB = getImagePathFromTMDB;
 exports.getMovieDetails = getMovieDetails;
 exports.spinner = spinner;
+exports.getLibraryFilms = getLibraryFilms;
