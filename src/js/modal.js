@@ -207,10 +207,10 @@ const refs = {
 
     window.removeEventListener('keydown', onEscKeyPress);
     
-    if (document.querySelector('.library-button__watched').classList.contains('library-button-current')) { 
+    if (document.querySelector('.library-button__watched').classList.contains('library-button-current') && document.querySelector('.button-mylibrary').classList.contains('current')) { 
       getLibraryFilms( event, "watched");
     }
-    if (document.querySelector('.library-button__queue').classList.contains('library-button-current')) { 
+    if (document.querySelector('.library-button__queue').classList.contains('library-button-current') && document.querySelector('.button-mylibrary').classList.contains('current')) { 
      getLibraryFilms(event, "queue");
     }
   }

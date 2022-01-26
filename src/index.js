@@ -440,7 +440,7 @@ async function getLibraryFilms(event = new Event("default"), libraryPage = 'watc
   const parsedData = JSON.parse(savedData); //IDs of movies
 
   movieGalleryElement.innerHTML = '';
-
+  
   const showEmptyGalleryMessage = !parsedData;
   document.querySelector('.empty-library').classList.toggle('visually-hidden', !showEmptyGalleryMessage); //hide gallery if there are no movies in localStorage
 
