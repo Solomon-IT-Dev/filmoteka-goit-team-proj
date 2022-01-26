@@ -9,6 +9,11 @@ import './dark-theme';
 import { SaveTheme } from './dark-theme'
 import Notiflix from 'notiflix';
 
+const notiflixOverride = {
+  fontFamily: "inherit",
+  success: { background: "#ff6b01", },
+};
+
 // Осуществление открытия модального окна
 let movieForRendering;
 
@@ -111,7 +116,7 @@ const refs = {
       event.currentTarget.removeEventListener("click", deleteWatchedFilm);
       event.currentTarget.addEventListener('click', saveWatchedFilm);
       event.currentTarget.textContent = 'Add to watched';
-      Notiflix.Notify.success(`Deleted ${movieForRendering.title} from watched`);
+      Notiflix.Notify.success(`Deleted ${movieForRendering.title} from watched`, notiflixOverride);
     }
   
     function saveWatchedFilm(event) {
@@ -126,7 +131,7 @@ const refs = {
       event.currentTarget.removeEventListener("click", saveWatchedFilm);
       event.currentTarget.addEventListener('click', deleteWatchedFilm);
       event.currentTarget.textContent = 'Delete from watched';
-      Notiflix.Notify.success(`Added ${movieForRendering.title} to watched`);
+      Notiflix.Notify.success(`Added ${movieForRendering.title} to watched`, notiflixOverride);
     }
 
     function deleteQueueFilm(event) { 
@@ -140,7 +145,7 @@ const refs = {
       event.currentTarget.removeEventListener("click", deleteQueueFilm);
       event.currentTarget.addEventListener('click', saveFilmToQueue);
       event.currentTarget.textContent = 'Add to queue';
-      Notiflix.Notify.success(`Deleted ${movieForRendering.title} from queue`);
+      Notiflix.Notify.success(`Deleted ${movieForRendering.title} from queue`, notiflixOverride);
     }
 
     function saveFilmToQueue(event) {
@@ -155,7 +160,7 @@ const refs = {
       event.currentTarget.removeEventListener("click", saveFilmToQueue);
       event.currentTarget.addEventListener('click', deleteQueueFilm);
       event.currentTarget.textContent = 'Delete from queue';
-      Notiflix.Notify.success(`Added ${movieForRendering.title} to queue`);
+      Notiflix.Notify.success(`Added ${movieForRendering.title} to queue`, notiflixOverride);
     } 
 
     SaveTheme();
