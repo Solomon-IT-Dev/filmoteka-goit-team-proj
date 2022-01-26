@@ -12,15 +12,15 @@ import {SaveTheme} from './dark-theme'
 // Осуществление открытия модального окна
 let movieForRendering;
 
-const filmsArray = [];
+const watchedArray = [];
 const queueArray = [];
 
-const savedDataWathed = localStorage.getItem('watched');
-const parsedDataWathed = JSON.parse(savedDataWathed);
-if (parsedDataWathed) {
-  for (const array of parsedDataWathed) {
-    filmsArray.push(array);
-  }
+const savedDataWatched = localStorage.getItem('watched');
+const parsedDataWatched = JSON.parse(savedDataWatched);
+if (parsedDataWatched) {
+  for (const array of parsedDataWatched) {
+    watchedArray.push(array);
+  } 
 }
 
 const savedDataQueue = localStorage.getItem('queue');
@@ -86,33 +86,31 @@ if (parsedDataQueue) {
     // console.log(markup)
     //local-storage
 
-    const buttonAddToWached = document.querySelector('.modal-movies__button-watched');
-    buttonAddToWached.addEventListener('click', saveWatchedFilm);
+    const buttonAddToWatched = document.querySelector('.modal-movies__button-watched');
+    buttonAddToWatched.addEventListener('click', saveWatchedFilm);
   
     function saveWatchedFilm() {
-      for (const oneFilm of filmsArray) {
-        if (oneFilm.id === movieForRendering.id) {
+      for (const filmID of watchedArray) {
+        if (filmID === movieForRendering.id) {
           return;
         }
       }
-      const watchedListData = movieForRendering.id;
-      filmsArray.push(watchedListData);
-      // console.log(filmsArray);
+      watchedArray.push(movieForRendering.id);
+      // console.log(watchedArray);
 
-      localStorage.setItem('watched', JSON.stringify(filmsArray));
+      localStorage.setItem('watched', JSON.stringify(watchedArray));
     }
 
     const buttonAddToQueue = document.querySelector('.modal-movies__button-queue');
     buttonAddToQueue.addEventListener('click', saveFilmToQueue);
 
     function saveFilmToQueue() {
-      for (const oneFilm of queueArray) {
-        if (oneFilm.id === movieForRendering.id) {
+      for (const filmID of queueArray) {
+        if (filmID === movieForRendering.id) {
           return;
         }
       }
-      const queueListData = movieForRendering.id;
-      queueArray.push(queueListData);
+      queueArray.push(movieForRendering.id);
       localStorage.setItem('queue', JSON.stringify(queueArray));
     }
     SaveTheme();
@@ -143,11 +141,6 @@ if (parsedDataQueue) {
     document.body.classList.toggle('modal-open');
     refs.modalMovie.classList.toggle('backdrop--is-hidden');
   }
-  // DEBUG MOVIE DETAILS
-  // const testClickOnMovie = { preventDefault() { } }; //dummy Event
-  // testClickOnMovie.target = { dataset: { id: 272 } }; //dummy Movie
-  // showMovieDetails(testClickOnMovie);
-  // END DEBUG MOVIE DETAILS
 
   // OPEN/CLOSE MODAL MOVIE
   async function openModalMovie(event) {

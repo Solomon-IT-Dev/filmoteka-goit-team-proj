@@ -429,9 +429,10 @@ async function getLibraryFilms(event = new Event("default"), libraryPage = 'watc
 
   movieGalleryElement.innerHTML = '';
 
+  const showEmptyGalleryMessage = !parsedData;
+  document.querySelector('.empty-library').classList.toggle('visually-hidden', !showEmptyGalleryMessage); //hide gallery if there are no movies in localStorage
+
   if (!parsedData) {
-    const showEmptyGalleryMessage = !parsedData;
-    document.querySelector('.empty-library').classList.toggle('visually-hidden', !showEmptyGalleryMessage); //hide gallery if there are no movies in localStorage
     return; //no movies in localStorage, early exit
   }
   
