@@ -160,7 +160,7 @@
   }
   @include transition(border, color, background-color);
   @include mq('desktop') {
-    width: 136px;
+    min-width: 136px;
     &:not(:last-of-type) {
       margin-right: 15px;
     }

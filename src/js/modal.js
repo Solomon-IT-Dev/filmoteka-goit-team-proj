@@ -86,13 +86,37 @@ if (parsedDataQueue) {
     refs.modalMovieContainer.innerHTML = '';
     const markup = modalMovieTemplate(movieForRendering);
     refs.modalMovieContainer.insertAdjacentHTML('beforeend', markup);
-   
-    //get full image paths in sizes with: await getImagePathFromIMDB()
-    // console.log(markup)
+    
     //local-storage
-
     const buttonAddToWatched = document.querySelector('.modal-movies__button-watched');
-    buttonAddToWatched.addEventListener('click', saveWatchedFilm);
+    const buttonAddToQueue = document.querySelector('.modal-movies__button-queue');
+    if (watchedArray.includes(movieForRendering.id)) {
+      buttonAddToWatched.textContent = 'Delete from watched';
+      buttonAddToWatched.addEventListener('click', () => {
+          buttonAddToWatched.textContent = 'Deleted from watched';
+          deleteWatchedFilm();
+        })
+    } else { 
+      buttonAddToWatched.textContent = 'Add to watched';
+      buttonAddToWatched.addEventListener('click', () => {
+        buttonAddToWatched.textContent = 'Added to watched';
+        saveWatchedFilm();
+      });
+    };
+
+    if (queueArray.includes(movieForRendering.id)) {
+      buttonAddToQueue.textContent = 'Delete from queue';
+      buttonAddToQueue.addEventListener('click', () => {
+        buttonAddToQueue.textContent = 'Deleted from queue';
+        deleteQueueFilm()
+      })
+    } else { 
+      buttonAddToQueue.textContent = 'Add to queue';
+      buttonAddToQueue.addEventListener('click', () => {
+        buttonAddToQueue.textContent = 'Added to queue';
+        saveFilmToQueue();
+      });
+    }
   
     function saveWatchedFilm() {
       for (const filmID of watchedArray) {
@@ -101,13 +125,8 @@ if (parsedDataQueue) {
         }
       }
       watchedArray.push(movieForRendering.id);
-      // console.log(watchedArray);
-
       localStorage.setItem('watched', JSON.stringify(watchedArray));
     }
-
-    const buttonAddToQueue = document.querySelector('.modal-movies__button-queue');
-    buttonAddToQueue.addEventListener('click', saveFilmToQueue);
 
     function saveFilmToQueue() {
       for (const filmID of queueArray) {
@@ -118,6 +137,25 @@ if (parsedDataQueue) {
       queueArray.push(movieForRendering.id);
       localStorage.setItem('queue', JSON.stringify(queueArray));
     }
+    
+    function deleteWatchedFilm() { 
+      for (let i = 0; i < watchedArray.length; i++) {
+        if (watchedArray[i] === movieForRendering.id) { 
+          watchedArray.splice(i, 1);
+        }
+      }
+      localStorage.setItem('watched', JSON.stringify(watchedArray));
+    }
+
+    function deleteQueueFilm() { 
+      for (let i = 0; i < queueArray.length; i++) {
+        if (queueArray[i] === movieForRendering.id) { 
+          queueArray.splice(i, 1);
+        }
+      }
+      localStorage.setItem('queue', JSON.stringify(queueArray));
+    }
+
     SaveTheme();
   }
 
