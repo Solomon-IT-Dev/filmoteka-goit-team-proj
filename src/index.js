@@ -441,7 +441,7 @@ async function getLibraryFilms(event = new Event("default"), libraryPage = 'watc
 
   movieGalleryElement.innerHTML = '';
 
-  const isGalleryEmpty = (!parsedData) || (parsedData.length === 0 );
+  const isGalleryEmpty = (!parsedData) || (parsedData.length === 0 ); //if localStorage is empty or contains an empty array
   document.querySelector('.empty-library').classList.toggle('visually-hidden', !isGalleryEmpty); //hide gallery if there are no movies in localStorage
 
   if (isGalleryEmpty) {
