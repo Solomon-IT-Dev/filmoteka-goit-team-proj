@@ -7,7 +7,12 @@ const { TmdbUrlHandler } = require('./api-service');
 const axios = require('axios').default;
 import { scrollUpwardBtn } from './scroll';
 import './dark-theme';
-import {SaveTheme} from './dark-theme'
+import { SaveTheme } from './dark-theme'
+import Spinner from './spinner';
+
+const modalSpinner = new Spinner({
+  hidden: true,
+});
 
 // Осуществление открытия модального окна
 let movieForRendering;
@@ -132,6 +137,8 @@ if (parsedDataQueue) {
     while (cardElement.nodeName != 'LI') {
       cardElement = cardElement.parentNode;
     }
+
+    modalSpinner.show();
 
     const movie_id = cardElement.dataset.id; //read ID from data attribute from HTML (added in renderResults). Example: 272 = `Batman Begins`
     
