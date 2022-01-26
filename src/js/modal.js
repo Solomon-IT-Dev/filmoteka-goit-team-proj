@@ -1,5 +1,5 @@
 //import { renderMovieDetails } from "../index.js";
-import { getImagePathFromTMDB } from '../index.js';
+import { getImagePathFromTMDB, getMovieDetails } from '../index.js';
 const movieGalleryItem = document.querySelector('[data-id]');
 import modalMovieTemplate from '../templates/modal-movie-card.hbs';
 import mainMovieTemplate from '../templates/main-movie-card.hbs';
@@ -95,8 +95,9 @@ if (parsedDataQueue) {
           return;
         }
       }
-      const watchedListData = movieForRendering;
+      const watchedListData = movieForRendering.id;
       filmsArray.push(watchedListData);
+      // console.log(filmsArray);
 
       localStorage.setItem('watched', JSON.stringify(filmsArray));
     }
@@ -110,12 +111,14 @@ if (parsedDataQueue) {
           return;
         }
       }
-      const queueListData = movieForRendering;
+      const queueListData = movieForRendering.id;
       queueArray.push(queueListData);
       localStorage.setItem('queue', JSON.stringify(queueArray));
     }
     SaveTheme();
   }
+
+  
 
   async function showMovieDetails(event = new Event('default')) {
     event.preventDefault();
@@ -124,43 +127,21 @@ if (parsedDataQueue) {
     if (event.target.nodeName === 'UL') {
       return;
     }
-    document.body.classList.toggle('modal-open');
-    refs.modalMovie.classList.toggle('backdrop--is-hidden');
+    
     let cardElement = event.target;
     while (cardElement.nodeName != 'LI') {
       cardElement = cardElement.parentNode;
     }
 
     const movie_id = cardElement.dataset.id; //read ID from data attribute from HTML (added in renderResults). Example: 272 = `Batman Begins`
-    const handler_params = {
-      movie_id: movie_id,
-      language: '',
-    };
-    const URL_handler = new TmdbUrlHandler('TMDB_movieData', handler_params);
+    
+    const movieData = await getMovieDetails(movie_id, "");
 
-    const AxiosMovieParams = {
-      method: 'get',
-      url: URL_handler.toString(),
-    };
-
-    try {
-      const serverResponse = await axios(AxiosMovieParams);
-
-      if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
-        throw new ServerError(
-          `Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
-        );
-      }
-     
-      //add movie data to modal window here
-      //console.log(serverResponse.data); //debug line
-      renderMovieDetails(serverResponse.data);
-
-    } catch (error) {
-      console.log(error.message);
-    }
- 
-
+    //add movie data to modal window here
+    
+    renderMovieDetails(movieData);
+    document.body.classList.toggle('modal-open');
+    refs.modalMovie.classList.toggle('backdrop--is-hidden');
   }
   // DEBUG MOVIE DETAILS
   // const testClickOnMovie = { preventDefault() { } }; //dummy Event
