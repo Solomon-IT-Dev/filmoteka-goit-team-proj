@@ -163,9 +163,7 @@ async function renderResults(TMDB_response_results) {
     const moviesListForRendering = await makeMoviesDataforRendering(TMDB_response_results);
     const markup = mainMovieTemplate(moviesListForRendering);
     movieGalleryElement.insertAdjacentHTML("beforeend", markup);
-    SaveTheme()
-    spinner.hide()
-
+    SaveTheme();
 }
 
 /* Adds field "genres" with an array of genres in text into a single movie object (and removes "genre_ids").
@@ -274,6 +272,7 @@ async function searchMovies(event = new Event('default')) {
   } catch (error) {
     console.log(error.message);
   }
+  spinner.hide();
 }
 
 async function searchTrendMovies() {
@@ -287,6 +286,8 @@ async function searchTrendMovies() {
     method: 'get',
     url: URL_handler.toString(),
   };
+
+  spinner.show();
 
   try {
     const serverResponse = await axios(AxiosSearchParams);
@@ -311,6 +312,7 @@ async function searchTrendMovies() {
   } catch (error) {
     console.log(error.message);
   }
+  spinner.hide();
 }
 
 /* Requests another page for the same search string. Calls render afterwars.
@@ -375,6 +377,8 @@ async function movePage(event) {
   } catch (error) {
     console.log(error.message);
   }
+
+  spinner.hide();
 }
 
 
@@ -465,3 +469,4 @@ function backToHome() {
 
 exports.getImagePathFromTMDB = getImagePathFromTMDB;
 exports.getMovieDetails = getMovieDetails;
+exports.spinner = spinner;
