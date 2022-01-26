@@ -1,5 +1,5 @@
 //import { renderMovieDetails } from "../index.js";
-import { getImagePathFromTMDB, getMovieDetails } from '../index.js';
+import { getImagePathFromTMDB, getMovieDetails, spinner } from '../index.js';
 const movieGalleryItem = document.querySelector('[data-id]');
 import modalMovieTemplate from '../templates/modal-movie-card.hbs';
 import mainMovieTemplate from '../templates/main-movie-card.hbs';
@@ -10,9 +10,9 @@ import './dark-theme';
 import { SaveTheme } from './dark-theme'
 import Spinner from './spinner';
 
-const modalSpinner = new Spinner({
-  hidden: true,
-});
+// const modalSpinner = new Spinner({
+//   hidden: true,
+// });
 
 // Осуществление открытия модального окна
 let movieForRendering;
@@ -138,7 +138,7 @@ if (parsedDataQueue) {
       cardElement = cardElement.parentNode;
     }
 
-    modalSpinner.show();
+    spinner.show();
 
     const movie_id = cardElement.dataset.id; //read ID from data attribute from HTML (added in renderResults). Example: 272 = `Batman Begins`
     
@@ -149,6 +149,7 @@ if (parsedDataQueue) {
     renderMovieDetails(movieData);
     document.body.classList.toggle('modal-open');
     refs.modalMovie.classList.toggle('backdrop--is-hidden');
+    spinner.hide();
   }
   // DEBUG MOVIE DETAILS
   // const testClickOnMovie = { preventDefault() { } }; //dummy Event
