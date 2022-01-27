@@ -6,8 +6,8 @@ import mainMovieTemplate from '../templates/main-movie-card.hbs';
 const { TmdbUrlHandler } = require('./api-service');
 import { scrollUpwardBtn } from './scroll';
 import './dark-theme';
-import { SaveTheme } from './dark-theme'
 import Notiflix from 'notiflix';
+import { SaveThemeModal } from './dark-theme'
 
 const notiflixOverride = {
   fontFamily: "inherit",
@@ -163,7 +163,7 @@ const refs = {
       Notiflix.Notify.success(`Added ${movieForRendering.title} to queue`, notiflixOverride);
     } 
 
-    SaveTheme();
+    SaveThemeModal();
   }
 
   
