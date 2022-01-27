@@ -7,7 +7,7 @@ const { TmdbUrlHandler } = require('./api-service');
 const axios = require('axios').default;
 import { scrollUpwardBtn } from './scroll';
 import './dark-theme';
-import { SaveTheme } from './dark-theme'
+import { SaveThemeModal } from './dark-theme'
 import Spinner from './spinner';
 
 // const modalSpinner = new Spinner({
@@ -118,7 +118,7 @@ if (parsedDataQueue) {
       queueArray.push(movieForRendering.id);
       localStorage.setItem('queue', JSON.stringify(queueArray));
     }
-    SaveTheme();
+    SaveThemeModal();
   }
 
   
