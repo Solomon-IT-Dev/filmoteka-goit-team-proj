@@ -1,18 +1,18 @@
 //import { renderMovieDetails } from "../index.js";
-import { getImagePathFromTMDB, getMovieDetails, spinner } from '../index.js';
+import { getImagePathFromTMDB, getMovieDetails, spinner, getLibraryFilms } from '../index.js';
 const movieGalleryItem = document.querySelector('[data-id]');
 import modalMovieTemplate from '../templates/modal-movie-card.hbs';
 import mainMovieTemplate from '../templates/main-movie-card.hbs';
 const { TmdbUrlHandler } = require('./api-service');
-const axios = require('axios').default;
 import { scrollUpwardBtn } from './scroll';
 import './dark-theme';
+import Notiflix from 'notiflix';
 import { SaveThemeModal } from './dark-theme'
-import Spinner from './spinner';
 
-// const modalSpinner = new Spinner({
-//   hidden: true,
-// });
+const notiflixOverride = {
+  fontFamily: "inherit",
+  success: { background: "#ff6b01", },
+};
 
 // Осуществление открытия модального окна
 let movieForRendering;
@@ -36,8 +36,7 @@ if (parsedDataQueue) {
   }
 }
 
-(() => {
-  const refs = {
+const refs = {
     // Модальное окно для фильмов
     openModalMovieBtn: document.querySelector('[data-modal-open]'),
     closeModalMovieBtn: document.querySelector('[data-modal-close]'),
@@ -86,30 +85,70 @@ if (parsedDataQueue) {
     refs.modalMovieContainer.innerHTML = '';
     const markup = modalMovieTemplate(movieForRendering);
     refs.modalMovieContainer.insertAdjacentHTML('beforeend', markup);
-   
-    //get full image paths in sizes with: await getImagePathFromIMDB()
-    // console.log(markup)
+    
     //local-storage
-
     const buttonAddToWatched = document.querySelector('.modal-movies__button-watched');
-    buttonAddToWatched.addEventListener('click', saveWatchedFilm);
+    const buttonAddToQueue = document.querySelector('.modal-movies__button-queue');
+    if (watchedArray.includes(movieForRendering.id)) {
+      buttonAddToWatched.textContent = 'Delete from watched';
+      buttonAddToWatched.addEventListener('click', deleteWatchedFilm);
+    } else { 
+      buttonAddToWatched.textContent = 'Add to watched';
+      buttonAddToWatched.addEventListener('click', saveWatchedFilm);
+    };
+
+    if (queueArray.includes(movieForRendering.id)) {
+      buttonAddToQueue.textContent = 'Delete from queue';
+      buttonAddToQueue.addEventListener('click', deleteQueueFilm);
+    } else { 
+      buttonAddToQueue.textContent = 'Add to queue';
+      buttonAddToQueue.addEventListener('click', saveFilmToQueue);
+    }
+
+    function deleteWatchedFilm(event) { 
+      for (let i = 0; i < watchedArray.length; i++) {
+        if (watchedArray[i] === movieForRendering.id) { 
+          watchedArray.splice(i, 1);
+        }
+      }
+      localStorage.setItem('watched', JSON.stringify(watchedArray));
+
+      event.currentTarget.removeEventListener("click", deleteWatchedFilm);
+      event.currentTarget.addEventListener('click', saveWatchedFilm);
+      event.currentTarget.textContent = 'Add to watched';
+      Notiflix.Notify.success(`Deleted ${movieForRendering.title} from watched`, notiflixOverride);
+    }
   
-    function saveWatchedFilm() {
+    function saveWatchedFilm(event) {
       for (const filmID of watchedArray) {
         if (filmID === movieForRendering.id) {
           return;
         }
       }
       watchedArray.push(movieForRendering.id);
-      // console.log(watchedArray);
-
       localStorage.setItem('watched', JSON.stringify(watchedArray));
+      
+      event.currentTarget.removeEventListener("click", saveWatchedFilm);
+      event.currentTarget.addEventListener('click', deleteWatchedFilm);
+      event.currentTarget.textContent = 'Delete from watched';
+      Notiflix.Notify.success(`Added ${movieForRendering.title} to watched`, notiflixOverride);
     }
 
-    const buttonAddToQueue = document.querySelector('.modal-movies__button-queue');
-    buttonAddToQueue.addEventListener('click', saveFilmToQueue);
+    function deleteQueueFilm(event) { 
+      for (let i = 0; i < queueArray.length; i++) {
+        if (queueArray[i] === movieForRendering.id) { 
+          queueArray.splice(i, 1);
+        }
+      }
+      localStorage.setItem('queue', JSON.stringify(queueArray));
 
-    function saveFilmToQueue() {
+      event.currentTarget.removeEventListener("click", deleteQueueFilm);
+      event.currentTarget.addEventListener('click', saveFilmToQueue);
+      event.currentTarget.textContent = 'Add to queue';
+      Notiflix.Notify.success(`Deleted ${movieForRendering.title} from queue`, notiflixOverride);
+    }
+
+    function saveFilmToQueue(event) {
       for (const filmID of queueArray) {
         if (filmID === movieForRendering.id) {
           return;
@@ -117,7 +156,13 @@ if (parsedDataQueue) {
       }
       queueArray.push(movieForRendering.id);
       localStorage.setItem('queue', JSON.stringify(queueArray));
-    }
+
+      event.currentTarget.removeEventListener("click", saveFilmToQueue);
+      event.currentTarget.addEventListener('click', deleteQueueFilm);
+      event.currentTarget.textContent = 'Delete from queue';
+      Notiflix.Notify.success(`Added ${movieForRendering.title} to queue`, notiflixOverride);
+    } 
+
     SaveThemeModal();
   }
 
@@ -169,6 +214,13 @@ if (parsedDataQueue) {
     }
 
     window.removeEventListener('keydown', onEscKeyPress);
+    
+    if (document.querySelector('.library-button__watched').classList.contains('library-button-current') && document.querySelector('.button-mylibrary').classList.contains('current')) { 
+      getLibraryFilms( event, "watched");
+    }
+    if (document.querySelector('.library-button__queue').classList.contains('library-button-current') && document.querySelector('.button-mylibrary').classList.contains('current')) { 
+     getLibraryFilms(event, "queue");
+    }
   }
   function onEscKeyPress(e) {
     if (e.code === 'Escape') {
@@ -219,4 +271,4 @@ if (parsedDataQueue) {
     window.removeEventListener('keydown', onTeamEscKeyPress);
   }
 
-})();
+

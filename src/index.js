@@ -441,10 +441,10 @@ async function getLibraryFilms(event = new Event("default"), libraryPage = 'watc
 
   movieGalleryElement.innerHTML = '';
 
-  const showEmptyGalleryMessage = !parsedData;
-  document.querySelector('.empty-library').classList.toggle('visually-hidden', !showEmptyGalleryMessage); //hide gallery if there are no movies in localStorage
+  const isGalleryEmpty = (!parsedData) || (parsedData.length === 0 ); //if localStorage is empty or contains an empty array
+  document.querySelector('.empty-library').classList.toggle('visually-hidden', !isGalleryEmpty); //hide gallery if there are no movies in localStorage
 
-  if (!parsedData) {
+  if (isGalleryEmpty) {
     return; //no movies in localStorage, early exit
   }
   
@@ -481,3 +481,4 @@ function backToHome() {
 exports.getImagePathFromTMDB = getImagePathFromTMDB;
 exports.getMovieDetails = getMovieDetails;
 exports.spinner = spinner;
+exports.getLibraryFilms = getLibraryFilms;
