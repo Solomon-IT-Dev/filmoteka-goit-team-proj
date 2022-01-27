@@ -17,7 +17,7 @@ function OnThemeSwitch(event) {
    }
 
    SaveTheme(); //apply theme changes
-   SaveThemeModal()
+   
 }
 
 function SaveTheme() {
