@@ -8,6 +8,7 @@ import { scrollUpwardBtn } from './scroll';
 import './dark-theme';
 import Notiflix from 'notiflix';
 import { SaveThemeModal } from './dark-theme'
+import defaultImage from '../images/main-section/default-image.jpg';
 
 const notiflixOverride = {
   fontFamily: "inherit",
@@ -68,8 +69,7 @@ const refs = {
       const movieFullAdress = await getImagePathFromTMDB(movieData.poster_path, 'w780');
       movieForRendering.poster_full_path = movieFullAdress;
     } else {
-      movieForRendering.poster_full_path =
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png';
+      movieForRendering.poster_full_path = defaultImage;
     }
     if (movieData.release_date) {
       movieForRendering.release_year = movieData.release_date.slice(0, 4);
