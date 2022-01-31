@@ -5,7 +5,7 @@ import './js/modal';
 import './js/dark-theme';
 import mainMovieTemplate from './templates/main-movie-card.hbs';
 import './js/modal-movie';
-
+import defaultImage from './images/main-section/default-image.jpg';
     
 const axios = require('axios').default;
 import {SaveTheme} from './js/dark-theme'
@@ -126,7 +126,7 @@ async function makeMoviesDataforRendering(TMDB_response_results) {
                 const movieFullAdress = await getImagePathFromTMDB(movie.poster_path, "w780");
                 movieForRendering.poster_full_path = movieFullAdress;
             } else { 
-                movieForRendering.poster_full_path = "https://www.southwest-windows.co.uk/wp-content/uploads/sites/68/2013/11/dummy-image-portrait.jpg"
+              movieForRendering.poster_full_path = defaultImage;
             }
             if (movie.release_date) {
                 movieForRendering.release_year = movie.release_date.slice(0, 4);
