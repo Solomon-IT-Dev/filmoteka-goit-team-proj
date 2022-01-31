@@ -1,9 +1,9 @@
 // Обработчик события клика на кнопку скрола наверх страницы
-
-export const scrollUpwardBtn = document.querySelector('.btn__scroll');
+import refs from './refs'
+// export const scrollUpwardBtn = document.querySelector('.btn__scroll');
 
 window.addEventListener('scroll', pageScrollHandler);
-scrollUpwardBtn.addEventListener('click', onBtnScrollUpwardClick);
+refs.scrollUpwardBtn.addEventListener('click', onBtnScrollUpwardClick);
 
 // Обрабатывает событие скрола - показывает или скрывает кнопку возврата наверх
 function pageScrollHandler() {
@@ -11,10 +11,10 @@ function pageScrollHandler() {
   const coords = document.documentElement.clientHeight;
 
   if (scrollParam > coords) {
-    scrollUpwardBtn.classList.add('btn__scroll--show');
+    refs.scrollUpwardBtn.classList.add('btn__scroll--show');
   }
   if (scrollParam < coords) {
-    scrollUpwardBtn.classList.remove('btn__scroll--show');
+    refs.scrollUpwardBtn.classList.remove('btn__scroll--show');
   }
 }
 

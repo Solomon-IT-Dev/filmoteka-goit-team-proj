@@ -2,9 +2,10 @@
 import './js/header-switcher';
 import './js/scroll';
 import './js/modal';
+import './js/modal-team';
 import './js/dark-theme';
+import refs from './js/refs'
 import mainMovieTemplate from './templates/main-movie-card.hbs';
-import './js/modal-movie';
 import defaultImage from './images/main-section/default-image.jpg';
     
 const axios = require('axios').default;
@@ -26,16 +27,10 @@ const spinner = new Spinner({
   hidden: true,
 });
 
-const movieGalleryElement = document.querySelector('.films-list');
-const searchFormEl = document.querySelector('.search-form');
-const buttonHome = document.querySelector('.button-home');
-const buttonMyLibrary = document.querySelector('.button-mylibrary');
-
-
-searchFormEl.addEventListener('submit', searchMovies);
+refs.searchFormEl.addEventListener('submit', searchMovies);
 document.addEventListener('DOMContentLoaded', searchTrendMovies); //upload 1 page of trends on first load of the page
-buttonHome.addEventListener('click', backToHome);
-buttonMyLibrary.addEventListener('click', myLibraryPage);
+refs.buttonHome.addEventListener('click', backToHome);
+refs.buttonMyLibrary.addEventListener('click', myLibraryPage);
 
 const tuiOptions = {
   totalItems: 0, //set proper value in search
@@ -158,11 +153,11 @@ async function renderResults(TMDB_response_results) {
         vote_count: 0
     }
 	*/
-    movieGalleryElement.innerHTML = '';
+    refs.movieGalleryElement.innerHTML = '';
 
     const moviesListForRendering = await makeMoviesDataforRendering(TMDB_response_results);
     const markup = mainMovieTemplate(moviesListForRendering);
-    movieGalleryElement.insertAdjacentHTML("beforeend", markup);
+    refs.movieGalleryElement.insertAdjacentHTML("beforeend", markup);
     SaveTheme();
 }
 
@@ -227,7 +222,7 @@ async function searchMovies(event = new Event('default')) {
   // --- DEBUG TESTING - split trends into separate function?
   let URL_handler = {};
   if (!searchString) {
-    document.querySelector('.error-message').classList.remove('visually-hidden');
+    refs.errorMessageEl.classList.remove('visually-hidden');
     spinner.hide();
     return;
   }
@@ -248,7 +243,7 @@ async function searchMovies(event = new Event('default')) {
 
   try {
     const serverResponse = await axios(AxiosSearchParams);
-    document.querySelector('.error-message').classList.add('visually-hidden');
+    refs.errorMessageEl.classList.add('visually-hidden');
     
     if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
       spinner.hide();
@@ -261,7 +256,7 @@ async function searchMovies(event = new Event('default')) {
 
     tuiPaginationInstance.currentSearchString = searchString; ///important: we need to preserve searchString between func calls to make pagination possible. Here it's done via saving it into pagination object
     if (serverResponse.data.results.length === 0) {
-      document.querySelector('.error-message').classList.remove('visually-hidden');
+      refs.errorMessageEl.classList.remove('visually-hidden');
       spinner.hide();
     }
     if (serverResponse.data.results.length > 0) {
@@ -355,7 +350,7 @@ async function movePage(event) {
 
     const serverResponse = await axios(AxiosSearchParams);
 
-    document.querySelector('.error-message').classList.add('visually-hidden');
+    // document.querySelector('.error-message').classList.add('visually-hidden');
 
     if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
       throw new ServerError(
@@ -363,9 +358,9 @@ async function movePage(event) {
       );
     }
 
-    if (serverResponse.data.results.length === 0) {
-      document.querySelector('.error-message').classList.remove('visually-hidden');
-    }
+    // if (serverResponse.data.results.length === 0) {
+    //   document.querySelector('.error-message').classList.remove('visually-hidden');
+    // }
 
     if (serverResponse.data.results.length > 0) {
       //TODO: additionally disable interface elements responsible for switching here accordingly
@@ -384,20 +379,20 @@ async function movePage(event) {
 
 //local-storage
 
-const buttonWached = document.querySelector('.library-button__watched');
+
 // buttonWached.addEventListener('click', renderWachedFilms);
-buttonWached.addEventListener('click', (event) => {
+refs.buttonWatched.addEventListener('click', (event) => {
   getLibraryFilms(event, "watched");
-  document.querySelector('.library-button__queue').classList.remove('library-button-current');
-  document.querySelector('.library-button__watched').classList.add('library-button-current');
+  buttonQueue.classList.remove('library-button-current');
+  refs.buttonWatched.classList.add('library-button-current');
 });
 
-const buttonQueue = document.querySelector('.library-button__queue');
+
 // buttonQueue.addEventListener('click', (renderQueueFilms);
-buttonQueue.addEventListener('click', (event) => {
+refs.buttonQueue.addEventListener('click', (event) => {
   getLibraryFilms(event, "queue");
-  document.querySelector('.library-button__watched').classList.remove('library-button-current');
-  document.querySelector('.library-button__queue').classList.add('library-button-current');
+  refs.buttonWatched.classList.remove('library-button-current');
+  refs.buttonQueue.classList.add('library-button-current');
 });
 
 
@@ -439,10 +434,10 @@ async function getLibraryFilms(event = new Event("default"), libraryPage = 'watc
   const savedData = localStorage.getItem(libraryPage.toLowerCase());
   const parsedData = JSON.parse(savedData); //IDs of movies
 
-  movieGalleryElement.innerHTML = '';
+  refs.movieGalleryElement.innerHTML = '';
 
   const isGalleryEmpty = (!parsedData) || (parsedData.length === 0 ); //if localStorage is empty or contains an empty array
-  document.querySelector('.empty-library').classList.toggle('visually-hidden', !isGalleryEmpty); //hide gallery if there are no movies in localStorage
+  refs.emptyLibraryMessage.classList.toggle('visually-hidden', !isGalleryEmpty); //hide gallery if there are no movies in localStorage
 
   if (isGalleryEmpty) {
     return; //no movies in localStorage, early exit
@@ -463,16 +458,16 @@ async function getLibraryFilms(event = new Event("default"), libraryPage = 'watc
 }
 
 function myLibraryPage(event) {
-  movieGalleryElement.innerHTML = '';
+  refs.movieGalleryElement.innerHTML = '';
 
   // renderWachedFilms();
   getLibraryFilms(event, "watched");
-  document.querySelector('.library-button__queue').classList.remove('library-button-current');
-  document.querySelector('.library-button__watched').classList.add('library-button-current');
+  refs.buttonQueue.classList.remove('library-button-current');
+  refs.buttonWatched.classList.add('library-button-current');
 };
 
 function backToHome() {
-  document.querySelector('.empty-library').classList.add('visually-hidden');
+  refs.emptyLibraryMessage.classList.add('visually-hidden');
   searchTrendMovies();
  };
 

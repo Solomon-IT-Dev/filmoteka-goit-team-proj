@@ -1,10 +1,7 @@
-//import { renderMovieDetails } from "../index.js";
+import refs from './refs'
 import { getImagePathFromTMDB, getMovieDetails, spinner, getLibraryFilms } from '../index.js';
-const movieGalleryItem = document.querySelector('[data-id]');
 import modalMovieTemplate from '../templates/modal-movie-card.hbs';
-import mainMovieTemplate from '../templates/main-movie-card.hbs';
 const { TmdbUrlHandler } = require('./api-service');
-import { scrollUpwardBtn } from './scroll';
 import './dark-theme';
 import Notiflix from 'notiflix';
 import { SaveThemeModal } from './dark-theme'
@@ -37,20 +34,6 @@ if (parsedDataQueue) {
   }
 }
 
-const refs = {
-    // Модальное окно для фильмов
-    openModalMovieBtn: document.querySelector('[data-modal-open]'),
-    closeModalMovieBtn: document.querySelector('[data-modal-close]'),
-    modalMovie: document.querySelector('[data-modal]'),
-    // Модальное окно для команды
-    openModalTeamBtn: document.querySelector('[data-team-open]'),
-    closeModalTeamBtn: document.querySelector('[data-team-close]'),
-    modalTeam: document.querySelector('[data-team]'),
-    modalMovieContainer: document.querySelector('.modal-movies'),
-    backdrop: document.querySelector('.backdrop'),
-    backdropTeam: document.querySelector('.backdrop-team'),
-    movieGalleryElement: document.querySelector('.films-list'),
-  };
 
   // Work of Modal Movie
   refs.backdrop.addEventListener('click', onBackdropClick);
@@ -87,22 +70,21 @@ const refs = {
     refs.modalMovieContainer.insertAdjacentHTML('beforeend', markup);
     
     //local-storage
-    const buttonAddToWatched = document.querySelector('.modal-movies__button-watched');
-    const buttonAddToQueue = document.querySelector('.modal-movies__button-queue');
+
     if (watchedArray.includes(movieForRendering.id)) {
-      buttonAddToWatched.textContent = 'Delete from watched';
-      buttonAddToWatched.addEventListener('click', deleteWatchedFilm);
+      refs.buttonAddToWatched.textContent = 'Delete from watched';
+      refs.buttonAddToWatched.addEventListener('click', deleteWatchedFilm);
     } else { 
-      buttonAddToWatched.textContent = 'Add to watched';
-      buttonAddToWatched.addEventListener('click', saveWatchedFilm);
+      refs.buttonAddToWatched.textContent = 'Add to watched';
+      refs.buttonAddToWatched.addEventListener('click', saveWatchedFilm);
     };
 
     if (queueArray.includes(movieForRendering.id)) {
-      buttonAddToQueue.textContent = 'Delete from queue';
-      buttonAddToQueue.addEventListener('click', deleteQueueFilm);
+      refs.buttonAddToQueue.textContent = 'Delete from queue';
+      refs.buttonAddToQueue.addEventListener('click', deleteQueueFilm);
     } else { 
-      buttonAddToQueue.textContent = 'Add to queue';
-      buttonAddToQueue.addEventListener('click', saveFilmToQueue);
+      refs.buttonAddToQueue.textContent = 'Add to queue';
+      refs.buttonAddToQueue.addEventListener('click', saveFilmToQueue);
     }
 
     function deleteWatchedFilm(event) { 
@@ -197,7 +179,7 @@ const refs = {
 
   // OPEN/CLOSE MODAL MOVIE
   async function openModalMovie(event) {
-    scrollUpwardBtn.classList.remove('btn__scroll--show');
+    refs.scrollUpwardBtn.classList.remove('btn__scroll--show');
     await showMovieDetails(event);
     window.addEventListener('keydown', onEscKeyPress);
   }
@@ -210,65 +192,27 @@ const refs = {
     const coords = document.documentElement.clientHeight;
 
     if (scrollParam > coords) {
-      scrollUpwardBtn.classList.add('btn__scroll--show');
+      refs.scrollUpwardBtn.classList.add('btn__scroll--show');
     }
 
     window.removeEventListener('keydown', onEscKeyPress);
     
-    if (document.querySelector('.library-button__watched').classList.contains('library-button-current') && document.querySelector('.button-mylibrary').classList.contains('current')) { 
+    if (refs.buttonWatched.classList.contains('library-button-current') && refs.buttonMyLibrary.classList.contains('current')) { 
       getLibraryFilms( event, "watched");
     }
-    if (document.querySelector('.library-button__queue').classList.contains('library-button-current') && document.querySelector('.button-mylibrary').classList.contains('current')) { 
+    if (refs.buttonQueue.classList.contains('library-button-current') && refs.buttonMyLibrary.classList.contains('current')) { 
      getLibraryFilms(event, "queue");
     }
   }
-  function onEscKeyPress(e) {
-    if (e.code === 'Escape') {
+  function onEscKeyPress(event) {
+    if (event.code === 'Escape') {
       closeModalMovie();
     }
   }
-  function onBackdropClick(e) {
-    if (e.target === e.currentTarget) {
+  function onBackdropClick(event) {
+    if (event.target === event.currentTarget) {
       closeModalMovie();
     }
   }
 
-  // OPEN/CLOSE MODAL TEAM
-  refs.backdropTeam.addEventListener('click', onTeamBackdropClick);
-  refs.openModalTeamBtn.addEventListener('click', openModalTeam);
-  refs.closeModalTeamBtn.addEventListener('click', closeModalTeam);
-
-  function onTeamEscKeyPress(e) {
-    if (e.code === 'Escape') {
-      closeModalTeam();
-    }
-  }
-  function onTeamBackdropClick(e) {
-    if (e.target === e.currentTarget) {
-      closeModalTeam();
-    }
-  }
-  function openModalTeam() {
  
-    scrollUpwardBtn.classList.remove('btn__scroll--show');
-    document.body.classList.toggle('modal-open');
-    refs.modalTeam.classList.toggle('backdrop--is-hidden');
-    window.addEventListener('keydown', onTeamEscKeyPress);
-    
-    
-  }
-  function closeModalTeam() {
-    document.body.classList.toggle('modal-open');
-    refs.modalTeam.classList.toggle('backdrop--is-hidden');
-
-    const scrollParam = window.scrollY;
-    const coords = document.documentElement.clientHeight;
-
-    if (scrollParam > coords) {
-      scrollUpwardBtn.classList.add('btn__scroll--show');
-    }
-
-    window.removeEventListener('keydown', onTeamEscKeyPress);
-  }
-
-
