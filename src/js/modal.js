@@ -1,5 +1,8 @@
 import refs from './refs'
-import { getImagePathFromTMDB, getMovieDetails, spinner, getLibraryFilms } from '../index.js';
+import { getImagePathFromTMDB } from './get-image-full-path'
+import { getMovieDetails } from './search-movie-by-id'
+import { getLibraryFilms } from '../index.js';
+import { spinner } from './spinner';
 import modalMovieTemplate from '../templates/modal-movie-card.hbs';
 const { TmdbUrlHandler } = require('./api-service');
 import './dark-theme';

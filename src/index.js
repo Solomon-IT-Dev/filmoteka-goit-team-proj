@@ -7,6 +7,7 @@ import './js/search-movies-by-query';
 import './js/search-trend-movies'
 import './js/render-main-card-movie'
 import './js/dark-theme';
+import './js/pagination'
 
 import refs from './js/refs'
 import mainMovieTemplate from './templates/main-movie-card.hbs';
@@ -14,11 +15,12 @@ import defaultImage from './images/main-section/default-image.jpg';
     
 const axios = require('axios').default;
 import {SaveTheme} from './js/dark-theme'
-import TuiPagination from 'tui-pagination';
-import "tui-pagination/dist/tui-pagination.css";
+// import TuiPagination from 'tui-pagination';
+// import "tui-pagination/dist/tui-pagination.css";
 import { searchMovies} from './js/search-movies-by-query'
 import { searchTrendMovies } from './js/search-trend-movies'
 import { renderResults } from './js/render-main-card-movie';
+import { getMovieDetails } from './js/search-movie-by-id';
 import { onBtnScrollUpwardClick } from './js/scroll';
 import { spinner } from './js/spinner';
 import './sass/main.scss';
@@ -36,78 +38,78 @@ const { TmdbUrlHandler } = require('./js/api-service');
 refs.buttonHome.addEventListener('click', backToHome);
 refs.buttonMyLibrary.addEventListener('click', myLibraryPage);
 
-const tuiOptions = {
-  totalItems: 0, //set proper value in search
-  itemsPerPage: 20, //default from TMDB API
-  visiblePages: 4,
-  page: 1,
-  centerAlign: false,
-  firstItemClassName: 'tui-first-child',
-  lastItemClassName: 'tui-last-child',
-  template: {
-    page: '<a href="#" class="tui-page-btn">{{page}}</a>',
-    currentPage: '<strong class="tui-page-btn tui-is-selected">{{page}}</strong>',
-    moveButton:
-      '<a href="#" class="tui-page-btn tui-{{type}}">' +
-      '<span class="tui-ico-{{type}}">{{type}}</span>' +
-      '</a>',
-    disabledMoveButton:
-      '<span class="tui-page-btn tui-is-disabled tui-{{type}}">' +
-      '<span class="tui-ico-{{type}}">{{type}}</span>' +
-      '</span>',
-    moreButton:
-      '<a href="#" class="tui-page-btn tui-{{type}}-is-ellip">' +
-      '<span class="tui-ico-ellip">...</span>' +
-      '</a>',
-  },
-  usageStatistics: true, //GoogleStats for usage of TuiP
-};
-export const tuiPaginationInstance = new TuiPagination(
-  document.getElementById('tui-pagination-container'),
-  tuiOptions,
-);
+// const tuiOptions = {
+//   totalItems: 0, //set proper value in search
+//   itemsPerPage: 20, //default from TMDB API
+//   visiblePages: 4,
+//   page: 1,
+//   centerAlign: false,
+//   firstItemClassName: 'tui-first-child',
+//   lastItemClassName: 'tui-last-child',
+//   template: {
+//     page: '<a href="#" class="tui-page-btn">{{page}}</a>',
+//     currentPage: '<strong class="tui-page-btn tui-is-selected">{{page}}</strong>',
+//     moveButton:
+//       '<a href="#" class="tui-page-btn tui-{{type}}">' +
+//       '<span class="tui-ico-{{type}}">{{type}}</span>' +
+//       '</a>',
+//     disabledMoveButton:
+//       '<span class="tui-page-btn tui-is-disabled tui-{{type}}">' +
+//       '<span class="tui-ico-{{type}}">{{type}}</span>' +
+//       '</span>',
+//     moreButton:
+//       '<a href="#" class="tui-page-btn tui-{{type}}-is-ellip">' +
+//       '<span class="tui-ico-ellip">...</span>' +
+//       '</a>',
+//   },
+//   usageStatistics: true, //GoogleStats for usage of TuiP
+// };
+// export const tuiPaginationInstance = new TuiPagination(
+//   document.getElementById('tui-pagination-container'),
+//   tuiOptions,
+// );
 
-let TMDB_GENRE_CACHE; //undefined. Clean it when we change language!
+// let TMDB_GENRE_CACHE; //undefined. Clean it when we change language!
 
-let TMDB_CONFIG; //undefined
+// let TMDB_CONFIG; //undefined
 
-/* Generates full path for images from IMDB.
-file_path: short path from 'movieData' or a search result
-size: any size that IMDB supports. Optional. See IMDB_CONFIG for valid sizes. Default is "original" */
+// /* Generates full path for images from IMDB.
+// file_path: short path from 'movieData' or a search result
+// size: any size that IMDB supports. Optional. See IMDB_CONFIG for valid sizes. Default is "original" */
 
-export async function getImagePathFromTMDB(file_path, size) {
-  //do ONCE - cache IMDB config with base_path and sizes for images
-  //reference for config format: https://developers.themoviedb.org/3/configuration/get-api-configuration
-  if (TMDB_CONFIG === undefined) {
-    try {
-      const AxiosConfigParams = {
-        method: 'get',
-        url: new TmdbUrlHandler('TMDB_config').toString(),
-      };
+// export async function getImagePathFromTMDB(file_path, size) {
+//   //do ONCE - cache IMDB config with base_path and sizes for images
+//   //reference for config format: https://developers.themoviedb.org/3/configuration/get-api-configuration
+//   if (TMDB_CONFIG === undefined) {
+//     try {
+//       const AxiosConfigParams = {
+//         method: 'get',
+//         url: new TmdbUrlHandler('TMDB_config').toString(),
+//       };
 
-      const serverResponse = await axios(AxiosConfigParams);
+//       const serverResponse = await axios(AxiosConfigParams);
 
-      if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
-        throw new ServerError(
-          `Unable to cache configuration from TMDB. Request: ${AxiosConfigParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
-        );
-      }
+//       if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
+//         throw new ServerError(
+//           `Unable to cache configuration from TMDB. Request: ${AxiosConfigParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
+//         );
+//       }
 
-      TMDB_CONFIG = serverResponse.data;
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
+//       TMDB_CONFIG = serverResponse.data;
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   }
 
-  const handler_params = {
-    TMDB_base_url: TMDB_CONFIG.images.secure_base_url,
-    size: size,
-    file_path: file_path,
-  };
-  const URL_handler = new TmdbUrlHandler('TMDB_image', handler_params);
+//   const handler_params = {
+//     TMDB_base_url: TMDB_CONFIG.images.secure_base_url,
+//     size: size,
+//     file_path: file_path,
+//   };
+//   const URL_handler = new TmdbUrlHandler('TMDB_image', handler_params);
 
-  return URL_handler.toString();
-}
+//   return URL_handler.toString();
+// }
 
 
 // async function makeMoviesDataforRendering(TMDB_response_results) {
@@ -170,51 +172,51 @@ export async function getImagePathFromTMDB(file_path, size) {
 If you have an array of movies, run it for EACH of them. 
 Pure function: returns a modified COPY of movieData */
 
-export async function addGenreNames(movieData, language) {
-  //do ONCE - cache genres from the backend
-  if (TMDB_GENRE_CACHE === undefined) {
-    try {
-      const AxiosGenreParams = {
-        method: 'get',
-        url: new TmdbUrlHandler('TMDB_genres', { language: language }).toString(),
-      };
+// export async function addGenreNames(movieData, language) {
+//   //do ONCE - cache genres from the backend
+//   if (TMDB_GENRE_CACHE === undefined) {
+//     try {
+//       const AxiosGenreParams = {
+//         method: 'get',
+//         url: new TmdbUrlHandler('TMDB_genres', { language: language }).toString(),
+//       };
 
-      const serverResponse = await axios(AxiosGenreParams);
+//       const serverResponse = await axios(AxiosGenreParams);
 
-      if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
-        throw new ServerError(
-          `Unable to cache genres from TMDB. Request: ${AxiosGenreParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
-        );
-      }
+//       if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
+//         throw new ServerError(
+//           `Unable to cache genres from TMDB. Request: ${AxiosGenreParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
+//         );
+//       }
 
-      TMDB_GENRE_CACHE = serverResponse.data.genres;
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
+//       TMDB_GENRE_CACHE = serverResponse.data.genres;
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   }
 
-  const movieData_with_genres = { ...movieData }; //clone movie object BY VALUE!
+//   const movieData_with_genres = { ...movieData }; //clone movie object BY VALUE!
 
-  if (movieData_with_genres.genre_ids) {
-    //we have short movie data without genres from search
-    delete movieData_with_genres.genre_ids;
+//   if (movieData_with_genres.genre_ids) {
+//     //we have short movie data without genres from search
+//     delete movieData_with_genres.genre_ids;
 
-    movieData_with_genres.genres = movieData.genre_ids.map(genre_id => {
-      const genreObject = TMDB_GENRE_CACHE.find(genre => {
-        return genre.id === genre_id;
-      });
-      return genreObject.name;
-    });
-  }
-  else if (movieData_with_genres.genres && movieData_with_genres.genres.every( (genre) => genre.name ) ) {
-    //we have full movie data from Library, objects have names
-    movieData_with_genres.genres = movieData.genres.map(genre => {
-      return genre.name;
-    });
-  } 
+//     movieData_with_genres.genres = movieData.genre_ids.map(genre_id => {
+//       const genreObject = TMDB_GENRE_CACHE.find(genre => {
+//         return genre.id === genre_id;
+//       });
+//       return genreObject.name;
+//     });
+//   }
+//   else if (movieData_with_genres.genres && movieData_with_genres.genres.every( (genre) => genre.name ) ) {
+//     //we have full movie data from Library, objects have names
+//     movieData_with_genres.genres = movieData.genres.map(genre => {
+//       return genre.name;
+//     });
+//   } 
 
-  return movieData_with_genres;
-}
+//   return movieData_with_genres;
+// }
 
 // async function searchMovies(event = new Event('default')) {
 //   event.preventDefault();
@@ -317,68 +319,68 @@ export async function addGenreNames(movieData, language) {
 /* Requests another page for the same search string. Calls render afterwars.
 Needs a wrapper telling it what page to load (direction)*/
 
-tuiPaginationInstance.on('afterMove', event => {
-  movePage(event);
-});
+// tuiPaginationInstance.on('afterMove', event => {
+//   movePage(event);
+// });
 
 /* function for pagination
 Works for both trends and search results.
 Is called by tuiPaginationInstance. Should not be called separately.
 event is generated by tuiPaginationInstance and is required for determining correct page */
-async function movePage(event) {
-  //direction) {
-  let URL_handler;
+// async function movePage(event) {
+//   //direction) {
+//   let URL_handler;
 
-  if (!tuiPaginationInstance.currentSearchString) {
-    const handler_params = {
-      page: event.page,
-    };
-    URL_handler = new TmdbUrlHandler('TMDB_trending', handler_params);
-  } else {
-    const handler_params = {
-      queryString: tuiPaginationInstance.currentSearchString,
-      page: event.page,
-      language: '',
-    };
-    URL_handler = new TmdbUrlHandler('TMDB_search', handler_params);
-  }
-  //console.log('Generated query: ' + URL_handler.toString());
+//   if (!tuiPaginationInstance.currentSearchString) {
+//     const handler_params = {
+//       page: event.page,
+//     };
+//     URL_handler = new TmdbUrlHandler('TMDB_trending', handler_params);
+//   } else {
+//     const handler_params = {
+//       queryString: tuiPaginationInstance.currentSearchString,
+//       page: event.page,
+//       language: '',
+//     };
+//     URL_handler = new TmdbUrlHandler('TMDB_search', handler_params);
+//   }
+//   //console.log('Generated query: ' + URL_handler.toString());
 
-  const AxiosSearchParams = {
-    method: 'get',
-    url: URL_handler.toString(),
-  };
+//   const AxiosSearchParams = {
+//     method: 'get',
+//     url: URL_handler.toString(),
+//   };
 
-  try {
-    spinner.show();
+//   try {
+//     spinner.show();
 
-    const serverResponse = await axios(AxiosSearchParams);
+//     const serverResponse = await axios(AxiosSearchParams);
 
-    // document.querySelector('.error-message').classList.add('visually-hidden');
+//     // document.querySelector('.error-message').classList.add('visually-hidden');
 
-    if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
-      throw new ServerError(
-        `Unable to get new page from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. "TMDB RESPONSE STATUS: ${serverResponse.status}`,
-      );
-    }
+//     if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
+//       throw new ServerError(
+//         `Unable to get new page from TMDB. Request: ${AxiosSearchParams.url}. TMDB response: ${serverResponse.statusText}. "TMDB RESPONSE STATUS: ${serverResponse.status}`,
+//       );
+//     }
 
-    // if (serverResponse.data.results.length === 0) {
-    //   document.querySelector('.error-message').classList.remove('visually-hidden');
-    // }
+//     // if (serverResponse.data.results.length === 0) {
+//     //   document.querySelector('.error-message').classList.remove('visually-hidden');
+//     // }
 
-    if (serverResponse.data.results.length > 0) {
-      //TODO: additionally disable interface elements responsible for switching here accordingly
+//     if (serverResponse.data.results.length > 0) {
+//       //TODO: additionally disable interface elements responsible for switching here accordingly
 
-      renderResults(serverResponse.data.results);
-      onBtnScrollUpwardClick();
-      //console.log(serverResponse.data); //debug line
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
+//       renderResults(serverResponse.data.results);
+//       onBtnScrollUpwardClick();
+//       //console.log(serverResponse.data); //debug line
+//     }
+//   } catch (error) {
+//     console.log(error.message);
+//   }
 
-  spinner.hide();
-}
+//   spinner.hide();
+// }
 
 
 //local-storage
@@ -402,33 +404,33 @@ refs.buttonQueue.addEventListener('click', (event) => {
 
 /* get single movieData object from IMDB */
 
-async function getMovieDetails(movie_id, language) {
-    const handler_params = {
-      movie_id: movie_id,
-      language: language,
-    };
-    const URL_handler = new TmdbUrlHandler('TMDB_movieData', handler_params);
+// async function getMovieDetails(movie_id, language) {
+//     const handler_params = {
+//       movie_id: movie_id,
+//       language: language,
+//     };
+//     const URL_handler = new TmdbUrlHandler('TMDB_movieData', handler_params);
 
-    const AxiosMovieParams = {
-      method: 'get',
-      url: URL_handler.toString(),
-    };
+//     const AxiosMovieParams = {
+//       method: 'get',
+//       url: URL_handler.toString(),
+//     };
 
-    try {
-      const serverResponse = await axios(AxiosMovieParams);
+//     try {
+//       const serverResponse = await axios(AxiosMovieParams);
 
-      if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
-        throw new ServerError(
-          `Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
-        );
-      }
-      //console.log(serverResponse.data); //debug line
-      return serverResponse.data; //return detailed movie data
-    } catch (error) {
-      console.log(error.message);
-    }
-    return false; //otherwise return false
-}
+//       if (serverResponse.statusText != 'OK' && serverResponse.status != 200) {
+//         throw new ServerError(
+//           `Unable to get movie data from TMDB. Request: ${AxiosMovieParams.url}. TMDB response: ${serverResponse.statusText}. TMDB RESPONSE STATUS: ${serverResponse.status}`,
+//         );
+//       }
+//       //console.log(serverResponse.data); //debug line
+//       return serverResponse.data; //return detailed movie data
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//     return false; //otherwise return false
+// }
 
 /* function retrieves movie data from IMDB based on ids in localStorage and calls render
 
@@ -477,7 +479,7 @@ function backToHome() {
 
 //export common functions
 
-exports.getImagePathFromTMDB = getImagePathFromTMDB;
-exports.getMovieDetails = getMovieDetails;
-exports.spinner = spinner;
+// exports.getImagePathFromTMDB = getImagePathFromTMDB;
+// exports.getMovieDetails = getMovieDetails;
+// exports.spinner = spinner;
 exports.getLibraryFilms = getLibraryFilms;

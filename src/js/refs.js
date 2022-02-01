@@ -9,7 +9,6 @@ const refs = {
     buttonWatched: document.querySelector('.library-button__watched'),
     buttonQueue: document.querySelector('.library-button__queue'),
     errorMessageEl: document.querySelector('.error-message'),
-
     //Pagination
     paginationElement: document.getElementById('tui-pagination-container'),
     //Scroll
@@ -19,7 +18,6 @@ const refs = {
     closeModalMovieBtn: document.querySelector('[data-modal-close]'),
     modalMovie: document.querySelector('[data-modal]'),
     backdrop: document.querySelector('.backdrop'),
-
     // Модальное окно для команды
     openModalTeamBtn: document.querySelector('[data-team-open]'),
     closeModalTeamBtn: document.querySelector('[data-team-close]'),

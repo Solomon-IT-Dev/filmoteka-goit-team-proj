@@ -1,7 +1,7 @@
 import refs from './refs';
 import { SaveTheme } from './dark-theme';
-import { addGenreNames } from '../index';
-import { getImagePathFromTMDB } from '../index'
+import { addGenreNames } from './get-genres';
+import { getImagePathFromTMDB } from './get-image-full-path'
 import mainMovieTemplate from '../templates/main-movie-card.hbs';
 import defaultImage from '../images/main-section/default-image.jpg';
 

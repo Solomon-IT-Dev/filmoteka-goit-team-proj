@@ -1,6 +1,6 @@
 import refs from './refs';
 const axios = require('axios').default;
-import { tuiPaginationInstance} from '../index'
+import { tuiPaginationInstance} from './pagination'
 import { spinner} from './spinner';
 const { TmdbUrlHandler } = require('./api-service');
 import { renderResults } from './render-main-card-movie'
