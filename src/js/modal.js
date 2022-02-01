@@ -70,21 +70,22 @@ if (parsedDataQueue) {
     refs.modalMovieContainer.insertAdjacentHTML('beforeend', markup);
     
     //local-storage
-
+    const buttonAddToWatched = document.querySelector('.modal-movies__button-watched');
+    const buttonAddToQueue = document.querySelector('.modal-movies__button-queue');
     if (watchedArray.includes(movieForRendering.id)) {
-      refs.buttonAddToWatched.textContent = 'Delete from watched';
-      refs.buttonAddToWatched.addEventListener('click', deleteWatchedFilm);
+      buttonAddToWatched.textContent = 'Delete from watched';
+      buttonAddToWatched.addEventListener('click', deleteWatchedFilm);
     } else { 
-      refs.buttonAddToWatched.textContent = 'Add to watched';
-      refs.buttonAddToWatched.addEventListener('click', saveWatchedFilm);
+      buttonAddToWatched.textContent = 'Add to watched';
+      buttonAddToWatched.addEventListener('click', saveWatchedFilm);
     };
 
     if (queueArray.includes(movieForRendering.id)) {
-      refs.buttonAddToQueue.textContent = 'Delete from queue';
-      refs.buttonAddToQueue.addEventListener('click', deleteQueueFilm);
+      buttonAddToQueue.textContent = 'Delete from queue';
+      buttonAddToQueue.addEventListener('click', deleteQueueFilm);
     } else { 
-      refs.buttonAddToQueue.textContent = 'Add to queue';
-      refs.buttonAddToQueue.addEventListener('click', saveFilmToQueue);
+      buttonAddToQueue.textContent = 'Add to queue';
+      buttonAddToQueue.addEventListener('click', saveFilmToQueue);
     }
 
     function deleteWatchedFilm(event) { 

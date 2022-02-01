@@ -19,8 +19,7 @@ const refs = {
     closeModalMovieBtn: document.querySelector('[data-modal-close]'),
     modalMovie: document.querySelector('[data-modal]'),
     backdrop: document.querySelector('.backdrop'),
-    buttonAddToWatched: document.querySelector('.modal-movies__button-watched'),
-    buttonAddToQueue: document.querySelector('.modal-movies__button-queue'),
+
     // Модальное окно для команды
     openModalTeamBtn: document.querySelector('[data-team-open]'),
     closeModalTeamBtn: document.querySelector('[data-team-close]'),
