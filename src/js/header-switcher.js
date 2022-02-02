@@ -1,46 +1,43 @@
-const buttonHome = document.querySelector('.button-home');
+import refs from './refs';
 
-const addBlackHeader = () => {
-  document.querySelector('.header-container').classList.remove('header-container-red');
-  document.querySelector('.header-container').classList.add('header-container-black');
+refs.buttonHome.addEventListener('click', addBlackHeader);
+refs.buttonMyLibrary.addEventListener('click', addRedHeader);
 
-  document.querySelector('.header').classList.add('header-black');
-  document.querySelector('.header').classList.remove('header-red');
+function addBlackHeader () {
+  refs.headerContainer.classList.remove('header-container-red');
+  refs.headerContainer.classList.add('header-container-black');
 
-  document.querySelector('.button-mylibrary').classList.remove('current');
-  document.querySelector('.button-home').classList.add('current');
+  refs.headerEl.classList.add('header-black');
+  refs.headerEl.classList.remove('header-red');
 
-  document.querySelector('.header-form').classList.remove('visually-hidden');
-  document.querySelector('.library-buttons').classList.add('visually-hidden');
+  refs.buttonMyLibrary.classList.remove('current');
+  refs.buttonHome.classList.add('current');
 
-  togglePagination("visually-hidden", !(document.querySelector(".button-home").classList.contains("current")) );
+  refs.headerForm.classList.remove('visually-hidden');
+  refs.libraryButtons.classList.add('visually-hidden');
+
+  togglePagination("visually-hidden", !(refs.buttonHome.classList.contains("current")) );
 };
 
-buttonHome.addEventListener('click', addBlackHeader);
+function addRedHeader () {
+  refs.headerContainer.classList.remove('header-container-black');
+  refs.headerContainer.classList.add('header-container-red');
 
-const buttonMyLibrary = document.querySelector('.button-mylibrary');
+  refs.headerEl.classList.remove('header-black');
+  refs.headerEl.classList.add('header-red');
 
-const addRedHeader = () => {
-  document.querySelector('.header-container').classList.remove('header-container-black');
-  document.querySelector('.header-container').classList.add('header-container-red');
+  refs.buttonHome.classList.remove('current');
+  refs.buttonMyLibrary.classList.add('current');
 
-  document.querySelector('.header').classList.remove('header-black');
-  document.querySelector('.header').classList.add('header-red');
+  refs.libraryButtons.classList.remove('visually-hidden');
+  refs.headerForm.classList.add('visually-hidden');
 
-  document.querySelector('.button-home').classList.remove('current');
-  document.querySelector('.button-mylibrary').classList.add('current');
+  refs.errorMessageEl.classList.add('visually-hidden');
 
-  document.querySelector('.library-buttons').classList.remove('visually-hidden');
-  document.querySelector('.header-form').classList.add('visually-hidden');
-
-  document.querySelector('.error-message').classList.add('visually-hidden');
-
-  togglePagination("visually-hidden", !(document.querySelector(".button-home").classList.contains("current")) );
+  togglePagination("visually-hidden", !(refs.buttonHome.classList.contains("current")) );
 };
 
-buttonMyLibrary.addEventListener('click', addRedHeader);
 
 function togglePagination(invisibleClass = "visually-hidden", hidePagination = false) {
-  const paginationElement = document.getElementById('tui-pagination-container');
-  paginationElement.classList.toggle(invisibleClass, hidePagination);
+  refs.paginationElement.classList.toggle(invisibleClass, hidePagination);
 }

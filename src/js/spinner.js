@@ -24,3 +24,7 @@ export default class Spinner {
     this.refs.mainSection.style.opacity = 0;
   }
 }
+
+export const spinner = new Spinner({
+  hidden: true,
+});
