@@ -35,14 +35,12 @@
 
 The project is implemented in Vanilla JavaScript and working with:
 
-:star: [The Movie Database TMDB](https://www.themoviedb.org/), 
+🛠 [The Movie Database TMDB](https://www.themoviedb.org/);
 
-:star: Responsive design for use on phone 📱, tablet 📟 and desktop 💻.
+🛠 Responsive design for use on phone 📱, tablet 📟 and desktop 💻.
 
 
-We are students of the FullStack Developer course
-[<img src="https://img.shields.io/badge/Go-IT-orange" />](https://goit.ua), the
-project is written at the end of the study of JavaScript.
+We are students of the FullStack Developer course [<img src="https://img.shields.io/badge/Go-IT-orange" />](https://goit.ua), the project is written at the end of the study of JavaScript.
 
 
 ## How to use Filmoteka?
