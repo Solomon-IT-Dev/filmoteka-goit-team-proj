@@ -52,12 +52,12 @@ project is written at the end of the study of Javascript.
 
 **The Web App provides the following functions:**
 
-:black_circle: search movie by a key word,
+:star: search movie by a key word;
   
-:green_circle: manage your film database by adding or deleting chosen movie to WATCHED or to QUEUE,
+:star: manage your film database by adding or deleting chosen movie to WATCHED or to QUEUE;
 
-:star: pagination allows you to easily navigate between movies,
+:star: pagination allows you to easily navigate between movies;
 
-:world_map: in LIBRARY you can see your database of movies divided by 2 categories: WATCHED and QUEUE,
+:star: in LIBRARY you can see your database of movies divided by 2 categories: WATCHED and QUEUE;
 
-:black_circle: responsive design for use on phone :iphone:, tablet and desktop :desktop_computer:.
+:star: responsive design for use on phone :iphone:, tablet :tablet: and desktop :desktop_computer:.
