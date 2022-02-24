@@ -35,9 +35,9 @@
 
 The project is implemented in Vanilla JavaScript and working with:
 
-🛠 [The Movie Database TMDB](https://www.themoviedb.org/);
+🛠 [the Movie Database TMDB](https://www.themoviedb.org/);
 
-🛠 Responsive design for use on phone 📱, tablet 📟 and desktop 💻.
+🛠 responsive design for use on phone 📱, tablet 📟 and desktop 💻.
 
 
 We are students of the FullStack Developer course [<img src="https://img.shields.io/badge/Go-IT-orange" />](https://goit.ua), the project is written at the end of the study of JavaScript.
