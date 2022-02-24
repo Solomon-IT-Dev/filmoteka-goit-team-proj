@@ -1,5 +1,5 @@
 <h1 align="center"> 👨‍💻 GoIT Team Project 👩‍💻 </h1>
-<h2 align="center">  FILMOTEKA  </h2>
+<h2 align="center">  FILMOTEKA 🎥 </h2>
 
 <span align="center"> 
   
@@ -18,7 +18,7 @@
 </span>
 
 
-<h3 align="center"> ℹ️ &nbsp; The sWitchers Developers Team 🚀 <h3>
+<h3 align="center"> ℹ️ &nbsp; The sWitchers Developers Team   🚀 <h3>
 <span align="center"> 
   
 <a align="center" href="https://github.com/Solomon-IT-Dev">![GitHub](https://img.shields.io/badge/-masa87-05122A?style=flat&logo=github)</a>
@@ -45,7 +45,7 @@ We are students of the FullStack Developer course [<img src="https://img.shields
 
 ## How to use Filmoteka?
 
-🎥 It is the site for searching and collecting movies.
+📽 It is the site for searching and collecting movies.
 
 
 **The Web App provides the following functions:**
