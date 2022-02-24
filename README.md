@@ -1,58 +1,63 @@
-# Parcel boilerplate
+<h1 align="center"> :technologist: GoIT Team project :technologist: </h1>
+<h2 align="center">  FILMOTEKA  </h2>
 
-## Скрытые файлы
+<span align="center"> 
+  
+![HTML](https://img.shields.io/badge/-HTML-05122A?style=flat&logo=HTML5)&nbsp;
+![CSS](https://img.shields.io/badge/-CSS-05122A?style=flat&logo=CSS3&logoColor=1572B6)&nbsp;
+![JavaScript](https://img.shields.io/badge/-JavaScript-05122A?style=flat&logo=javascript)&nbsp;
+![Node.js](https://img.shields.io/badge/-Node.js-05122A?style=flat&logo=Node.js)&nbsp;
+  
+![Git](https://img.shields.io/badge/-Git-05122A?style=flat&logo=git)&nbsp;
+![GitHub](https://img.shields.io/badge/-GitHub-05122A?style=flat&logo=github)&nbsp;
+<!-- ![Firebase](https://img.shields.io/badge/-Firebase-05122A?style=flat&logo=firebase)&nbsp; -->
+![Figma](https://img.shields.io/badge/-Figma-05122A?style=flat&logo=figma)&nbsp;
 
-Включите отображение скрытых файлов и папок в проводнике своей операционной системы, иначе вы не
-сможете выбрать и скопировать себе файлы настроек проекта, имена которых начинаются с точки.
+![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-05122A?style=flat&logo=visual-studio-code&logoColor=007ACC)&nbsp;
 
-## Зависимости
+</span>
 
-На компьютере должена быть установлена LTS-версия [Node.js](https://nodejs.org/en/) со всеми
-дополнительными инструментами кроме **Chocolatey** - его ставить не нужно.
 
-## Перед началом работы
+<h3 align="center"> ℹ️ &nbsp; The sWitchers Developers Team 🐾 🐱‍🚀 <h3>
+<span align="center"> 
+  
+<a align="center" href="https://github.com/Solomon-IT-Dev">![GitHub](https://img.shields.io/badge/-masa87-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/Cocokringle">![GitHub](https://img.shields.io/badge/-Joanna--Golofit-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/inapolov">![GitHub](https://img.shields.io/badge/-Majinmuszu-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/Kilkenni">![GitHub](https://img.shields.io/badge/-DamianBrzezinski96-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/NikitaHolovan">![GitHub](https://img.shields.io/badge/-DamianBrzezinski96-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/o-ishchenko">![GitHub](https://img.shields.io/badge/-DamianBrzezinski96-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/Sig1smund">![GitHub](https://img.shields.io/badge/-DamianBrzezinski96-05122A?style=flat&logo=github)</a>
 
-Один раз на проект установить все зависимости.
+</span> 
 
-```shell
-npm ci
-```
+## Description
 
-### Разработка
+The project is implemented in vanilla JavaScript and working with:
 
-Запустить режим разработки.
+:star: [The Movie Database TMDB](https://www.themoviedb.org/), 
 
-```shell
-npm run dev
-```
+:star: Responsive design for use on phone :iphone:, tablet and desktop :desktop_computer:.
 
-Во вкладке браузера перейти по адресу [http://localhost:1234](http://localhost:1234).
 
-### Деплой
+We are students of the FullStack developer course
+[<img src="https://img.shields.io/badge/Go-IT-orange" />](https://goit.ua), the
+project is written at the end of the study of Javascript.
 
-Сборка будет автоматически собирать и деплоить продакшен версию проекта на GitHub Pages, в ветку
-`gh-pages`, каждый раз когда обновляется ветка `main`. Например, после прямого пуша или принятого
-пул-реквеста. Для этого необходимо в файле `package.json` отредактировать поле `homepage` и скрипт
-`build`, заменив `имя_пользователя` и `имя_репозитория` на свои.
 
-```json
-"homepage": "https://имя_пользователя.github.io/имя_репозитория",
-"scripts": {
-  "build": "parcel build src/*.html --public-url /имя_репозитория/"
-},
-```
+## How to use Filmoteka?
 
-На всякий случай стоит зайти в настройки репозитория `Settings` > `Pages` и убедиться что продакшен
-версии файлов раздаются из папки `/root` ветки `gh-pages`.
+:orange_circle: It is the site for searching movies.
 
-Через какое-то время живую страницу можно будет посмотреть по адресу указанному в отредактированном
-свойстве `homepage`, например
-[https://goitacademy.github.io/parcel-project-template](https://goitacademy.github.io/parcel-project-template).
 
-## Файлы и папки
+**The Web App provides the following functions:**
 
-- Все паршалы файлов стилей должны лежать в папке `src/sass` и импортироваться в
-  `src/sass/main.scss`
-- Изображения добавляйте в папку `src/images`, заранее оптимизировав их. Сборщик просто копирует
-  используемые изображения чтобы не нагружать систему оптимизацией картинок, так как на слабых
-  компьютерах это может занять много времени.
+:black_circle: search movie by a key word,
+  
+:green_circle: manage your film database by adding or deleting chosen movie to WATCHED or to QUEUE,
+
+:star: pagination allows you to easily navigate between movies,
+
+:world_map: in LIBRARY you can see your database of movies divided by 2 categories: WATCHED and QUEUE,
+
+:black_circle: responsive design for use on phone :iphone:, tablet and desktop :desktop_computer:.
