@@ -47,17 +47,12 @@ project is written at the end of the study of Javascript.
 
 ## How to use Filmoteka?
 
-:orange_circle: It is the site for searching movies.
+⚫ It is the site for searching movies.
 
 
 **The Web App provides the following functions:**
 
-:star: search movie by a key word;
-  
-:star: manage your film database by adding or deleting chosen movie to WATCHED or to QUEUE;
-
-:star: pagination allows you to easily navigate between movies;
-
-:star: in LIBRARY you can see your database of movies divided by 2 categories: WATCHED and QUEUE;
-
-:star: responsive design for use on phone :iphone:, tablet :tablet: and desktop :desktop_computer:.
+⭐ search movie by a key word;  
+⭐ manage your film database by adding or deleting chosen movie to WATCHED or to QUEUE;
+⭐ pagination allows you to easily navigate between movies;
+⭐ in LIBRARY you can see your database of movies divided by 2 categories: WATCHED and QUEUE.
