@@ -18,7 +18,7 @@
 </span>
 
 
-<h3 align="center"> ℹ️ &nbsp; The sWitchers Developers Team 🐾🐱‍🚀 <h3>
+<h3 align="center"> ℹ️ &nbsp; The sWitchers Developers Team 🚀 <h3>
 <span align="center"> 
   
 <a align="center" href="https://github.com/Solomon-IT-Dev">![GitHub](https://img.shields.io/badge/-masa87-05122A?style=flat&logo=github)</a>
@@ -33,29 +33,29 @@
 
 ## Description
 
-The project is implemented in vanilla JavaScript and working with:
+The project is implemented in Vanilla JavaScript and working with:
 
 :star: [The Movie Database TMDB](https://www.themoviedb.org/), 
 
-:star: Responsive design for use on phone 📱, tablet and desktop 🖥️.
+:star: Responsive design for use on phone 📱, tablet 📟 and desktop 💻.
 
 
-We are students of the FullStack developer course
+We are students of the FullStack Developer course
 [<img src="https://img.shields.io/badge/Go-IT-orange" />](https://goit.ua), the
-project is written at the end of the study of Javascript.
+project is written at the end of the study of JavaScript.
 
 
 ## How to use Filmoteka?
 
-⚫ It is the site for searching movies.
+🎥 It is the site for searching and collecting movies.
 
 
 **The Web App provides the following functions:**
 
-⭐ search movie by a key word;
+🎞 search movie by a key word;
   
-⭐ manage your film database by adding or deleting chosen movie to WATCHED or to QUEUE;
+🎞 manage your film database by adding or deleting chosen movie to WATCHED or to QUEUE;
   
-⭐ pagination allows you to easily navigate between movies;
+🎞 pagination allows you to easily navigate between movies;
   
-⭐ in LIBRARY you can see your database of movies divided by 2 categories: WATCHED and QUEUE.
+🎞 in LIBRARY you can see your database of movies divided by 2 categories: WATCHED and QUEUE.
