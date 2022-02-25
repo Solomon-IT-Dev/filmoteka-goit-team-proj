@@ -21,13 +21,13 @@
 <h3 align="center"> ℹ️ &nbsp; The sWitchers Developers Team   🚀 <h3>
 <span align="center"> 
   
-<a align="center" href="https://github.com/Solomon-IT-Dev">![GitHub](https://img.shields.io/badge/-masa87-05122A?style=flat&logo=github)</a>
-<a align="center" href="https://github.com/Cocokringle">![GitHub](https://img.shields.io/badge/-Joanna--Golofit-05122A?style=flat&logo=github)</a>
-<a align="center" href="https://github.com/inapolov">![GitHub](https://img.shields.io/badge/-Majinmuszu-05122A?style=flat&logo=github)</a>
-<a align="center" href="https://github.com/Kilkenni">![GitHub](https://img.shields.io/badge/-DamianBrzezinski96-05122A?style=flat&logo=github)</a>
-<a align="center" href="https://github.com/NikitaHolovan">![GitHub](https://img.shields.io/badge/-DamianBrzezinski96-05122A?style=flat&logo=github)</a>
-<a align="center" href="https://github.com/o-ishchenko">![GitHub](https://img.shields.io/badge/-DamianBrzezinski96-05122A?style=flat&logo=github)</a>
-<a align="center" href="https://github.com/Sig1smund">![GitHub](https://img.shields.io/badge/-DamianBrzezinski96-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/Solomon-IT-Dev">![GitHub](https://img.shields.io/badge/-Roman-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/Cocokringle">![GitHub](https://img.shields.io/badge/-Natasha-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/inapolov">![GitHub](https://img.shields.io/badge/-Igor-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/Kilkenni">![GitHub](https://img.shields.io/badge/-Vitalii-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/NikitaHolovan">![GitHub](https://img.shields.io/badge/-Nikita-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/o-ishchenko">![GitHub](https://img.shields.io/badge/-Olya-05122A?style=flat&logo=github)</a>
+<a align="center" href="https://github.com/Sig1smund">![GitHub](https://img.shields.io/badge/-Igor-05122A?style=flat&logo=github)</a>
 
 </span> 
 
